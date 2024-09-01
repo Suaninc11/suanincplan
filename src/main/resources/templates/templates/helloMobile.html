@@ -1,0 +1,249 @@
+<div class="card shadow mb-4">
+	<!-- 요금제 -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
+    </div>
+    <div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="simSerialNumber">일련번호</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="simSerialNumber" class="form-control form-control-user" >
+			</div>
+			<div class="col-sm-2 border-right">
+		        <label for="carrierPlan">요금제</label>
+		    </div>
+			<div class="col-sm-4 mb-3 mb-sm-0">
+			    <select name="carrierPlan" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+				</select>
+			</div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="simCost">유심 비용</label>
+			</div>
+			<div class="col-sm-4 mb-3 mb-sm-0">
+			    <select name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="즉납">즉납</option>
+					<option value="후납">후납</option>
+				</select>
+			</div>
+			<div class="col-sm-2 border-right">
+		        <label for="subscriptionCost">가입비</label>
+		    </div>
+			<div class="col-sm-4 mb-3 mb-sm-0">
+			    <select name="subscriptionCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="완납">완납</option>
+					<option value="분납">분납</option>
+				</select>
+			</div>
+		</div>
+    </div>
+	
+	<!-- 고객정보 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">고객정보</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="name">가입자명</label>
+		    </div>
+			<div class="col-sm-4">
+		        <input type="text" name="name" class="form-control form-control-user" value="서류에 자필작성" disabled>
+		    </div>
+			<div class="col-sm-2 border-right">
+		        <label for="birthdate">생년월일</label>
+		    </div>
+		    <div class="col-sm-4">
+		        <input type="text" name="birthdate" class="form-control form-control-user" value="서류에 자필작성" disabled>
+		    </div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="address">주소</label>
+		    </div>
+		    <div class="col-sm-10">
+				<input type="text" name="address" class="form-control form-control-user" value="서류에 자필작성" disabled>
+		    </div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="openingNumber">개통 번호</label>
+		    </div>
+			<div class="col-sm-4">
+			    <input type="text" name="openingNumber" class="form-control form-control-user">
+			</div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="openingCategory">개통 구분</label>
+		    </div>
+			<div class="col-sm-4 mb-3 mb-sm-0">
+		        <select name="openingCategory" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="신규">신규</option>
+					<option value="번호이동">번호이동</option>
+				</select>
+		    </div>
+			<div class="col-sm-2 border-right">
+			    <label for="previousCarrier">이전 통신사</label>
+			</div>
+		    <div class="col-sm-4">
+				<select name="previousCarrier" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="SKT">SKT</option>
+					<option value="KT">KT</option>
+					<option value="U+">U+</option>
+					<option value="기타">기타</option>
+				</select>
+		    </div>
+		</div>
+	</div>
+	
+	<!-- 자동이체 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">자동이체</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="depositorName">예금주명</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="depositorName" class="form-control form-control-user" value="서류에 자필작성" disabled>
+			</div>
+			<div class="col-sm-2 border-right">
+		        <label for="depositorBirthdate">생년월일</label>
+		    </div>
+		    <div class="col-sm-4">
+		        <input type="text" name="depositorBirthdate" class="form-control form-control-user" value="서류에 자필작성" disabled>
+		    </div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="paymentName">은행(카드사)명</label>
+			</div>
+			<div class="col-sm-4">
+		        <input type="text" name="paymentName" class="form-control form-control-user" value="자필작성" disabled>
+			</div>
+			<div class="col-sm-2 border-right">
+			    <label for="accountNumber">유효기간</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="effectiveDate" class="form-control form-control-user" value="자필작성" disabled>
+			</div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="automaticTransfer">자동이체</label>
+		    </div>
+			<div class="col-sm-4 mb-3 mb-sm-0">
+		        <select name="automaticTransfer" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="계좌">계좌</option>
+					<option value="카드">카드</option>
+				</select>
+		    </div>
+			<div class="col-sm-2 border-right">
+			    <label for="accountNumber">계좌번호</label>
+			</div>
+			<div class="col-sm-4">
+		        <input type="text" name="accountNumber" class="form-control form-control-user" value="자필작성" disabled>
+		    </div>
+		</div>
+	</div>
+	
+	<!-- 청소년 법정대리인 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">청소년 법정대리인</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="depositorName">예금주명</label>
+			</div>
+			<div class="col-sm-2">
+			    <input type="text" name="depositorName" class="form-control form-control-user" value="자필작성" disabled>
+			</div>
+			<div class="col-sm-2 border-right">
+		        <label for="depositorBirthdate">생년월일</label>
+		    </div>
+		    <div class="col-sm-2">
+		        <input type="text" name="depositorBirthdate" class="form-control form-control-user" value="자필작성" disabled>
+		    </div>
+			<div class="col-sm-2 border-right">
+			    <label for="relationship">관계</label>
+			</div>
+			<div class="col-sm-2">
+			    <input type="text" name="relationship" class="form-control form-control-user" value="자필작성" disabled>
+			</div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="legalRepresentativeNumber">법대연락처</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="legalRepresentativeNumber" class="form-control form-control-user" value="서류에 자필작성" disabled>
+			</div>
+			<div class="col-sm-2 border-right">
+		        <label for="legalRepresentativeAddress">법대주소</label>
+		    </div>
+		    <div class="col-sm-4">
+		        <input type="text" name="legalRepresentativeAddress" class="form-control form-control-user" value="서류에 자필작성" disabled>
+		    </div>
+		</div>
+	</div>
+	
+	<!-- 부가기능 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">부가기능</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="additionalServices">부가서비스</label>
+		    </div>
+			<div class="col-sm-4">
+				<select name="additionalServices" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="없음">없음</option>
+					<option value="안심옵션">안심옵션</option>
+				</select>
+			</div>
+			<div class="col-sm-2 border-right">
+			    <label for="overseasData">해외데이터</label>
+			</div>
+			<div class="col-sm-4">
+				<select name="overseasData" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="차단">차단</option>
+					<option value="사용">사용</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 판매자 정보 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">판매자 정보</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="retailerName">판매점 상호</label>
+			</div>
+			<div class="col-sm-2">
+			    <input type="text" name="retailerName" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-2 border-right">
+			    <label for="sellerName">판매자명</label>
+			</div>
+			<div class="col-sm-2">
+			    <input type="text" name="sellerName" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-1 border-right">
+			    <label for="sellerNumber">연락처</label>
+			</div>
+			<div class="col-sm-3">
+			    <input type="text" name="sellerNumber" class="form-control form-control-user">
+			</div>
+		</div>
+	</div>
+</div>
