@@ -24,53 +24,6 @@
 
 <body id="page-top">
 	<script>
-		function applyFormDownload(preview = false) {
-		    var formElement = document.getElementById('dataForm'); // 폼 요소 가져오기
-		    var dataForm = new FormData(formElement);
-			
-			var formattedDate = getFormattedDate();
-			var selectElement = document.getElementById('templateCode');
-			var selectedOption = selectElement.options[selectElement.selectedIndex];
-			var templateCodeText = selectedOption.text;
-
-		    fetch('/homepage/inscribeView/autoComplete', {
-		        method: 'POST',
-		        body: dataForm
-		    })
-		    .then(response => response.blob())
-		    .then(blob => {
-		        const url = window.URL.createObjectURL(blob);
-
-		        if (preview) {
-		            // PDF 미리보기 팝업 창 띄우기
-		            const pdfWindow = window.open("", "PDF Preview", "width=800,height=600");
-		            if (pdfWindow) {
-		                pdfWindow.document.write(
-		                    `<html>
-		                        <head><title>PDF Preview</title></head>
-		                        <body style="margin: 0;">
-		                            <embed width="100%" height="100%" src="${url}" type="application/pdf">
-		                        </body>
-		                    </html>`
-		                );
-		            } else {
-		                alert("팝업 차단이 설정되어 있습니다. 팝업 차단을 해제하고 다시 시도해 주세요.");
-		            }
-		        } else {
-		            // PDF 다운로드 기능
-		            const a = document.createElement('a');
-		            a.style.display = 'none';
-		            a.href = url;
-		            a.download = templateCodeText + '_' + formattedDate; // 파일 이름을 PDF로 지정하고, 더 명확하게 변경
-		            document.body.appendChild(a);
-		            a.click();
-		            window.URL.revokeObjectURL(url);
-		            document.body.removeChild(a);
-		        }
-		    })
-		    .catch(error => console.error('Error downloading the document:', error));  // 오류 메시지 수정
-		}
-
 		function updateHiddenFields() {
 		    var selectElement = document.getElementById('carrierPlanSelect');
 		    if (!selectElement) return; // selectElement가 없으면 함수를 종료
@@ -111,11 +64,7 @@
 		        codeDescription = "helloMobile";
 		    } else if (selectedValue === "UM001") {
 		        codeDescription = "uplusuMobile";
-			} else if (selectedValue === "UM002") {
-			    codeDescription = "uplusuMobileYouth";
-			} else if (selectedValue === "UM003") {
-			    codeDescription = "uplusuMobileChange";
-		    } else if (selectedValue === "SM001") {
+		    } else if (selectedValue === "SM001" || selectedValue === "SM002") {
 		        codeDescription = "snowman";
 		    } else if (selectedValue === "SL001") {
 		        codeDescription = "skyLife";
@@ -153,36 +102,6 @@
 		        });
 		    }
 		}
-		
-		function getFormattedDate() {
-		    var now = new Date();
-
-		    var year = now.getFullYear();
-		    var month = ('0' + (now.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 +1 필요
-		    var day = ('0' + now.getDate()).slice(-2);
-		    var hours = ('0' + now.getHours()).slice(-2);
-		    var minutes = ('0' + now.getMinutes()).slice(-2);
-
-		    return year + month + day + hours + minutes;
-		}
-		
-		function checkPassword() {
-		    var password = prompt("비밀번호를 입력하세요:");
-
-		    // 비밀번호가 입력되지 않으면 리디렉션을 막음
-		    if (password === null || password === "") {
-		        alert("비밀번호를 입력하지 않았습니다.");
-		        return false;  // href 링크로 이동하지 않음
-		    }
-
-		    // 비밀번호가 올바른지 확인 (간단한 예시로 '1234'이 맞는지 체크)
-		    if (password === "1234") {
-		        return true;  // 비밀번호가 맞으면 href로 이동
-		    } else {
-		        alert("비밀번호가 틀렸습니다.");
-		        return false;  // 비밀번호가 틀리면 이동하지 않음
-		    }
-		}
 
 		// 페이지 로드 시 이벤트 리스너 설정
 		document.addEventListener('DOMContentLoaded', () => {
@@ -194,7 +113,6 @@
 		        fetchData(selectElement.value);
 		    }
 		});
-			
 	</script>
 	
     <!-- Page Wrapper -->
@@ -237,8 +155,8 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="/homepage/inscribeView/carrierPlan" onclick="return checkPassword();">요금제 설정</a>
-                        <a class="collapse-item" href="/" onclick="return checkPassword();">템플릿 설정</a>
+                        <a class="collapse-item" href="/">요금제 설정</a>
+                        <a class="collapse-item" href="/">템플릿 설정</a>
                     </div>
                 </div>
             </li>
@@ -252,7 +170,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <nav class="bg-white mb-4 static-top shadow">
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -267,52 +185,56 @@
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center mb-4 justify-content-between">
 					    <div>
-					        <h1 class="h3 mb-0 text-gray-800">가입신청서</h1>
-					    </div>
-					    <div>
-					        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;" onclick="applyFormDownload(true)">
-					            <i class="fas fa-download fa-sm text-white-50"></i> 출력</a>
-					        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" onclick="applyFormDownload(false)">
-					            <i class="fas fa-download fa-sm text-white-50"></i> 다운로드</a>
+					        <h1 class="h3 mb-0 text-gray-800">요금제 설정</h1>
 					    </div>
 					</div>
 
                     <!-- Content Row -->
 					<form id="dataForm">
-						<input type="hidden" id="codeDescription" name="codeDescription">
-						<input type="hidden" id="carrierPlanId" name="carrierPlanId">
-						<input type="hidden" id="carrierPlanName" name="carrierPlanName">
-						<input type="hidden" id="mobileCarrier" name="mobileCarrier">
-						<input type="hidden" id="monthlyBillingAmt" name="monthlyBillingAmt">
-						<input type="hidden" id="basicAmt" name="basicAmt">
-						<input type="hidden" id="discountAmt" name="discountAmt">
-						<input type="hidden" id="voiceCall" name="voiceCall">
-						<input type="hidden" id="mobileData" name="mobileData">
-						<input type="hidden" id="mobileQos" name="mobileQos">
-						<input type="hidden" id="mobileMessage" name="mobileMessage">
-						
-						<input type="hidden" name="commonCheck" value="commonCheck">
-						
 	                    <div class="row">
-							<div id="template" class="col-xl-8 col-lg-7"></div>
-	                        <!-- Pie Chart -->
-	                        <div class="col-xl-4 col-lg-5">
-	                            <div class="card shadow mb-4">
-	                                <!-- Card Header - Dropdown -->
-	                                <div
-	                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-	                                    <h6 class="m-0 font-weight-bold text-primary">통신사</h6>
-	                                </div>
-	                                <!-- Card Body -->
-	                                <div class="card-body">
-										<select name="templateCode" id="templateCode" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-											<th:block th:each="carrier : ${carrierList}">
-											    <option th:value="${carrier.codeValue}" th:text="${carrier.codeName}"></option>
-											</th:block>
-										</select>
-	                                </div>
-	                            </div>
-	                        </div>
+							<div class="col-lg-12">
+								<div class="card shadow mb-4">
+									<!-- 요금제 -->
+								    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								        <h6 class="m-0 font-weight-bold text-primary">요금제 수정</h6>
+								    </div>
+								    <div class="card-body">
+										<div class="form-group row align-items-center d-flex text-center">
+											<div class="col-sm-2 border-right">
+											    <label for="codeName">통신사</label>
+											</div>
+											<div class="col-sm-4">
+												<select name="templateCode" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+													<th:block th:each="carrier : ${carrierList}">
+													    <option th:value="${carrier.codeValue}" th:text="${carrier.codeName}"></option>
+													</th:block>
+												</select>
+											</div>
+											<div class="col-sm-2 border-right">
+											    <label for="carrierPlan">요금제</label>
+											</div>
+											<div class="col-sm-4 mb-3 mb-sm-0">
+												<select id="carrierPlanSelect" name="carrierPlan" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="updateHiddenFields()">
+											        <th:block th:each="carrierPlan : ${carrierPlanList}">
+											            <option th:value="${carrierPlan.carrierPlanId}"
+											                    th:text="${carrierPlan.mobileCarrier}"
+											                    th:data-plan-name="${carrierPlan.carrierPlanName}"
+																th:data-mobile-carrier="${carrierPlan.mobileCarrier}"
+											                    th:data-monthly-billing="${carrierPlan.monthlyBillingAmt}"
+											                    th:data-basic-amt="${carrierPlan.basicAmt}"
+											                    th:data-discount-amt="${carrierPlan.discountAmt}"
+											                    th:data-voice-call="${carrierPlan.voiceCall}"
+											                    th:data-mobile-data="${carrierPlan.mobileData}"
+											                    th:data-mobile-qos="${carrierPlan.mobileQos}"
+											                    th:data-mobile-message="${carrierPlan.mobileMessage}">
+											            </option>
+											        </th:block>
+											    </select>
+											</div>
+										</div>
+								    </div>
+								</div>
+							</div>
 	                    </div>
 					</form>
                 </div>

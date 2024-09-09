@@ -1,7 +1,7 @@
 <div class="card shadow mb-4">
 	
 	<!-- 신청서 -->
-    <div class="card-body" style="background-color: #f0f8ff; border: 2px solid lightgray;">
+	<div class="card-body" style="background-color: #f0f8ff; border: 2px solid lightgray;">
 		<div class="form-group row align-items-center d-flex text-center" style="margin-bottom: 0rem;">
 			<div class="col-sm-2 border-right">
 			    <label for="customerType">고객구분</label>
@@ -10,12 +10,10 @@
 				<select name="customerType" aria-controls="dataTable" class="custom-select form-control form-control-sm">
 					<option value="customerType1">개인</option>
 					<option value="customerType2">사업자</option>
-					<option value="customerType3">청소년</option>
-					<option value="customerType4">법인</option>
 				</select>
 			</div>
 		</div>
-    </div>
+	</div>
 	
 	<!-- 요금제 -->
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -61,15 +59,6 @@
 					<option value="simCost2">후납</option>
 				</select>
 			</div>
-			<div class="col-sm-2 border-right">
-		        <label for="subscriptionCost">가입비</label>
-		    </div>
-			<div class="col-sm-4 mb-3 mb-sm-0">
-			    <select name="subscriptionCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-					<option value="subscriptionCost1">완납</option>
-					<option value="subscriptionCost2">분납</option>
-				</select>
-			</div>
 		</div>
     </div>
 	
@@ -83,13 +72,13 @@
 		        <label for="name">가입자명</label>
 		    </div>
 			<div class="col-sm-4">
-		        <input type="text" name="name" class="form-control form-control-user" value="서류에 자필작성" disabled>
+		        <input type="text" name="name" class="form-control form-control-user">
 		    </div>
 			<div class="col-sm-2 border-right">
 		        <label for="birthdate">생년월일</label>
 		    </div>
 		    <div class="col-sm-4">
-		        <input type="text" name="birthdate" class="form-control form-control-user" value="서류에 자필작성" disabled>
+		        <input type="text" name="birthdate" class="form-control form-control-user">
 		    </div>
 		</div>
 		<div class="form-group row align-items-center d-flex text-center">
@@ -97,7 +86,7 @@
 		        <label for="address">주소</label>
 		    </div>
 		    <div class="col-sm-10">
-				<input type="text" name="address" class="form-control form-control-user" value="서류에 자필작성" disabled>
+				<input type="text" name="address" class="form-control form-control-user">
 		    </div>
 		</div>
 		<div class="form-group row align-items-center d-flex text-center">
@@ -105,7 +94,13 @@
 		        <label for="openingNumber">개통 번호</label>
 		    </div>
 			<div class="col-sm-4">
-			    <input type="text" name="openingNumber" class="form-control form-control-user" pattern="\d{3}-\d{4}-\d{4}" placeholder="010-0000-0000">
+			    <input type="text" name="openingNumber" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-2 border-right">
+			    <label for="mobileNumber">가입자 연락처</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="mobileNumber" class="form-control form-control-user">
 			</div>
 		</div>
 		<div class="form-group row align-items-center d-flex text-center">
@@ -142,13 +137,13 @@
 			    <label for="depositorName">예금주명</label>
 			</div>
 			<div class="col-sm-4">
-			    <input type="text" name="depositorName" class="form-control form-control-user" value="서류에 자필작성" disabled>
+			    <input type="text" name="depositorName" class="form-control form-control-user">
 			</div>
 			<div class="col-sm-2 border-right">
 		        <label for="depositorBirthdate">생년월일</label>
 		    </div>
 		    <div class="col-sm-4">
-		        <input type="text" name="depositorBirthdate" class="form-control form-control-user" value="서류에 자필작성" disabled>
+		        <input type="text" name="depositorBirthdate" class="form-control form-control-user">
 		    </div>
 		</div>
 		<div class="form-group row align-items-center d-flex text-center">
@@ -156,13 +151,13 @@
 			    <label for="paymentName">은행(카드사)명</label>
 			</div>
 			<div class="col-sm-4">
-		        <input type="text" name="paymentName" class="form-control form-control-user" value="자필작성" disabled>
+		        <input type="text" name="paymentName" class="form-control form-control-user">
 			</div>
 			<div class="col-sm-2 border-right">
-			    <label for="accountNumber">유효기간</label>
+			    <label for="effectiveDate">유효기간</label>
 			</div>
 			<div class="col-sm-4">
-			    <input type="text" name="effectiveDate" class="form-control form-control-user" value="자필작성" disabled>
+			    <input type="text" name="effectiveDate" class="form-control form-control-user">
 			</div>
 		</div>
 		<div class="form-group row align-items-center d-flex text-center">
@@ -179,7 +174,7 @@
 			    <label for="accountNumber">계좌번호</label>
 			</div>
 			<div class="col-sm-4">
-		        <input type="text" name="accountNumber" class="form-control form-control-user" value="자필작성" disabled>
+		        <input type="text" name="accountNumber" class="form-control form-control-user">
 		    </div>
 		</div>
 	</div>
@@ -191,37 +186,31 @@
 	<div class="card-body">
 		<div class="form-group row align-items-center d-flex text-center">
 			<div class="col-sm-2 border-right">
-			    <label for="depositorName">예금주명</label>
+			    <label for="depositorName">법정대리인명</label>
 			</div>
-			<div class="col-sm-2">
-			    <input type="text" name="depositorName" class="form-control form-control-user" value="자필작성" disabled>
+			<div class="col-sm-4">
+			    <input type="text" name="depositorName" class="form-control form-control-user">
 			</div>
 			<div class="col-sm-2 border-right">
 		        <label for="depositorBirthdate">생년월일</label>
 		    </div>
-		    <div class="col-sm-2">
-		        <input type="text" name="depositorBirthdate" class="form-control form-control-user" value="자필작성" disabled>
+		    <div class="col-sm-4">
+		        <input type="text" name="depositorBirthdate" class="form-control form-control-user">
 		    </div>
-			<div class="col-sm-2 border-right">
-			    <label for="relationship">관계</label>
-			</div>
-			<div class="col-sm-2">
-			    <input type="text" name="relationship" class="form-control form-control-user" value="자필작성" disabled>
-			</div>
 		</div>
 		<div class="form-group row align-items-center d-flex text-center">
 			<div class="col-sm-2 border-right">
 			    <label for="legalRepresentativeNumber">법대연락처</label>
 			</div>
 			<div class="col-sm-4">
-			    <input type="text" name="legalRepresentativeNumber" class="form-control form-control-user" value="서류에 자필작성" disabled>
+			    <input type="text" name="legalRepresentativeNumber" class="form-control form-control-user">
 			</div>
 			<div class="col-sm-2 border-right">
-		        <label for="legalRepresentativeAddress">법대주소</label>
-		    </div>
-		    <div class="col-sm-4">
-		        <input type="text" name="legalRepresentativeAddress" class="form-control form-control-user" value="서류에 자필작성" disabled>
-		    </div>
+			    <label for="relationship">관계</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="relationship" class="form-control form-control-user">
+			</div>
 		</div>
 	</div>
 	
@@ -240,13 +229,25 @@
 					<option value="안심옵션">안심옵션</option>
 				</select>
 			</div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
 			<div class="col-sm-2 border-right">
 			    <label for="overseasData">해외데이터</label>
 			</div>
 			<div class="col-sm-4">
 				<select name="overseasData" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-					<option value="overseasData1">차단</option>
-					<option value="overseasData2">사용</option>
+					<option value="overseasData1">데이터로밍완전차단</option>
+					<option value="overseasData2">차단</option>
+					<option value="overseasData3">이용</option>
+				</select>
+			</div>
+			<div class="col-sm-2 border-right">
+			    <label for="mobilePayment">통신과금서비스</label>
+			</div>
+			<div class="col-sm-4">
+				<select name="mobilePayment" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="mobilePayment1">휴대폰결제 차단</option>
+					<option value="mobilePayment2">휴대폰결제 이용</option>
 				</select>
 			</div>
 		</div>

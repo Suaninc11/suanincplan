@@ -11,8 +11,9 @@
 	</parent>
 	<groupId>com.suanincplan</groupId>
 	<artifactId>suanincplan</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>suanincplan</name>
+	<packaging>war</packaging>
 	<description>Suan project for Spring Boot</description>
 	<url/>
 	<licenses>

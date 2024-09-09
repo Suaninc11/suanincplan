@@ -1,4 +1,4 @@
-package com.suaninc.newsagency.model;
+package com.suaninc.newsagency.domain;
 
 public class CommonCode {
     private String codeValue;

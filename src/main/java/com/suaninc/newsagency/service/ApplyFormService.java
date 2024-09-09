@@ -2,33 +2,20 @@ package com.suaninc.newsagency.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
+import com.suaninc.newsagency.domain.ApplyForm;
+import com.suaninc.newsagency.domain.CarrierPlan;
+import com.suaninc.newsagency.domain.CarrierTemplate;
+import com.suaninc.newsagency.domain.CommonCode;
+import com.suaninc.newsagency.domain.TemplateCoordinate;
 
-import com.suaninc.newsagency.model.TemplateCoordinate;
-import com.suaninc.newsagency.model.CarrierTemplate;
-import com.suaninc.newsagency.model.CommonCode;
-import com.suaninc.newsagency.repository.ApplyFormRepository;
+public interface ApplyFormService {
 
-
-@Service
-public class ApplyFormService {
-
-	private ApplyFormRepository applyFormRepository;
-
-    public ApplyFormService(ApplyFormRepository applyFormRepository) {
-        this.applyFormRepository = applyFormRepository;
-    }
-
-    public List<CommonCode> getCarrierList() {
-        return applyFormRepository.selectCarrierList();
-    }
+    public List<CommonCode> getCarrierList();
     
-    public List<CarrierTemplate> findByCode() {
-        return applyFormRepository.findByCode(Integer carrierTemplateId));
-    }
-    
-    public List<TemplateCoordinate> getTemplateCoordinateList() {
-        return applyFormRepository.selectTemplateCoordinateList();
-    }
+    public List<CarrierTemplate> getCarrierTemplate(ApplyForm form);
+
+	public List<CarrierPlan> getCarrierPlanList(ApplyForm form);
+
+	public List<TemplateCoordinate> getTemplateCoordinateList(CarrierTemplate templateImageOrder);
 	
 }
