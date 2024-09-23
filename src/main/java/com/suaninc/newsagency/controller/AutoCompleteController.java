@@ -16,8 +16,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+<<<<<<< HEAD
 import java.nio.file.Path;
 import java.nio.file.Paths;
+=======
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -51,8 +54,11 @@ public class AutoCompleteController {
 	@Autowired
 	private ApplyFormService applyFormService;
 	
+<<<<<<< HEAD
 	private final Path imagePath = Paths.get("uploads");
 	
+=======
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
 	@GetMapping("/homepage/inscribeView")
 	public String mainPage(Model model) throws Exception {
 		
@@ -66,14 +72,22 @@ public class AutoCompleteController {
 	@PostMapping("/homepage/templates/mobileCarrier")
 	public String templates(Model model, ApplyForm form) {
 		
+<<<<<<< HEAD
 		List<CarrierPlan> carrierPlan = applyFormService.getCarrierPlan(form);
+=======
+		List<CarrierPlan> carrierPlanList = applyFormService.getCarrierPlanList(form);
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
 
 		String returnPage = "templates/helloMobile";
 		if (form.getCodeDescription() != null && !form.getCodeDescription().isEmpty()) {
 		    returnPage = "templates/" + form.getCodeDescription();
 		}
 
+<<<<<<< HEAD
 		model.addAttribute("carrierPlan", carrierPlan);
+=======
+		model.addAttribute("carrierPlanList", carrierPlanList);
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
 		
 		return returnPage;
 	}
@@ -115,7 +129,11 @@ public class AutoCompleteController {
 	                    if (text != null) {
 	                        // 텍스트를 그리기 위해 Graphics2D 객체 사용
 	                        Graphics2D g2d = image.createGraphics();
+<<<<<<< HEAD
 	                        g2d.setFont(new Font("NanumGothic", Font.PLAIN, 11)); // Arial Malgun Gothic
+=======
+	                        g2d.setFont(new Font("Malgun Gothic", Font.PLAIN, 11)); // Arial Malgun Gothic
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
 	                        g2d.setColor(Color.BLACK);
 
 	                        // 텍스트 그리기
@@ -169,6 +187,7 @@ public class AutoCompleteController {
 	    }
 	}
 	
+<<<<<<< HEAD
     @GetMapping("/images/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         try {
@@ -203,5 +222,16 @@ public class AutoCompleteController {
 
         return "modifyInscribeView";
     }
+=======
+	@GetMapping("/homepage/inscribeView/carrierPlan")
+	public String carrierPlan(Model model, ApplyForm form) throws Exception {
+		
+		List<CommonCode> carrierList = applyFormService.getCarrierList();
+		
+		model.addAttribute("carrierList", carrierList);
+		
+		return "carrierPlan";
+	}
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
 
 }

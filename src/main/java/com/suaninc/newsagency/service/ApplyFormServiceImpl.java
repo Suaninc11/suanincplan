@@ -24,6 +24,7 @@ public class ApplyFormServiceImpl implements ApplyFormService {
 	}
 	
 	@Override
+<<<<<<< HEAD
 	public List<CarrierTemplate> getCarrierTemplate(ApplyForm form) {
 		return applyFormDao.selectCarrierTemplate(form);
 	}
@@ -31,6 +32,15 @@ public class ApplyFormServiceImpl implements ApplyFormService {
 	@Override
 	public List<CarrierPlan> getCarrierPlan(ApplyForm form) {
 		return applyFormDao.selectCarrierPlan(form);
+=======
+	public List<CarrierPlan> getCarrierPlanList(ApplyForm form) {
+		return applyFormDao.selectCarrierPlanList(form);
+	}
+	
+	@Override
+	public List<CarrierTemplate> getCarrierTemplate(ApplyForm form) {
+		return applyFormDao.selectCarrierTemplate(form);
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
 	}
 
 	@Override

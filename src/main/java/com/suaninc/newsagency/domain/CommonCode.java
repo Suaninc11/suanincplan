@@ -1,5 +1,6 @@
 package com.suaninc.newsagency.domain;
 
+<<<<<<< HEAD
 import java.util.Date;
 
 public class CommonCode {
@@ -20,6 +21,14 @@ public class CommonCode {
 		this.codeId = codeId;
 	}
 
+=======
+public class CommonCode {
+    private String codeValue;
+    private String codeName;
+    private String codeDescription;
+
+    // Getters and Setters
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
     public String getCodeValue() {
         return codeValue;
     }
@@ -43,6 +52,7 @@ public class CommonCode {
     public void setCodeDescription(String codeDescription) {
         this.codeDescription = codeDescription;
     }
+<<<<<<< HEAD
     
 	public Integer getParentCodeId() {
 		return parentCodeId;
@@ -60,4 +70,6 @@ public class CommonCode {
 		this.registeredDatetime = registeredDatetime;
 	}
 	
+=======
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
 }

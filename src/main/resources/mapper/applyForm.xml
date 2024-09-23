@@ -13,7 +13,11 @@
         WHERE ccp.code_value = 'MOBILE_CARRIER'
     </select>
     
+<<<<<<< HEAD
     <select id="selectCarrierPlan"  parameterType="com.suaninc.newsagency.domain.TemplateCoordinate" resultType="com.suaninc.newsagency.domain.CarrierPlan">
+=======
+    <select id="selectCarrierPlanList"  parameterType="com.suaninc.newsagency.domain.TemplateCoordinate" resultType="com.suaninc.newsagency.domain.CarrierPlan">
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
 		SELECT
 			carrier_plan_id AS carrierPlanId,
 			template_code AS templateCode,
@@ -29,12 +33,19 @@
 			registered_datetime AS registeredDatetime
 		FROM
 			carrier_plan cp
+<<<<<<< HEAD
 	    <where>
 	        <if test="templateCode != null and templateCode != ''">
 	            template_code = #{templateCode}
 	        </if>
 	    </where>
 		ORDER BY carrier_plan_id
+=======
+		WHERE
+			template_code = #{templateCode}
+		ORDER BY
+			carrier_plan_id
+>>>>>>> 6d971a4cc491035c9e57842d3fa3e8643b8f5651
     </select>
     
     <select id="selectCarrierTemplate"  parameterType="com.suaninc.newsagency.domain.TemplateCoordinate" resultType="com.suaninc.newsagency.domain.CarrierTemplate">
