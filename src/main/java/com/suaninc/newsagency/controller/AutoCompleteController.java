@@ -53,14 +53,14 @@ public class AutoCompleteController {
 	
 	private final Path imagePath = Paths.get("uploads");
 	
-	@GetMapping("/homepage/inscribeView")
+	@GetMapping("/homepage/templates/helloMobile")
 	public String mainPage(Model model) throws Exception {
 		
 		List<CommonCode> carrierList = applyFormService.getCarrierList();
 		
 		model.addAttribute("carrierList", carrierList);
 		
-		return "inscribeView";
+		return "templates/helloMobile";
 	}
 	
 	@PostMapping("/homepage/templates/mobileCarrier")

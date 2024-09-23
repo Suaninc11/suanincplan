@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("redirect:/homepage/inscribeView");
+        registry.addViewController("/").setViewName("redirect:/homepage/templates/helloMobile");
     }
     
     @Override

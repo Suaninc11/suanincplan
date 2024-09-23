@@ -57,27 +57,31 @@
 					    </div>
 					</div>
 					
-					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
-						<div class="card-header py-3 d-flex align-items-center justify-content-between">
-						    <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
-						    <div class="input-group" style="max-width: 300px;">
-							    <select class="form-control small" style="background-color: #f8f9fa; border: 1px solid #ddd;" aria-label="Search" aria-describedby="basic-addon2">
-							        <option value="">전체</option>
-							        <option value="option1">헬로모바일</option>
-									<option value="option2">스노우맨</option>
-									<option value="option3">SKYLIFE</option>
-									<option value="option4">KTM</option>
-									<option value="option5">7모바일</option>
-									<option value="option6">유모바일</option>
-							    </select>
-							    <div class="input-group-append">
-							        <button class="btn btn-primary" type="button">
-							            <i class="fas fa-search fa-sm"></i>
-							        </button>
-							    </div>
-							</div>
-						</div>
+					    <div class="card-header py-3 d-flex align-items-center justify-content-between">
+					        <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
+					        <form id="searchForm" action="/homepage/carrierPlan/carrierPlanList" method="get" class="d-flex">
+					            <div class="input-group" style="max-width: 300px;">
+					                <select class="form-control small" name="templateCode" th:value="${carrierPlan.templateCode}"
+					                        style="background-color: #f8f9fa; border: 1px solid #ddd;" aria-label="Search" aria-describedby="basic-addon2">
+					                    <option value="">전체</option>
+					                    <option value="HM001" th:selected="${carrierPlan.templateCode == 'HM001'}">헬로모바일</option>
+					                    <option value="SM001" th:selected="${carrierPlan.templateCode == 'SM001'}">KT스노우맨</option>
+					                    <option value="SM002" th:selected="${carrierPlan.templateCode == 'SM002'}">SK스노우맨</option>
+					                    <option value="SL001" th:selected="${carrierPlan.templateCode == 'SL001'}">SKYLIFE</option>
+					                    <option value="KM001" th:selected="${carrierPlan.templateCode == 'KM001'}">KTM</option>
+					                    <option value="ST001" th:selected="${carrierPlan.templateCode == 'ST001'}">7모바일</option>
+					                    <option value="UM001" th:selected="${carrierPlan.templateCode == 'UM001'}">유모바일</option>
+					                </select>
+					                <div class="input-group-append">
+					                    <button class="btn btn-primary" type="submit">
+					                        <i class="fas fa-search fa-sm"></i>
+					                    </button>
+					                </div>
+					            </div>
+					        </form>
+					    </div>
+
 						<div class="card-body">
 							<div class="table-responsive">
 								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -108,59 +112,47 @@
 							<!-- 페이지네이션 버튼 -->
 							<div class="row">
 							    <div class="col-sm-12 col-md-12">
-							        <div class="pagination justify-content-end">
-										<ul class="pagination">
-											<li class="paginate_button page-item" th:classappend="${carrierPlanList.number == 0} ? 'disabled'">
-											    <a th:href="@{/homepage/inscribeView/carrierPlanList(page=${0})}" class="page-link">&laquo;</a>
-											</li>
+									<div class="pagination justify-content-end">
+									    <ul class="pagination">
+									        <li class="paginate_button page-item" th:classappend="${carrierPlanList.number == 0} ? 'disabled'">
+									            <a th:href="@{/homepage/carrierPlan/carrierPlanList(page=${0}, templateCode=${carrierPlan.templateCode})}" class="page-link">&laquo;</a>
+									        </li>
 
-											<!--<li class="paginate_button page-item" th:classappend="${!carrierPlanList.hasPrevious()} ? 'disabled'">
-											    <a th:href="@{/homepage/inscribeView/carrierPlanList(page=${carrierPlanList.number - 1})}" class="page-link">&lt;</a>
-											</li>-->
-
+											<!-- 페이지 번호 출력 -->
 											<li th:each="i : ${#numbers.sequence(
-											    carrierPlanList.number <= 2 ? 0 : (carrierPlanList.totalPages >= 5 ? carrierPlanList.number - 2 : 0), 
-											    carrierPlanList.number <= 2 ? 4 : (carrierPlanList.number >= carrierPlanList.totalPages - 3 ? carrierPlanList.totalPages - 1 : carrierPlanList.number + 2))}"
+											        carrierPlanList.number < 3 ? 0 : (carrierPlanList.number >= carrierPlanList.totalPages - 3 ? carrierPlanList.totalPages - 5 : carrierPlanList.number - 2),
+											        carrierPlanList.number < 3 ? (carrierPlanList.totalPages >= 5 ? 4 : carrierPlanList.totalPages - 1) : (carrierPlanList.number >= carrierPlanList.totalPages - 3 ? carrierPlanList.totalPages - 1 : carrierPlanList.number + 2))}"
 											    class="paginate_button page-item" th:classappend="${carrierPlanList.number == i} ? 'active'">
-											    <a th:href="@{/homepage/inscribeView/carrierPlanList(page=${i})}" class="page-link" th:text="${i + 1}"></a>
+											    <a th:href="@{/homepage/carrierPlan/carrierPlanList(page=${i}, templateCode=${carrierPlan.templateCode})}" class="page-link" th:text="${i + 1}"></a>
 											</li>
 
-										    <!--<li th:if="${carrierPlanList.hasNext()}" class="paginate_button page-item">
-										        <a th:href="@{/homepage/inscribeView/carrierPlanList(page=${carrierPlanList.number + 1})}" class="page-link">&gt;</a>
-										    </li>-->
 
-										    <li th:if="${carrierPlanList.number < carrierPlanList.totalPages - 1}" class="paginate_button page-item">
-										        <a th:href="@{/homepage/inscribeView/carrierPlanList(page=${carrierPlanList.totalPages - 1})}" class="page-link">&raquo;</a>
-										    </li>
-										</ul>
-							        </div>
+											<li class="paginate_button page-item" th:classappend="${carrierPlanList.number == carrierPlanList.totalPages - 1} ? 'disabled'">
+											    <a th:if="${carrierPlanList.number < carrierPlanList.totalPages - 1}" 
+											       th:href="@{/homepage/carrierPlan/carrierPlanList(page=${carrierPlanList.totalPages - 1}, templateCode=${carrierPlan.templateCode})}" 
+											       class="page-link">&raquo;</a>
+											    <span th:if="${carrierPlanList.number == carrierPlanList.totalPages - 1}" class="page-link">&raquo;</span>
+											</li>
+									    </ul>
+									</div>
+
 							    </div>
 							</div>
+							
+						</div>	
+					</div>
+					<footer class="sticky-footer bg-white">
+						<div class="container my-auto">
+							<div class="copyright text-center my-auto">
+								<span>Copyright &copy; suaninc 2024</span>
+							</div>
 						</div>
-					</div>
-				
-				<!-- /.container-fluid -->
-
-			</div>
-			<!-- End of Main Content -->
-
-			<!-- Footer -->
-			<footer class="sticky-footer bg-white">
-				<div class="container my-auto">
-					<div class="copyright text-center my-auto">
-						<span>Copyright &copy; suaninc 2024</span>
-					</div>
+					</footer>
 				</div>
-			</footer>
-			<!-- End of Footer -->
-
+			</div>
 		</div>
-		<!-- End of Content Wrapper -->
-
 	</div>
-	<!-- End of Page Wrapper -->
 
-	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top">
 		<i class="fas fa-angle-up"></i>
 	</a>
@@ -176,7 +168,7 @@
 		    });
 		});
 	</script>
-	<!-- Bootstrap core JavaScript-->
+	
 	<script src="/vendor/jquery/jquery.min.js"></script>
 	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>

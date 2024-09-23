@@ -33,6 +33,7 @@ public class CarrierPlanController {
 	    Page<CarrierPlan> carrierPlanList = carrierPlanService.getCarrierPlanList(form, pageable);
 	    
 	    model.addAttribute("carrierPlanList", carrierPlanList);
+	    model.addAttribute("carrierPlan", form);
 		
 		return "carrierPlanList";
 	}

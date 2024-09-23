@@ -103,58 +103,6 @@
 		    document.getElementById('mobileMessage').value = mobileMessage;
 		}
 
-		function fetchData(selectedValue) {
-		    var formElement = document.getElementById('dataForm'); // 폼 요소 가져오기
-		    var dataForm = new FormData(formElement);
-		    var codeDescription = "";
-
-		    if (selectedValue === "HM001") {
-		        codeDescription = "helloMobile";
-		    } else if (selectedValue === "UM001") {
-		        codeDescription = "uplusuMobile";
-			} else if (selectedValue === "UM002") {
-			    codeDescription = "uplusuMobileYouth";
-			} else if (selectedValue === "UM003") {
-			    codeDescription = "uplusuMobileChange";
-		    } else if (selectedValue === "SM001") {
-		        codeDescription = "snowman";
-		    } else if (selectedValue === "SL001") {
-		        codeDescription = "skyLife";
-		    } else if (selectedValue === "KM001") {
-		        codeDescription = "ktmMobile";
-		    } else if (selectedValue === "ST001") {
-		        codeDescription = "skTelink";
-		    }
-			document.getElementById('codeDescription').value = codeDescription;
-			
-		    fetch('/homepage/templates/mobileCarrier', {
-		        method: 'POST',
-		        body: dataForm
-		    })
-		    .then(response => response.text())
-		    .then(html => {
-		        document.getElementById('template').innerHTML = html;
-		        setupEventListeners(); // HTML 로드 후에 이벤트 리스너 설정
-		        updateHiddenFields();  // 첫 번째 옵션의 값으로 필드 값 설정
-		    })
-		    .catch(error => console.error('Error loading the header:', error));
-		}
-
-		// 이벤트 리스너 설정
-		function setupEventListeners() {
-		    const selectElement = document.getElementById('carrierPlanSelect');
-		    if (selectElement) {
-		        selectElement.addEventListener('change', updateHiddenFields);
-		    }
-
-		    const templateSelectElement = document.querySelector('select[name="templateCode"]');
-		    if (templateSelectElement) {
-		        templateSelectElement.addEventListener('change', (event) => {
-		            fetchData(event.target.value);
-		        });
-		    }
-		}
-		
 		function getFormattedDate() {
 		    var now = new Date();
 
@@ -176,7 +124,6 @@
 		        return false;  // href 링크로 이동하지 않음
 		    }
 
-		    // 비밀번호가 올바른지 확인 (간단한 예시로 '1234'이 맞는지 체크)
 		    if (password === "1234") {
 		        return true;  // 비밀번호가 맞으면 href로 이동
 		    } else {
@@ -188,12 +135,6 @@
 		// 페이지 로드 시 이벤트 리스너 설정
 		document.addEventListener('DOMContentLoaded', () => {
 		    setupEventListeners();
-		    
-		    // templateCode가 설정되어 있으면 데이터를 가져옴
-		    const selectElement = document.querySelector('select[name="templateCode"]');
-		    if (selectElement) {
-		        fetchData(selectElement.value);
-		    }
 		});
 			
 	</script>
@@ -252,7 +193,7 @@
 						<input type="hidden" name="commonCheck" value="commonCheck">
 						
 	                    <div class="row">
-							<div id="template" class="col-xl-8 col-lg-7">
+							<div id="template" class="col-xl-12 col-lg-12">
 								<div class="card shadow mb-4">
 									
 									<!-- 신청서 -->
@@ -534,26 +475,7 @@
 										</div>
 									</div>
 								</div>
-								
 							</div>
-	                        <!-- Pie Chart -->
-	                        <div class="col-xl-4 col-lg-5">
-	                            <div class="card shadow mb-4">
-	                                <!-- Card Header - Dropdown -->
-	                                <div
-	                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-	                                    <h6 class="m-0 font-weight-bold text-primary">통신사</h6>
-	                                </div>
-	                                <!-- Card Body -->
-	                                <div class="card-body">
-										<select name="templateCode" id="templateCode" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-											<th:block th:each="carrier : ${carrierList}">
-											    <option th:value="${carrier.codeValue}" th:text="${carrier.codeName}"></option>
-											</th:block>
-										</select>
-	                                </div>
-	                            </div>
-	                        </div>
 	                    </div>
 					</form>
 					
