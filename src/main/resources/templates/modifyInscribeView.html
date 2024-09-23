@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>suaninc</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/css/sb-admin-2.css" rel="stylesheet">
+    <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+</head>
+
+<body id="page-top">
+    <style>
+        /* 이미지 컨테이너 */
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 이미지 위에 나타날 텍스트 */
+        .draggable-text {
+            position: absolute;
+            cursor: move;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            border-radius: 5px;
+            user-select: none;
+        }
+    </style>
+
+    <script>
+        // 자바스크립트로 드래그 가능하게 설정
+        document.querySelectorAll('.draggable-text').forEach(function (textElement) {
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            textElement.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - textElement.offsetLeft;
+                offsetY = e.clientY - textElement.offsetTop;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    textElement.style.left = `${e.clientX - offsetX}px`;
+                    textElement.style.top = `${e.clientY - offsetY}px`;
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+        });
+    </script>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+    	<div th:include="sidebar :: sidebar"></div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="bg-white mb-4 static-top shadow">
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center mb-4 justify-content-between">
+                        <div>
+                            <h1 class="h3 mb-0 text-gray-800">템플릿 설정</h1>
+                        </div>
+                        <div>
+                            <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;" onclick="applyFormDownload(true)">
+                                <i class="fas fa-download fa-sm text-white-50"></i> 출력</a>
+                            <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" onclick="applyFormDownload(false)">
+                                <i class="fas fa-download fa-sm text-white-50"></i> 다운로드</a>
+                        </div>
+                    </div>
+
+                    <!-- 이미지와 텍스트 컨테이너 -->
+                    <div class="image-container">
+                        <img src="http://localhost:8080/images/helloMobile/helloMobile_01.jpg" alt="이미지">
+                        <div id="container">
+                            <!-- Thymeleaf로 데이터 반복 출력 -->
+                            <div th:each="plan : ${templateCoordinateList}"
+                                 th:text="${plan.templateCoordinateName}"
+                                 th:style="'left:' + ${plan.coordinateXAxis} + 'px; top:' + ${plan.coordinateYAxis} + 'px;'"
+                                 class="draggable-text">
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; suaninc 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>

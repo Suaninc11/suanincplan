@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="templateForm">
+
+    
+    <select id="selectTemplateListCount" resultType="int">
+	    SELECT COUNT(*)
+	    FROM common_code cc
+	    <where>
+            parent_code_id = 1
+	    </where>
+	</select>
+
+    <select id="selectTemplateList" resultType="com.suaninc.newsagency.domain.CommonCode">
+		SELECT
+		    code_id AS codeId,
+		    code_value AS codeValue,
+		    code_name AS codeName,
+		    code_description AS codeDescription,
+		    parent_code_id AS parentCodeId,
+		    DATE_FORMAT(registered_datetime, '%Y-%m-%d %H:%i') AS registeredDatetime
+		FROM
+		    common_code
+	    WHERE
+            parent_code_id = 1
+		ORDER BY code_id DESC
+	    LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+    
+    <select id="selectTemplateInfo" resultType="com.suaninc.newsagency.domain.CarrierTemplate">
+		SELECT
+			carrier_plan_id AS carrierPlanId,
+			template_code AS templateCode,
+			carrier_plan_name AS carrierPlanName,
+			mobile_carrier AS mobileCarrier,
+			monthly_billing_amt AS monthlyBillingAmt,
+			basic_amt AS basicAmt,
+			discount_amt AS discountAmt,
+			voice_call AS voiceCall,
+			mobile_data AS mobileData,
+			mobile_qos AS mobileQos,
+			mobile_message AS mobileMessage,
+			registered_datetime AS registeredDatetime
+		FROM
+			carrier_plan cp
+		WHERE	
+            carrier_plan_id = #{carrierPlanId}
+		ORDER BY carrier_plan_id
+    </select>
+    
+	<update id="updateTemplate" parameterType="com.suaninc.newsagency.domain.CarrierTemplate">
+	    UPDATE carrier_plan
+	    SET 
+	        mobile_carrier = #{mobileCarrier},
+	        monthly_billing_amt = #{monthlyBillingAmt},
+	        basic_amt = #{basicAmt},
+	        discount_amt = #{discountAmt},
+	        voice_call = #{voiceCall},
+	        mobile_data = #{mobileData},
+	        mobile_qos = #{mobileQos},
+	        mobile_message = #{mobileMessage}
+	    WHERE carrier_plan_id = #{carrierPlanId}
+	</update>
+
+</mapper>

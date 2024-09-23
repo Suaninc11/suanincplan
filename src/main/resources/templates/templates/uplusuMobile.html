@@ -1,0 +1,284 @@
+<div class="card shadow mb-4">
+	
+	<!-- 신청서 -->
+	<div class="card-body" style="background-color: #f0f8ff; border: 2px solid lightgray;">
+		<div class="form-group row align-items-center d-flex text-center" style="margin-bottom: 0rem;">
+			<div class="col-sm-2 border-right">
+			    <label for="customerType">고객구분</label>
+			</div>
+			<div class="col-sm-4">
+				<select name="customerType" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="customerType1">개인</option>
+					<option value="customerType2">사업자</option>
+					<option value="customerType3">청소년</option>
+					<option value="customerType4">법인</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 요금제 -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
+    </div>
+    <div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="simSerialNumber">일련번호</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="simSerialNumber" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+			</div>
+			<div class="col-sm-2 border-right">
+		        <label for="carrierPlan">요금제</label>
+		    </div>
+			<div class="col-sm-4 mb-3 mb-sm-0">
+				<select id="carrierPlanSelect" name="carrierPlan" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="updateHiddenFields()">
+			        <th:block th:each="carrierPlan : ${carrierPlanList}">
+			            <option th:value="${carrierPlan.carrierPlanId}"
+			                    th:text="${carrierPlan.mobileCarrier}"
+			                    th:data-plan-name="${carrierPlan.carrierPlanName}"
+								th:data-mobile-carrier="${carrierPlan.mobileCarrier}"
+			                    th:data-monthly-billing="${carrierPlan.monthlyBillingAmt}"
+			                    th:data-basic-amt="${carrierPlan.basicAmt}"
+			                    th:data-discount-amt="${carrierPlan.discountAmt}"
+			                    th:data-voice-call="${carrierPlan.voiceCall}"
+			                    th:data-mobile-data="${carrierPlan.mobileData}"
+			                    th:data-mobile-qos="${carrierPlan.mobileQos}"
+			                    th:data-mobile-message="${carrierPlan.mobileMessage}">
+			            </option>
+			        </th:block>
+			    </select>
+			</div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="simCost">유심 비용</label>
+			</div>
+			<div class="col-sm-4 mb-3 mb-sm-0">
+			    <select name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="simCost1">즉납</option>
+					<option value="simCost2">후납</option>
+				</select>
+			</div>
+		</div>
+    </div>
+	
+	<!-- 고객정보 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">고객정보</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="name">가입자명</label>
+		    </div>
+			<div class="col-sm-4">
+		        <input type="text" name="name" class="form-control form-control-user">
+		    </div>
+			<div class="col-sm-2 border-right">
+		        <label for="birthdate">생년월일</label>
+		    </div>
+		    <div class="col-sm-4">
+		        <input type="text" name="birthdate" class="form-control form-control-user">
+		    </div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="address">주소</label>
+		    </div>
+		    <div class="col-sm-10">
+				<input type="text" name="address" class="form-control form-control-user">
+		    </div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="openingNumber">개통 번호</label>
+		    </div>
+			<div class="col-sm-4">
+			    <input type="text" name="openingNumber" class="form-control form-control-user">
+			</div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="openingCategory">개통 구분</label>
+		    </div>
+			<div class="col-sm-4 mb-3 mb-sm-0">
+		        <select name="openingCategory" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="openingCategory1">신규</option>
+					<option value="openingCategory2">번호이동</option>
+				</select>
+		    </div>
+			<div class="col-sm-2 border-right">
+			    <label for="previousCarrier">이전 통신사</label>
+			</div>
+		    <div class="col-sm-4">
+				<select name="previousCarrier" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="previousCarrier1">SKT</option>
+					<option value="previousCarrier2">KT</option>
+					<option value="previousCarrier3">U+</option>
+					<option value="previousCarrier4">기타</option>
+				</select>
+		    </div>
+		</div>
+	</div>
+	
+	<!-- 자동이체 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">자동이체</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="depositorName">예금주명</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="depositorName" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-2 border-right">
+		        <label for="depositorBirthdate">생년월일</label>
+		    </div>
+		    <div class="col-sm-4">
+		        <input type="text" name="depositorBirthdate" class="form-control form-control-user">
+		    </div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="paymentName">은행(카드사)명</label>
+			</div>
+			<div class="col-sm-4">
+		        <input type="text" name="paymentName" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-2 border-right">
+			    <label for="effectiveDate">유효기간</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="effectiveDate" class="form-control form-control-user">
+			</div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="automaticTransfer">자동이체</label>
+		    </div>
+			<div class="col-sm-4 mb-3 mb-sm-0">
+		        <select name="automaticTransfer" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="automaticTransfer1">계좌</option>
+					<option value="automaticTransfer2">카드</option>
+				</select>
+		    </div>
+			<div class="col-sm-2 border-right">
+			    <label for="accountNumber">계좌번호</label>
+			</div>
+			<div class="col-sm-4">
+		        <input type="text" name="accountNumber" class="form-control form-control-user">
+		    </div>
+		</div>
+	</div>
+	
+	<!-- 청소년 법정대리인 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">청소년 법정대리인</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="depositorName">예금주명</label>
+			</div>
+			<div class="col-sm-2">
+			    <input type="text" name="depositorName" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-2 border-right">
+		        <label for="depositorBirthdate">생년월일</label>
+		    </div>
+		    <div class="col-sm-2">
+		        <input type="text" name="depositorBirthdate" class="form-control form-control-user">
+		    </div>
+			<div class="col-sm-2 border-right">
+			    <label for="relationship">관계</label>
+			</div>
+			<div class="col-sm-2">
+			    <input type="text" name="relationship" class="form-control form-control-user">
+			</div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="legalRepresentativeNumber">법대연락처</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="legalRepresentativeNumber" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-2 border-right">
+		        <label for="legalRepresentativeAddress">법대주소</label>
+		    </div>
+		    <div class="col-sm-4">
+		        <input type="text" name="legalRepresentativeAddress" class="form-control form-control-user">
+		    </div>
+		</div>
+	</div>
+	
+	<!-- 부가기능 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">부가기능</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="additionalServices">부가서비스</label>
+		    </div>
+			<div class="col-sm-4">
+				<select name="additionalServices" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="없음">없음</option>
+					<option value="안심옵션">안심옵션</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="overseasData">해외데이터</label>
+			</div>
+			<div class="col-sm-4">
+				<select name="overseasData" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="overseasData1">데이터로밍완전차단</option>
+					<option value="overseasData2">차단</option>
+					<option value="overseasData3">이용</option>
+				</select>
+			</div>
+			<div class="col-sm-2 border-right">
+			    <label for="mobilePayment">통신과금서비스</label>
+			</div>
+			<div class="col-sm-4">
+				<select name="mobilePayment" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+					<option value="mobilePayment1">휴대폰결제 차단</option>
+					<option value="mobilePayment2">휴대폰결제 이용</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	
+	<!-- 판매자 정보 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">판매자 정보</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="retailerName">판매점 상호</label>
+			</div>
+			<div class="col-sm-2">
+			    <input type="text" name="retailerName" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-2 border-right">
+			    <label for="sellerName">판매자명</label>
+			</div>
+			<div class="col-sm-2">
+			    <input type="text" name="sellerName" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-1 border-right">
+			    <label for="sellerNumber">연락처</label>
+			</div>
+			<div class="col-sm-3">
+			    <input type="text" name="sellerNumber" class="form-control form-control-user">
+			</div>
+		</div>
+	</div>
+</div>

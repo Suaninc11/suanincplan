@@ -1,0 +1,79 @@
+<div class="card shadow mb-4">
+	
+	<!-- 요금제 -->
+    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
+    </div>
+    <div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="simSerialName">모델명</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="simName" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-2 border-right">
+			    <label for="simName">일련번호</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="simSerialNumber" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+			</div>
+		</div>
+    </div>
+	
+	<!-- 고객정보 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">고객정보</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+		        <label for="name">가입자명</label>
+		    </div>
+			<div class="col-sm-4">
+		        <input type="text" name="name" class="form-control form-control-user">
+		    </div>
+			<div class="col-sm-2 border-right">
+		        <label for="birthdate">생년월일</label>
+		    </div>
+		    <div class="col-sm-4">
+		        <input type="text" name="birthdate" class="form-control form-control-user">
+		    </div>
+		</div>
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="mobileNumber">가입자 연락처</label>
+			</div>
+			<div class="col-sm-4">
+			    <input type="text" name="mobileNumber" class="form-control form-control-user">
+			</div>
+		</div>
+	</div>
+	
+	<!-- 판매자 정보 -->
+	<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	    <h6 class="m-0 font-weight-bold text-primary">판매자 정보</h6>
+	</div>
+	<div class="card-body">
+		<div class="form-group row align-items-center d-flex text-center">
+			<div class="col-sm-2 border-right">
+			    <label for="retailerName">판매점 상호</label>
+			</div>
+			<div class="col-sm-2">
+			    <input type="text" name="retailerName" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-2 border-right">
+			    <label for="sellerName">판매자명</label>
+			</div>
+			<div class="col-sm-2">
+			    <input type="text" name="sellerName" class="form-control form-control-user">
+			</div>
+			<div class="col-sm-1 border-right">
+			    <label for="sellerNumber">연락처</label>
+			</div>
+			<div class="col-sm-3">
+			    <input type="text" name="sellerNumber" class="form-control form-control-user">
+			</div>
+		</div>
+	</div>
+</div>
