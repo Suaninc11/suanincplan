@@ -15,4 +15,6 @@ public interface CarrierPlanDao {
 
 	public int deleteCarrierPlan(CarrierPlan form);
 
+	public int addCarrierPlan(CarrierPlan form);
+
 }

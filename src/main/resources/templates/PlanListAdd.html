@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,6 +46,12 @@
 		            return;
 		        }
 		        actionUrl = "/homepage/carrierPlan/deleteCarrierPlan";
+		    }else if(actionType === 'planAdd') {
+		        var userConfirmed = confirm("추가하시겠습니까?");
+		        if (!userConfirmed) {
+		            return;
+		        }
+		        actionUrl = "/homepage/carrierPlan/addCarrierPlan";
 		    }
 
 		    fetch(actionUrl, {
@@ -70,7 +77,51 @@
 	<!-- Page Wrapper -->
 	<div id="wrapper">
 
-    	<div th:include="sidebar :: sidebar"></div>
+    	<div>
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <!-- Sidebar content goes here -->
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+                <div class="sidebar-brand-text mx-3">suaninc</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <li class="nav-item">
+                <a class="nav-link" style="padding: 16px 16px 5px 16px;" href="/"><i class="fas fa-fw fa-tachometer-alt"></i><span> 헬로모바일</span></a>
+				<a class="nav-link" style="padding: 5px 16px 5px 16px;" href="/"><i class="fas fa-fw fa-tachometer-alt"></i><span> 스노우맨</span></a>
+				<a class="nav-link" style="padding: 5px 16px 5px 16px;" href="/"><i class="fas fa-fw fa-tachometer-alt"></i><span> SKYLIFE</span></a>
+				<a class="nav-link" style="padding: 5px 16px 5px 16px;" href="/"><i class="fas fa-fw fa-tachometer-alt"></i><span> KTM</span></a>
+				<a class="nav-link" style="padding: 5px 16px 5px 16px;" href="/"><i class="fas fa-fw fa-tachometer-alt"></i><span> 7모바일</span></a>
+				<a class="nav-link" style="padding: 5px 16px 5px 16px;" href="/"><i class="fas fa-fw fa-tachometer-alt"></i><span> 유모바일</span></a>
+				<a class="nav-link" style="padding: 5px 16px 5px 16px;" href="/"><i class="fas fa-fw fa-tachometer-alt"></i><span> 유모바일(청소년)</span></a>
+				<a class="nav-link" style="padding: 5px 16px 16px 16px;" href="/"><i class="fas fa-fw fa-tachometer-alt"></i><span> 유모바일(변경)</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Interface
+            </div>
+
+			<li class="nav-item">
+			    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo"
+			       aria-expanded="true" aria-controls="collapseTwo">
+			        <i class="fas fa-fw fa-cog"></i>
+			        <span>설정</span>
+			    </a>
+			    <div id="collapseTwo" class="collapse" aria-labelledby="headingCarriarPlan" data-parent="#accordionSidebar">
+			        <div class="bg-white py-2 collapse-inner rounded">
+			            <a class="collapse-item" href="/homepage/carrierPlan/carrierPlanList" onclick="return checkPassword();">요금제 설정</a>
+					    <a class="collapse-item" href="/homepage/template/templateList" onclick="return checkPassword();">템플릿 설정</a>
+					</div>
+			    </div>
+			</li>
+        </ul>
+    </div>
 
 		<!-- Content Wrapper -->
 		<div id="content-wrapper" class="d-flex flex-column">
@@ -94,25 +145,43 @@
 					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center mb-4 justify-content-between">
 					    <div>
-					        <h1 class="h3 mb-0 text-gray-800">요금제 상세</h1>
+					        <h1 class="h3 mb-0 text-gray-800">요금제 추가</h1>
 					    </div>
 					</div>
 					
 					<!-- 신청서 -->
 					<div class="card shadow mb-4">
-						<form id="dataForm" method="post">
-							<input type="hidden" name="carrierPlanId" th:value="${carrierPlanInfo.carrierPlanId}">
+						<form id="dataForm" method="POST">
+							<input type="hidden" name="carrierPlanId" value="130">
 							<!-- 요금제 -->
 						    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 						        <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
 						    </div>
-						    <div class="card-body">
+						
+								 <div class="card-body">
+								<div class="form-group row align-items-center d-flex text-center">
+									<div class="col-sm-2 border-right">
+									    <label for="templateCode">통신사코드</label>
+									</div>
+									<div class="col-sm-4 mb-3 mb-sm-0">
+										<input type="text" name="templateCode" class="form-control form-control-user" value="ST001">
+									</div>
+								</div>
+								<div class="form-group row align-items-center d-flex text-center">
+									<div class="col-sm-2 border-right">
+									    <label for="carrierPlanName">통신사명</label>
+									</div>
+									<div class="col-sm-4 mb-3 mb-sm-0">
+										<input type="text" name="carrierPlanName" class="form-control form-control-user" value="7모바일">
+									</div>
+								</div>
+								
 								<div class="form-group row align-items-center d-flex text-center">
 									<div class="col-sm-2 border-right">
 									    <label for="mobileCarrier">요금제명</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="mobileCarrier" class="form-control form-control-user" th:value="${carrierPlanInfo.mobileCarrier}">
+										<input type="text" name="mobileCarrier" class="form-control form-control-user" value="LTE 알뜰 (7GB+/통화맘껏)">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -120,7 +189,7 @@
 									    <label for="monthlyBillingAmt">월청구요금</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="monthlyBillingAmt" class="form-control form-control-user" th:value="${carrierPlanInfo.monthlyBillingAmt}">
+										<input type="text" name="monthlyBillingAmt" class="form-control form-control-user" value="18700">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -128,7 +197,7 @@
 									    <label for="basicAmt">기본료</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="basicAmt" class="form-control form-control-user" th:value="${carrierPlanInfo.basicAmt}">
+										<input type="text" name="basicAmt" class="form-control form-control-user" value="48400">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -136,7 +205,7 @@
 									    <label for="discountAmt">할인</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="discountAmt" class="form-control form-control-user" th:value="${carrierPlanInfo.discountAmt}">
+										<input type="text" name="discountAmt" class="form-control form-control-user" value="29700">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -144,7 +213,7 @@
 									    <label for="voiceCall">음성(부가통화)</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="voiceCall" class="form-control form-control-user" th:value="${carrierPlanInfo.voiceCall}">
+										<input type="text" name="voiceCall" class="form-control form-control-user" value="무제한(300분)">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -152,7 +221,7 @@
 									    <label for="mobileData">데이터</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="mobileData" class="form-control form-control-user" th:value="${carrierPlanInfo.mobileData}">
+										<input type="text" name="mobileData" class="form-control form-control-user" value="7GB">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -160,7 +229,7 @@
 									    <label for="mobileQos">QOS(무제한)</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="mobileQos" class="form-control form-control-user" th:value="${carrierPlanInfo.mobileQos}">
+										<input type="text" name="mobileQos" class="form-control form-control-user" value="1Mbps">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -168,7 +237,7 @@
 									    <label for="mobileMessage">문자</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="mobileMessage" class="form-control form-control-user" th:value="${carrierPlanInfo.mobileMessage}">
+										<input type="text" name="mobileMessage" class="form-control form-control-user" value="무제한">
 									</div>
 								</div>
 						    </div>
@@ -180,13 +249,11 @@
 					    <div>
 							
 							<!--a href="/homepage/carrierPlan/carrierPlanList"-->
-							<a href="javascript:history.back()" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;">
+							<a href="/homepage/carrierPlan/carrierPlanList" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;">
 							    목록</a>
-								<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;"  onclick="submitForm('modify');">
-								    수정
-								<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-danger shadow-sm" style="margin-right: 10px;" onclick="submitForm('delete');">
-								    삭제
-								</a>
+								<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;"  onclick="submitForm('planAdd');">
+								    추가</a>
+								
 					    </div>
 					</div>
 				</div>

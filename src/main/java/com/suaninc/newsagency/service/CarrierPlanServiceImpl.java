@@ -33,5 +33,11 @@ public class CarrierPlanServiceImpl implements CarrierPlanService {
 	public int deleteCarrierPlan(CarrierPlan form) {
 		return carrierPlanDao.deleteCarrierPlan(form);
 	}
-
+	
+	@Override
+	public int addCarrierPlan(CarrierPlan form) {
+		return carrierPlanDao.addCarrierPlan(form);
+	}
+	
+	
 }

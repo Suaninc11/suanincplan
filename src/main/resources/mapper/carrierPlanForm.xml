@@ -78,4 +78,33 @@
 	    WHERE carrier_plan_id = #{carrierPlanId}
 	</delete>
 
+	<insert id="addCarrierPlan" parameterType="com.suaninc.newsagency.domain.CarrierPlan">
+	    INSERT INTO carrier_plan 
+		    (template_code,
+		    carrier_plan_name,
+		    mobile_carrier,
+		    monthly_billing_amt,
+		    basic_amt,
+		    discount_amt,
+		    voice_call,
+		    mobile_data,
+		    mobile_qos,
+		    mobile_message,
+		    registered_datetime)
+	    VALUES
+			    (#{templateCode},
+			    #{carrierPlanName},
+			    #{mobileCarrier},
+			    #{monthlyBillingAmt},
+			    #{basicAmt},
+			    #{discountAmt},
+			    #{voiceCall},
+			    #{mobileData},
+			    #{mobileQos},
+			    #{mobileMessage},
+			    now())
+	</insert>
+
+
+
 </mapper>

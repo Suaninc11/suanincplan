@@ -22,6 +22,9 @@
 	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
 
+	
+	
+	
 </head>
 
 <body id="page-top">
@@ -109,10 +112,33 @@
 									</tbody>
 								</table>
 							</div>
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
 							<!-- 페이지네이션 버튼 -->
 							<div class="row">
-							    <div class="col-sm-12 col-md-12">
-									<div class="pagination justify-content-end">
+							  
+
+								<!--요금제 추가 버튼-->
+
+
+								<div style="display: flex; justify-content: flex-end; width: 100%;">
+									
+									<a href="/homepage/carrierPlan/PlanListAdd.html" class=" btn btn-primary shadow-sm " style="margin-right: 10px; ">요금제 추가</a>
+								
+
+								</div>
+								
+								  <div class="col-sm-12 col-md-12">
+									<div class="pagination justify-content-center">
 									    <ul class="pagination">
 									        <li class="paginate_button page-item" th:classappend="${carrierPlanList.number == 0} ? 'disabled'">
 									            <a th:href="@{/homepage/carrierPlan/carrierPlanList(page=${0}, templateCode=${carrierPlan.templateCode})}" class="page-link">&laquo;</a>

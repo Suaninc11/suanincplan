@@ -85,6 +85,28 @@ public class CarrierPlanController {
 
 	    return response;
 	}
+	
+	
+	@GetMapping("/homepage/carrierPlan/PlanListAdd.html")
+	public String getPlanListAdd() {
+	    return "PlanListAdd";  
+	}
 
+	@PostMapping("/homepage/carrierPlan/addCarrierPlan")
+	@ResponseBody
+	public Map<String, Object> addCarrierPlan(CarrierPlan form) {
+	    Map<String, Object> response = new HashMap<>();
 
+	    try {
+	        carrierPlanService.addCarrierPlan(form);
+	        response.put("success", true);
+	        response.put("message", "추가가 완료되었습니다.");
+	        response.put("redirectUrl", "/homepage/carrierPlan/carrierPlanList");
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", "추가에 실패했습니다. 오류: " + e.getMessage());
+	    }
+
+	    return response;
+	}
 }

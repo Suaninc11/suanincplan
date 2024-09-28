@@ -52,4 +52,10 @@ public class CarrierPlanDaoImpl implements CarrierPlanDao {
 		return sqlSession.delete("carrierPlanForm.deleteCarrierPlan", form);
 	}
 
+	@Override
+	public int addCarrierPlan(CarrierPlan form) {
+		return sqlSession.insert("carrierPlanForm.addCarrierPlan", form);
+	}
+
+	
 }
