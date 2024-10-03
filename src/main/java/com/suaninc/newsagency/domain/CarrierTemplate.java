@@ -6,6 +6,7 @@ public class CarrierTemplate {
 	
 	private Integer carrierTemplateId;
     private String templateCode;
+    private String templateName;
     private Integer templateImageOrder;
     private String templateImageName;
     private Date registeredDatetime;
@@ -23,6 +24,12 @@ public class CarrierTemplate {
 	}
 	public void setTemplateCode(String templateCode) {
 		this.templateCode = templateCode;
+	}
+	public String getTemplateName() {
+		return templateName;
+	}
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
 	}
 	public Integer getTemplateImageOrder() {
 		return templateImageOrder;

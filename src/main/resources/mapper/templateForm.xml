@@ -8,57 +8,51 @@
 		FROM (
 		    SELECT
 		        ct.template_code AS templateCode,
+    			ct.template_name AS templateName,
 		        COUNT(ct.template_code) as templateCount
 		    FROM
 		        carrier_template ct
-		    GROUP BY template_code
+		    GROUP BY template_code, template_name
 		) AS subquery;
 	</select>
 
     <select id="selectTemplateList" resultType="com.suaninc.newsagency.domain.CarrierTemplate">
 		SELECT
 			ct.template_code AS templateCode,
+			ct.template_name AS templateName,
 			COUNT(ct.template_code) as templateCount
 		FROM
 			carrier_template ct
-		group by template_code
-		ORDER BY code_id DESC
+		group by template_code, template_name
 	    LIMIT #{pageSize} OFFSET #{offset}
     </select>
     
-    <select id="selectTemplateInfo" resultType="com.suaninc.newsagency.domain.CarrierTemplate">
+    <select id="selectTemplateInfo" resultType="com.suaninc.newsagency.domain.TemplateCoordinate">
 		SELECT
-			carrier_plan_id AS carrierPlanId,
-			template_code AS templateCode,
-			carrier_plan_name AS carrierPlanName,
-			mobile_carrier AS mobileCarrier,
-			monthly_billing_amt AS monthlyBillingAmt,
-			basic_amt AS basicAmt,
-			discount_amt AS discountAmt,
-			voice_call AS voiceCall,
-			mobile_data AS mobileData,
-			mobile_qos AS mobileQos,
-			mobile_message AS mobileMessage,
-			registered_datetime AS registeredDatetime
+			tc.template_coordinate_id AS templateCoordinateId,
+			tc.template_code AS templateCode,
+			tc.template_type AS templateType,
+			tc.template_image_order AS templateImageOrder,
+			tc.template_coordinate_name AS templateCoordinateName,
+			tc.template_input_type AS templateInputType,
+			tc.template_input_option AS templateInputOption,
+			tc.font_style AS fontStyle,
+			tc.font_size AS fontSize,
+			tc.coordinate_x_axis AS coordinateXAxis,
+			tc.coordinate_y_axis AS coordinateYAxis,
+			tc.registered_datetime AS registeredDatetime
 		FROM
-			carrier_plan cp
-		WHERE	
-            carrier_plan_id = #{carrierPlanId}
-		ORDER BY carrier_plan_id
+			template_coordinate tc
+		WHERE
+			template_code = #{templateCode}
     </select>
     
-	<update id="updateTemplate" parameterType="com.suaninc.newsagency.domain.CarrierTemplate">
-	    UPDATE carrier_plan
+	<update id="updateCoordinate" parameterType="com.suaninc.newsagency.domain.TemplateCoordinate">
+	    UPDATE template_coordinate
 	    SET 
-	        mobile_carrier = #{mobileCarrier},
-	        monthly_billing_amt = #{monthlyBillingAmt},
-	        basic_amt = #{basicAmt},
-	        discount_amt = #{discountAmt},
-	        voice_call = #{voiceCall},
-	        mobile_data = #{mobileData},
-	        mobile_qos = #{mobileQos},
-	        mobile_message = #{mobileMessage}
-	    WHERE carrier_plan_id = #{carrierPlanId}
+	        coordinate_x_axis = #{coordinateXAxis},
+	        coordinate_y_axis = #{coordinateYAxis}
+	    WHERE template_coordinate_id = #{templateCoordinateId}
 	</update>
 
 </mapper>

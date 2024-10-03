@@ -52,7 +52,7 @@ public class CarrierPlanController {
 	@PostMapping("/homepage/carrierPlan/carrierPlanModify")
 	@ResponseBody
 	public Map<String, Object> carrierPlanModify(CarrierPlan form) {
-	    Map<String, Object> result = new HashMap<>();
+		Map<String, Object> result = new HashMap<>();
 	    
 	    try {
 	        carrierPlanService.modifyCarrierPlan(form);

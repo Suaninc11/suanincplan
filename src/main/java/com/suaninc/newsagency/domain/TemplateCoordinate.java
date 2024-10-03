@@ -6,6 +6,7 @@ public class TemplateCoordinate {
 	
 	private Integer templateCoordinateId;
 	private String templateCode;
+	private String templateType;
     private String templateImageOrder;
     private String templateCoordinateName;
     private String templateInputType;
@@ -27,6 +28,12 @@ public class TemplateCoordinate {
 	}
 	public void setTemplateCode(String templateCode) {
 		this.templateCode = templateCode;
+	}
+	public String getTemplateType() {
+		return templateType;
+	}
+	public void setTemplateType(String templateType) {
+		this.templateType = templateType;
 	}
 	public String getTemplateImageOrder() {
 		return templateImageOrder;

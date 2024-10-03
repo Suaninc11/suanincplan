@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.suaninc.newsagency.domain.CarrierTemplate;
+import com.suaninc.newsagency.domain.TemplateCoordinate;
 
 @Repository
 public class TemplateDaoImpl implements TemplateDao {
@@ -38,13 +39,13 @@ public class TemplateDaoImpl implements TemplateDao {
 	}
 	
 	@Override
-	public CarrierTemplate selectTemplateInfo(Long carrierPlanId) {
-		return sqlSession.selectOne("templateForm.selectTemplateInfo", carrierPlanId);
+	public List<TemplateCoordinate> selectTemplateInfo(String templateCode) {
+		return sqlSession.selectList("templateForm.selectTemplateInfo", templateCode);
 	}
 	
 	@Override
-	public int modifyTemplate(CarrierTemplate form) {
-		return sqlSession.update("templateForm.updateTemplate", form);
+	public int updateCoordinate(TemplateCoordinate form) {
+		return sqlSession.update("templateForm.updateCoordinate", form);
 	}
 
 }

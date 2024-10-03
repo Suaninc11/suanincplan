@@ -1,17 +1,22 @@
 package com.suaninc.newsagency.controller;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.suaninc.newsagency.domain.CarrierPlan;
 import com.suaninc.newsagency.domain.CarrierTemplate;
+import com.suaninc.newsagency.domain.TemplateCoordinate;
 import com.suaninc.newsagency.service.TemplateService;
 
 @Controller
@@ -33,14 +38,22 @@ public class TemplateController {
 	}
 	
 	@GetMapping("/homepage/template/templateInfo")
-	public String templateInfo(@RequestParam("id") Long carrierTemplateId, Model model, CarrierPlan form, 
+	public String templateInfo(@RequestParam("id") String templateCode, Model model,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) throws Exception {
 		
-		CarrierTemplate templateInfo = templateService.getTemplateInfo(carrierTemplateId);
+		List<TemplateCoordinate> templateInfo = templateService.getTemplateInfo(templateCode);
 	    
 		model.addAttribute("templateInfo", templateInfo);
 	    
 		return "templateInfo";
+	}
+	
+	@PostMapping("/homepage/template/modifyCoordinate")
+	public ResponseEntity<String> modifyTemplate(@RequestBody TemplateCoordinate form) {
+		
+	    templateService.modifyCoordinate(form);
+
+	    return ResponseEntity.ok("좌표 업데이트 성공");
 	}
 
 }

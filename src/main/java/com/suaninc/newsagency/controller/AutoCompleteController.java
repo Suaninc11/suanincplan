@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -66,80 +67,88 @@ public class AutoCompleteController {
 	        List<CarrierTemplate> carrierTemplate = applyFormService.getCarrierTemplate(form);
 
 	        for (int i = 0; i < carrierTemplate.size(); i++) {
-	            InputStream is = AutoCompleteController.class.getResourceAsStream("/images/" + carrierTemplate.get(i).getTemplateCode() + "/" + carrierTemplate.get(i).getTemplateImageName());
+	            // 경로를 파일 시스템 경로로 변경
+	            String imagePath = "src/main/resources/static/images/" + carrierTemplate.get(i).getTemplateCode() + "/" + carrierTemplate.get(i).getTemplateImageName();
+	            
+	            // 파일 경로에서 이미지를 읽어옴
+	            Path path = Paths.get(imagePath);
+	            try (InputStream is = Files.newInputStream(path)) {
+	                CarrierTemplate templateImageOrder = new CarrierTemplate();
+	                templateImageOrder.setTemplateCode(carrierTemplate.get(i).getTemplateCode());
+	                templateImageOrder.setTemplateImageOrder(carrierTemplate.get(i).getTemplateImageOrder());
 
-	            CarrierTemplate templateImageOrder = new CarrierTemplate();
-	            templateImageOrder.setTemplateCode(carrierTemplate.get(i).getTemplateCode());
-	            templateImageOrder.setTemplateImageOrder(carrierTemplate.get(i).getTemplateImageOrder());
+	                BufferedImage image = ImageIO.read(is);
 
-	            BufferedImage image = ImageIO.read(is);
-	            is.close();
+	                List<TemplateCoordinate> templateCoordinateList = applyFormService.getTemplateCoordinateList(templateImageOrder);
 
-	            List<TemplateCoordinate> templateCoordinateList = applyFormService.getTemplateCoordinateList(templateImageOrder);
-
-	            for (TemplateCoordinate coordinate : templateCoordinateList) {
-	                try {
-	                    // ApplyForm 클래스의 필드를 리플렉션을 통해 동적으로 가져오기
-	                    Field field = form.getClass().getDeclaredField(coordinate.getTemplateCoordinateName());
-	                    field.setAccessible(true);
-	                    
-	                    Object value = field.get(form); // 필드 값을 가져옴
-
-	                    String text;
-	                    if (value instanceof String) {
-	                        text = (String) value;
-	                    } else if (value instanceof Integer) {
-	                        text = String.valueOf(value);
-	                    } else {
-	                        text = value != null ? value.toString() : ""; // 다른 타입인 경우 문자열로 변환
-	                    }
-
-	                    if (text != null) {
-	                        // 텍스트를 그리기 위해 Graphics2D 객체 사용
-	                        Graphics2D g2d = image.createGraphics();
-	                        g2d.setFont(new Font("NanumGothic", Font.PLAIN, 11)); // Arial Malgun Gothic
-	                        g2d.setColor(Color.BLACK);
-
-	                        // 텍스트 그리기
-	                        int x = coordinate.getCoordinateXAxis(); // X 좌표
-	                        int y = coordinate.getCoordinateYAxis(); // Y 좌표
+	                for (TemplateCoordinate coordinate : templateCoordinateList) {
+	                    try {
+	                        // ApplyForm 클래스의 필드를 리플렉션을 통해 동적으로 가져오기
+	                        Field field = form.getClass().getDeclaredField(coordinate.getTemplateCoordinateName());
+	                        field.setAccessible(true);
 	                        
-	                        // 텍스트가 "check"인 경우 체크 표시 그리기
-	                        if (coordinate.getTemplateInputType().equals("check")) {
-	                            if (text.equalsIgnoreCase(coordinate.getTemplateInputOption())) {
-	                                // 체크 표시 이미지를 불러옵니다.
-	                                BufferedImage checkImage = ImageIO.read(AutoCompleteController.class.getResourceAsStream("/images/checkmark.png"));
-	                                int imgWidth = checkImage.getWidth();
-	                                int imgHeight = checkImage.getHeight();
-	                                
-	                                // 체크 표시 이미지를 그립니다.
-	                                g2d.drawImage(checkImage, x - (imgWidth / 2), y - (imgHeight / 2), null);
-	                            }
+	                        Object value = field.get(form); // 필드 값을 가져옴
+
+	                        String text;
+	                        if (value instanceof String) {
+	                            text = (String) value;
+	                        } else if (value instanceof Integer) {
+	                            text = String.valueOf(value);
 	                        } else {
-	                            g2d.drawString(text, x, y); // 일반 텍스트 그리기
+	                            text = value != null ? value.toString() : ""; // 다른 타입인 경우 문자열로 변환
 	                        }
-	                        
-	                        g2d.dispose();
+
+	                        if (text != null) {
+	                            // 텍스트를 그리기 위해 Graphics2D 객체 사용
+	                            Graphics2D g2d = image.createGraphics();
+	                            g2d.setFont(new Font("NanumGothic", Font.PLAIN, 11)); // Arial Malgun Gothic
+	                            g2d.setColor(Color.BLACK);
+
+	                            // 텍스트 그리기
+	                            int x = coordinate.getCoordinateXAxis(); // X 좌표
+	                            int y = coordinate.getCoordinateYAxis(); // Y 좌표
+	                            
+	                            // 텍스트가 "check"인 경우 체크 표시 그리기
+	                            if (coordinate.getTemplateInputType().equals("check")) {
+	                                if (text.equalsIgnoreCase(coordinate.getTemplateInputOption())) {
+	                                    // 체크 표시 이미지를 불러옵니다.
+	                                    Path checkImagePath = Paths.get("src/main/resources/static/images/checkmark.png");
+	                                    BufferedImage checkImage = ImageIO.read(Files.newInputStream(checkImagePath));
+	                                    int imgWidth = checkImage.getWidth();
+	                                    int imgHeight = checkImage.getHeight();
+	                                    
+	                                    // 체크 표시 이미지를 그립니다.
+	                                    g2d.drawImage(checkImage, x - (imgWidth / 2), y - (imgHeight / 2), null);
+	                                }
+	                            } else {
+	                                g2d.drawString(text, x, y); // 일반 텍스트 그리기
+	                            }
+	                            
+	                            g2d.dispose();
+	                        }
+	                    } catch (NoSuchFieldException e) {
+	                        System.err.println("필드를 찾을 수 없습니다: " + coordinate.getTemplateCoordinateName());
+	                    } catch (IllegalAccessException e) {
+	                        // 필드 접근 실패 시 예외 처리
+	                        e.printStackTrace();
 	                    }
-	                } catch (NoSuchFieldException e) {
-	                    System.err.println("필드를 찾을 수 없습니다: " + coordinate.getTemplateCoordinateName());
-	                } catch (IllegalAccessException e) {
-	                    // 필드 접근 실패 시 예외 처리
-	                    e.printStackTrace();
 	                }
-	            }
 
-	            // 수정된 BufferedImage를 다시 바이트 배열로 변환
-	            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	            ImageIO.write(image, "jpg", baos);
-	            byte[] imageBytes = baos.toByteArray();
+	                // 수정된 BufferedImage를 다시 바이트 배열로 변환
+	                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	                ImageIO.write(image, "jpg", baos);
+	                byte[] imageBytes = baos.toByteArray();
 
-	            PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, imageBytes, carrierTemplate.get(i).getTemplateImageName());
-	            PDPage page = new PDPage(new PDRectangle(pdImage.getWidth(), pdImage.getHeight()));
-	            document.addPage(page);
+	                PDImageXObject pdImage = PDImageXObject.createFromByteArray(document, imageBytes, carrierTemplate.get(i).getTemplateImageName());
+	                PDPage page = new PDPage(new PDRectangle(pdImage.getWidth(), pdImage.getHeight()));
+	                document.addPage(page);
 
-	            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-	                contentStream.drawImage(pdImage, 0, 0);
+	                try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+	                    contentStream.drawImage(pdImage, 0, 0);
+	                }
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	                // 파일 읽기 실패 시 예외 처리
 	            }
 	        }
 
@@ -150,6 +159,7 @@ public class AutoCompleteController {
 	        e.printStackTrace();
 	    }
 	}
+
 	
     @GetMapping("/images/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
