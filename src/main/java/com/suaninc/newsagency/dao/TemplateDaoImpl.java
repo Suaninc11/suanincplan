@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.suaninc.newsagency.domain.CarrierTemplate;
-import com.suaninc.newsagency.domain.CommonCode;
 
 @Repository
 public class TemplateDaoImpl implements TemplateDao {
@@ -21,7 +20,7 @@ public class TemplateDaoImpl implements TemplateDao {
     private SqlSession sqlSession;
 
 	@Override
-	public Page<CommonCode> selectTemplateList(CommonCode form, Pageable pageable) {
+	public Page<CarrierTemplate> selectTemplateList(CarrierTemplate form, Pageable pageable) {
 	    // 전체 레코드 수 가져오기
 	    int total = sqlSession.selectOne("templateForm.selectTemplateListCount", form);
 	    
@@ -32,7 +31,7 @@ public class TemplateDaoImpl implements TemplateDao {
 	    params.put("pageSize", pageable.getPageSize());
 	    
 	    // 페이징된 리스트 가져오기
-	    List<CommonCode> templateList = sqlSession.selectList("templateForm.selectTemplateList", params);
+	    List<CarrierTemplate> templateList = sqlSession.selectList("templateForm.selectTemplateList", params);
 	    
 	    // Page 객체로 변환하여 반환
 	    return new PageImpl<>(templateList, pageable, total);

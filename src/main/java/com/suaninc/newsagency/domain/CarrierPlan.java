@@ -17,6 +17,9 @@ public class CarrierPlan {
     private String mobileMessage;
     private Date registeredDatetime;
     
+    private Long offset;
+    private Integer pageSize;
+    
 	public int getCarrierPlanId() {
 		return carrierPlanId;
 	}
@@ -89,5 +92,18 @@ public class CarrierPlan {
 	public void setRegisteredDatetime(Date registeredDatetime) {
 		this.registeredDatetime = registeredDatetime;
 	}
-    
+	
+	public Long getOffset() {
+		return offset;
+	}
+	public void setOffset(Long offset) {
+		this.offset = offset;
+	}
+	public Integer getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+	
 }

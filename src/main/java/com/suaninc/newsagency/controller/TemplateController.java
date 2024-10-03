@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.suaninc.newsagency.domain.CarrierPlan;
 import com.suaninc.newsagency.domain.CarrierTemplate;
-import com.suaninc.newsagency.domain.CommonCode;
 import com.suaninc.newsagency.service.TemplateService;
 
 @Controller
@@ -22,12 +21,11 @@ public class TemplateController {
 	private TemplateService templateService;
 	
 	@GetMapping("/homepage/template/templateList")
-	public String templateList(Model model, CommonCode form, 
-			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) throws Exception {
+	public String templateList(Model model, CarrierTemplate form, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) throws Exception {
 		
 	    Pageable pageable = PageRequest.of(page, size);
 	    
-	    Page<CommonCode> templateList = templateService.getTemplateList(form, pageable);
+	    Page<CarrierTemplate> templateList = templateService.getTemplateList(form, pageable);
 	    
 	    model.addAttribute("templateList", templateList);
 		

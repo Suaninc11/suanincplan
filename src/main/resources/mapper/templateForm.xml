@@ -4,25 +4,24 @@
 
     
     <select id="selectTemplateListCount" resultType="int">
-	    SELECT COUNT(*)
-	    FROM common_code cc
-	    <where>
-            parent_code_id = 1
-	    </where>
+		SELECT COUNT(*) AS totalRows
+		FROM (
+		    SELECT
+		        ct.template_code AS templateCode,
+		        COUNT(ct.template_code) as templateCount
+		    FROM
+		        carrier_template ct
+		    GROUP BY template_code
+		) AS subquery;
 	</select>
 
-    <select id="selectTemplateList" resultType="com.suaninc.newsagency.domain.CommonCode">
+    <select id="selectTemplateList" resultType="com.suaninc.newsagency.domain.CarrierTemplate">
 		SELECT
-		    code_id AS codeId,
-		    code_value AS codeValue,
-		    code_name AS codeName,
-		    code_description AS codeDescription,
-		    parent_code_id AS parentCodeId,
-		    DATE_FORMAT(registered_datetime, '%Y-%m-%d %H:%i') AS registeredDatetime
+			ct.template_code AS templateCode,
+			COUNT(ct.template_code) as templateCount
 		FROM
-		    common_code
-	    WHERE
-            parent_code_id = 1
+			carrier_template ct
+		group by template_code
 		ORDER BY code_id DESC
 	    LIMIT #{pageSize} OFFSET #{offset}
     </select>

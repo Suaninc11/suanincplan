@@ -2,22 +2,14 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>suaninc</title>
-
-    <!-- Custom fonts for this template-->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template-->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 	<link href="/css/sb-admin-2.css" rel="stylesheet">
 	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
@@ -26,13 +18,11 @@
 <body id="page-top">
 	<script>
 		function applyFormDownload(preview = false) {
-		    var formElement = document.getElementById('dataForm'); // 폼 요소 가져오기
+		    var formElement = document.getElementById('dataForm');
 		    var dataForm = new FormData(formElement);
 			
 			var formattedDate = getFormattedDate();
 			var selectElement = document.getElementById('templateCode');
-			var selectedOption = selectElement.options[selectElement.selectedIndex];
-			var templateCodeText = selectedOption.text;
 
 		    fetch('/homepage/inscribeView/autoComplete', {
 		        method: 'POST',
@@ -62,7 +52,7 @@
 		            const a = document.createElement('a');
 		            a.style.display = 'none';
 		            a.href = url;
-		            a.download = templateCodeText + '_' + formattedDate; // 파일 이름을 PDF로 지정하고, 더 명확하게 변경
+		            a.download = '헬로모바일_' + formattedDate; // 파일 이름을 PDF로 지정하고, 더 명확하게 변경
 		            document.body.appendChild(a);
 		            a.click();
 		            window.URL.revokeObjectURL(url);
@@ -74,8 +64,6 @@
 
 		function updateHiddenFields() {
 		    var selectElement = document.getElementById('carrierPlanSelect');
-		    if (!selectElement) return; // selectElement가 없으면 함수를 종료
-
 		    var selectedOption = selectElement.options[selectElement.selectedIndex];
 
 		    // 선택된 옵션에서 data- 속성 값 가져오기
@@ -105,7 +93,6 @@
 
 		function getFormattedDate() {
 		    var now = new Date();
-
 		    var year = now.getFullYear();
 		    var month = ('0' + (now.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 +1 필요
 		    var day = ('0' + now.getDate()).slice(-2);
@@ -118,55 +105,35 @@
 		function checkPassword() {
 		    var password = prompt("비밀번호를 입력하세요:");
 
-		    // 비밀번호가 입력되지 않으면 리디렉션을 막음
 		    if (password === null || password === "") {
 		        alert("비밀번호를 입력하지 않았습니다.");
-		        return false;  // href 링크로 이동하지 않음
+		        return false;
 		    }
-
 		    if (password === "1234") {
-		        return true;  // 비밀번호가 맞으면 href로 이동
+		        return true;
 		    } else {
 		        alert("비밀번호가 틀렸습니다.");
-		        return false;  // 비밀번호가 틀리면 이동하지 않음
+		        return false;
 		    }
 		}
-
-		// 페이지 로드 시 이벤트 리스너 설정
-		document.addEventListener('DOMContentLoaded', () => {
-		    setupEventListeners();
-		});
-			
 	</script>
 	
-    <!-- Page Wrapper -->
     <div id="wrapper">
 
     	<div th:include="sidebar :: sidebar"></div>
-
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
             <div id="content">
-
-                <!-- Topbar -->
                 <nav class="bg-white mb-4 static-top shadow">
-
-                    <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
                 </nav>
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
+				
                 <div class="container-fluid">
-
-					<!-- Page Heading -->
 					<div class="d-sm-flex align-items-center mb-4 justify-content-between">
 					    <div>
-					        <h1 class="h3 mb-0 text-gray-800">가입신청서</h1>
+					        <h1 class="h3 mb-0 text-gray-800">헬로모바일 가입신청서</h1>
 					    </div>
 					    <div>
 					        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;" onclick="applyFormDownload(true)">
@@ -175,9 +142,8 @@
 					            <i class="fas fa-download fa-sm text-white-50"></i> 다운로드</a>
 					    </div>
 					</div>
-
-                    <!-- Content Row -->
 					<form id="dataForm">
+						<input type="hidden" id="templateCode" name="templateCode" th:value="${form.templateCode}">
 						<input type="hidden" id="codeDescription" name="codeDescription">
 						<input type="hidden" id="carrierPlanId" name="carrierPlanId">
 						<input type="hidden" id="carrierPlanName" name="carrierPlanName">
@@ -478,14 +444,9 @@
 							</div>
 	                    </div>
 					</form>
-					
                 </div>
-                <!-- /.container-fluid -->
-
             </div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
@@ -493,25 +454,18 @@
                     </div>
                 </div>
             </footer>
-            <!-- End of Footer -->
 
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Bootstrap core JavaScript-->
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="/js/sb-admin-2.min.js"></script>
-
 </body>
 
 </html>

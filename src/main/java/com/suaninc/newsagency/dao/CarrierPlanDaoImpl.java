@@ -1,8 +1,6 @@
 package com.suaninc.newsagency.dao;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +23,11 @@ public class CarrierPlanDaoImpl implements CarrierPlanDao {
 	    int total = sqlSession.selectOne("carrierPlanForm.selectCarrierPlanListCount", form);
 	    
 	    // 페이징을 위한 파라미터 설정 (Map으로 묶음)
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("form", form);
-	    params.put("offset", pageable.getOffset());
-	    params.put("pageSize", pageable.getPageSize());
+	    form.setOffset(pageable.getOffset());
+	    form.setPageSize(pageable.getPageSize());
 	    
 	    // 페이징된 리스트 가져오기
-	    List<CarrierPlan> carrierPlanList = sqlSession.selectList("carrierPlanForm.selectCarrierPlanList", params);
+	    List<CarrierPlan> carrierPlanList = sqlSession.selectList("carrierPlanForm.selectCarrierPlanList", form);
 	    
 	    // Page 객체로 변환하여 반환
 	    return new PageImpl<>(carrierPlanList, pageable, total);

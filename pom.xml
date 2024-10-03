@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.2</version>
+        <version>3.3.2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.suanincplan</groupId>
 	<artifactId>suanincplan</artifactId>
-	<version>1.0.0</version>
+    <version>1.0.0</version>
 	<name>suanincplan</name>
 	<packaging>war</packaging>
 	<description>Suan project for Spring Boot</description>

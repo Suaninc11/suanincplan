@@ -1,13 +1,6 @@
 package com.suaninc.newsagency.controller;
 
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -28,18 +21,19 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.suaninc.newsagency.domain.ApplyForm;
 import com.suaninc.newsagency.domain.CarrierPlan;
 import com.suaninc.newsagency.domain.CarrierTemplate;
-import com.suaninc.newsagency.domain.CommonCode;
 import com.suaninc.newsagency.domain.TemplateCoordinate;
 import com.suaninc.newsagency.service.ApplyFormService;
 
@@ -53,29 +47,17 @@ public class AutoCompleteController {
 	
 	private final Path imagePath = Paths.get("uploads");
 	
-	@GetMapping("/homepage/templates/helloMobile")
-	public String mainPage(Model model) throws Exception {
+	@GetMapping("/homepage/templates/{templateCode}")
+	public String mainPage(@PathVariable String templateCode, ApplyForm form, Model model) throws Exception {
 		
-		List<CommonCode> carrierList = applyFormService.getCarrierList();
+		form.setTemplateCode(templateCode);
 		
-		model.addAttribute("carrierList", carrierList);
+		List<CarrierPlan> carrierPlanList = applyFormService.getCarrierPlan(form);
 		
-		return "templates/helloMobile";
-	}
-	
-	@PostMapping("/homepage/templates/mobileCarrier")
-	public String templates(Model model, ApplyForm form) {
+		model.addAttribute("form", form);
+		model.addAttribute("carrierPlanList", carrierPlanList);
 		
-		List<CarrierPlan> carrierPlan = applyFormService.getCarrierPlan(form);
-
-		String returnPage = "templates/helloMobile";
-		if (form.getCodeDescription() != null && !form.getCodeDescription().isEmpty()) {
-		    returnPage = "templates/" + form.getCodeDescription();
-		}
-
-		model.addAttribute("carrierPlan", carrierPlan);
-		
-		return returnPage;
+		return "templates/" + templateCode;
 	}
 	
 	@PostMapping("/homepage/inscribeView/autoComplete")
@@ -84,7 +66,7 @@ public class AutoCompleteController {
 	        List<CarrierTemplate> carrierTemplate = applyFormService.getCarrierTemplate(form);
 
 	        for (int i = 0; i < carrierTemplate.size(); i++) {
-	            InputStream is = AutoCompleteController.class.getResourceAsStream("/images/" + carrierTemplate.get(i).getTemplateImagePath() + "/" + carrierTemplate.get(i).getTemplateImageName());
+	            InputStream is = AutoCompleteController.class.getResourceAsStream("/images/" + carrierTemplate.get(i).getTemplateCode() + "/" + carrierTemplate.get(i).getTemplateImageName());
 
 	            CarrierTemplate templateImageOrder = new CarrierTemplate();
 	            templateImageOrder.setTemplateCode(carrierTemplate.get(i).getTemplateCode());
@@ -197,7 +179,6 @@ public class AutoCompleteController {
     	List<TemplateCoordinate> templateCoordinateList = applyFormService.getTemplateCoordinateList(templateImageOrder);
         
     	System.out.println("asdasd" + templateCoordinateList.get(1).getTemplateCode());
-    	System.out.println("asdasasdasdasdd");
     	
         model.addAttribute("templateCoordinateList", templateCoordinateList);
 

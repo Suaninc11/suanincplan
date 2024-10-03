@@ -7,9 +7,10 @@ public class CarrierTemplate {
 	private Integer carrierTemplateId;
     private String templateCode;
     private Integer templateImageOrder;
-    private String templateImagePath;
     private String templateImageName;
     private Date registeredDatetime;
+    
+    private String templateCount;
     
 	public Integer getCarrierTemplateId() {
 		return carrierTemplateId;
@@ -29,12 +30,6 @@ public class CarrierTemplate {
 	public void setTemplateImageOrder(Integer templateImageOrder) {
 		this.templateImageOrder = templateImageOrder;
 	}
-	public String getTemplateImagePath() {
-		return templateImagePath;
-	}
-	public void setTemplateImagePath(String templateImagePath) {
-		this.templateImagePath = templateImagePath;
-	}
 	public String getTemplateImageName() {
 		return templateImageName;
 	}
@@ -46,6 +41,12 @@ public class CarrierTemplate {
 	}
 	public void setRegisteredDatetime(Date registeredDatetime) {
 		this.registeredDatetime = registeredDatetime;
+	}
+	public String getTemplateCount() {
+		return templateCount;
+	}
+	public void setTemplateCount(String templateCount) {
+		this.templateCount = templateCount;
 	}
     
 }

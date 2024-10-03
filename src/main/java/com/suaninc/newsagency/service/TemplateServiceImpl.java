@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.suaninc.newsagency.dao.TemplateDao;
 import com.suaninc.newsagency.domain.CarrierTemplate;
-import com.suaninc.newsagency.domain.CommonCode;
 
 @Service
 public class TemplateServiceImpl implements TemplateService {
@@ -15,11 +14,11 @@ public class TemplateServiceImpl implements TemplateService {
     @Autowired
     private TemplateDao templateDao;
 
-	@Override
-	public Page<CommonCode> getTemplateList(CommonCode form, Pageable pageable) {
-		return templateDao.selectTemplateList(form, pageable);
-	}
-	
+    @Override
+    public Page<CarrierTemplate> getTemplateList(CarrierTemplate form, Pageable pageable) {
+        return templateDao.selectTemplateList(form, pageable);
+    }
+    
 	@Override
 	public CarrierTemplate getTemplateInfo(Long carrierTemplateId) {
 		return templateDao.selectTemplateInfo(carrierTemplateId);

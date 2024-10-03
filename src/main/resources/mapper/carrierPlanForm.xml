@@ -30,8 +30,8 @@
 		FROM
 			carrier_plan cp
 	    <where>
-	        <if test="form.templateCode != null and form.templateCode != ''">
-	            template_code = #{form.templateCode}
+	        <if test="templateCode != null and templateCode != ''">
+	            template_code = #{templateCode}
 	        </if>
 	    </where>
 		ORDER BY carrier_plan_id DESC
