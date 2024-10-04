@@ -49,7 +49,7 @@
 										<tr th:each="template : ${templateList}">
 											<td th:text="${template.templateCode}"></td>
 											<td>
-												<a th:href="@{/homepage/template/templateInfo(id=${template.templateCode})}" th:text="${template.templateName}"></a>
+												<a th:href="@{/homepage/template/templateInfo(templateCode=${template.templateCode})}" th:text="${template.templateName}"></a>
 											</td>
 										    <td th:text="${template.templateCount}"></td>
 										</tr>

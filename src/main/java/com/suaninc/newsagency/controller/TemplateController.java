@@ -38,7 +38,7 @@ public class TemplateController {
 	}
 	
 	@GetMapping("/homepage/template/templateInfo")
-	public String templateInfo(@RequestParam("id") String templateCode, Model model,
+	public String templateInfo(@RequestParam("templateCode") String templateCode,TemplateCoordinate form, Model model,
 			@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) throws Exception {
 		
 		List<TemplateCoordinate> templateInfo = templateService.getTemplateInfo(templateCode);
@@ -50,9 +50,13 @@ public class TemplateController {
 	
 	@PostMapping("/homepage/template/modifyCoordinate")
 	public ResponseEntity<String> modifyTemplate(@RequestBody TemplateCoordinate form) {
-		
-	    templateService.modifyCoordinate(form);
 
+	    // 유효성 검사: 필수 필드가 비어 있으면 400 오류 반환
+	    if (form.getCoordinateXAxis() == null || form.getCoordinateYAxis() == null) {
+	        return ResponseEntity.badRequest().body("좌표 값이 누락되었습니다.");
+	    }
+	    
+	    templateService.modifyCoordinate(form);
 	    return ResponseEntity.ok("좌표 업데이트 성공");
 	}
 

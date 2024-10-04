@@ -72,16 +72,15 @@
 		    let isDragging = false;
 		    let offsetX, offsetY;
 
-		    // 수정 버튼 클릭 시 모달을 초기화
+		    // 모달 열릴 때 좌표값 초기화
 		    $('#editModal').on('show.bs.modal', function (event) {
 		        var button = $(event.relatedTarget);
 		        var coordinateName = button.data('coordinate-name');
-				var templateCoordinateId = button.data('coordinate-id');
-				var templateCode = button.data('code');
+		        var templateCoordinateId = button.data('coordinate-id');
+		        var templateCode = button.data('code');
 		        var x = button.data('x');
 		        var y = button.data('y');
-				
-		        // 모달의 텍스트 및 좌표 설정
+
 		        var modal = $(this);
 		        modal.find('#modal-text').text(coordinateName);
 		        modal.find('#modal-text').css({
@@ -89,12 +88,11 @@
 		            'top': y + 'px'
 		        });
 
-		        // 템플릿 코드를 저장하기 위해 hidden input을 사용
-				$('#templateCoordinateId').val(templateCoordinateId);
+		        $('#templateCoordinateId').val(templateCoordinateId);
 		        $('#templateCode').val(templateCode);
 		    });
 
-		    // 텍스트 드래그를 위한 mousedown 이벤트
+		    // 드래그 앤 드롭 기능
 		    $('#modal-text').on('mousedown', function (e) {
 		        isDragging = true;
 
@@ -105,7 +103,6 @@
 		        e.preventDefault();
 		    });
 
-		    // 마우스가 움직일 때 텍스트를 따라 이동
 		    $(document).on('mousemove', function (e) {
 		        if (isDragging) {
 		            const modalRect = $('#editModal .modal-content')[0].getBoundingClientRect();
@@ -121,39 +118,51 @@
 		        isDragging = false;
 		    });
 
-		    // 저장 버튼 클릭 시 좌표값을 서버로 전송
+		    // 저장 버튼 클릭 시 좌표값 서버로 전송
 		    $('#save-position').on('click', function () {
 		        const textElement = $('#modal-text');
-				const templateCoordinateId = $('#templateCoordinateId').val();
+		        const templateCoordinateId = $('#templateCoordinateId').val();
 		        const templateCode = $('#templateCode').val();
-		        const coordinateXAxis = textElement.css('left').replace('px', '');
-		        const coordinateYAxis = textElement.css('top').replace('px', '');
-				
-				return false;
-				
+				let coordinateXAxis = parseInt(textElement.css('left').replace('px', ''), 10);
+				let coordinateYAxis = parseInt(textElement.css('top').replace('px', ''), 10);
+
+		        // Ajax 요청
 		        $.ajax({
 		            url: '/homepage/template/modifyCoordinate',
 		            method: 'POST',
 		            contentType: 'application/json',
 		            data: JSON.stringify({
-						templateCoordinateId: templateCoordinateId,
+		                templateCoordinateId: templateCoordinateId,
 		                templateCode: templateCode,
 		                coordinateXAxis: coordinateXAxis,
 		                coordinateYAxis: coordinateYAxis
 		            }),
 		            success: function(response) {
+						console.log('응답 성공:', response);  // 응답이 성공적으로 들어오는지 확인
 		                alert('좌표가 성공적으로 업데이트되었습니다!');
+						
+						const row = $('td').filter(function() {
+						    return $(this).text().trim() === templateCoordinateId.toString().trim();
+						}).closest('tr');
 
-		                const row = $('td:contains("' + templateCode + '")').closest('tr');
-		                row.find('td').eq(4).text(newX); // X 값
-		                row.find('td').eq(5).text(newY); // Y 값
+						console.log('선택된 row:', row);  // 선택된 row 확인
 
+						if (row.length > 0) {
+						    row.find('td').eq(4).text(coordinateXAxis); // X 값 업데이트
+						    row.find('td').eq(5).text(coordinateYAxis); // Y 값 업데이트
+						} else {
+						    console.error('해당 templateCoordinateId에 해당하는 행을 찾을 수 없습니다.');
+						}
+						
 		                $('#editModal').modal('hide');
 		            },
 		            error: function(error) {
 		                console.error('좌표 업데이트 중 오류 발생:', error);
 		                alert('좌표 업데이트 중 오류가 발생했습니다.');
-		            }
+		            },
+				    complete: function(xhr, status) {
+				        console.log('AJAX 요청이 완료되었습니다. 상태:', status);
+				    }
 		        });
 		    });
 		});
@@ -249,6 +258,7 @@
 									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 										<thead>
 											<tr>
+												<th>번호</th>
 												<th>템플릿코드</th>
 												<th>타입</th>
 												<th>폰트</th>
@@ -261,6 +271,7 @@
 										</thead>
 										<tbody>
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == 'customerInfo'">
+												<td th:text="${template.templateCoordinateId}"></td>												
 										        <td th:text="${template.templateCoordinateName}"></td>
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
@@ -538,7 +549,7 @@
 	                    <input type="hidden" name="coordinateXAxis" id="coordinateXAxis">
 	                    <input type="hidden" name="coordinateYAxis" id="coordinateYAxis">
 	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-	                    <button type="submit" class="btn btn-primary" id="save-position">저장</button>
+	                    <button type="button" class="btn btn-primary" id="save-position">저장</button>
 	                </div>
 	            </form>
 	        </div>
