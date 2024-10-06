@@ -16,10 +16,6 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 	<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-
-</head>
-
-<body id="page-top">
 	<script>
 		function submitForm(actionType) {
 		    var form = document.getElementById("dataForm");
@@ -59,25 +55,21 @@
 		    });
 		}
 	</script>
+</head>
+
+<body id="page-top">
 
 	<div id="wrapper">
-		
     	<div th:replace="sidebar :: sidebar"></div>
-		
 		<div id="content-wrapper" class="d-flex flex-column">
 			<div id="content">
-                <nav class="bg-white mb-4 static-top shadow">
-					<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-						<i class="fa fa-bars"></i>
-					</button>
+				<nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow" style="background-color: #20265C; padding-left: 0;">
+				    <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 10px; height: 80%; display: flex; align-items: center; margin-left: 0;"></div>
+				    <div class="ml-3">
+				        <h1 class="h5 mb-0 text-white">요금제 상세정보</h1>
+				    </div>					
 				</nav>
-
 				<div class="container-fluid">
-					<div class="d-sm-flex align-items-center mb-4 justify-content-between">
-					    <div>
-					        <h1 class="h3 mb-0 text-gray-800">요금제 상세</h1>
-					    </div>
-					</div>
 					
 					<!-- 신청서 -->
 					<div class="card shadow mb-4">
@@ -159,12 +151,14 @@
 					<div class="d-sm-flex align-items-center mb-4 justify-content-end">
 					    <div>
 							<a href="javascript:history.back()" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;">
-							    목록</a>
-								<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;"  onclick="submitForm('modify');">
-								    수정
-								<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-danger shadow-sm" style="margin-right: 10px;" onclick="submitForm('delete');">
-								    삭제
-								</a>
+							    목록
+							</a>
+							<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;"  onclick="submitForm('modify');">
+							    수정
+							</a>
+							<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-danger shadow-sm" onclick="submitForm('delete');">
+							    삭제
+							</a>
 					    </div>
 					</div>
 				</div>

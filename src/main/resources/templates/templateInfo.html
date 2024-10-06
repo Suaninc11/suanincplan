@@ -14,10 +14,7 @@
     <link href="/css/sb-admin-2.css" rel="stylesheet">
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
-</head>
-
-<body id="page-top">
-    <style>
+	<style>
 		/* 테이블 레이아웃 고정 */
 		table {
 		    table-layout: fixed; /* 고정 레이아웃 설정 */
@@ -28,21 +25,21 @@
 		th.fixed-width {
 		    width: 70px; /* 원하는 고정 너비 설정 */
 		}
-        /* 이미지 컨테이너 */
-        .image-container {
-            position: relative;
-            display: inline-block;
-        }
+	    /* 이미지 컨테이너 */
+	    .image-container {
+	        position: relative;
+	        display: inline-block;
+	    }
 
-        /* 이미지 위에 나타날 텍스트 */
-        .draggable-text {
-            position: absolute;
-            cursor: move;
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 5px;
-            border-radius: 5px;
-            user-select: none;
-        }
+	    /* 이미지 위에 나타날 텍스트 */
+	    .draggable-text {
+	        position: absolute;
+	        cursor: move;
+	        background-color: rgba(255, 255, 255, 0.7);
+	        padding: 5px;
+	        border-radius: 5px;
+	        user-select: none;
+	    }
 		
 		#modal-text {
 		    position: absolute; /* 좌표 기반의 배치를 가능하게 함 */
@@ -65,8 +62,7 @@
 		    outline: none;         /* 외곽선 제거 */
 		    box-shadow: none;      /* 클릭 시 빛나는 효과 제거 */
 		}
-    </style>
-
+	</style>
 	<script>
 		$(document).ready(function () {
 		    let isDragging = false;
@@ -167,29 +163,22 @@
 		    });
 		});
 	</script>
+</head>
+
+<body id="page-top">
 
     <div id="wrapper">
-
     	<div th:replace="sidebar :: sidebar"></div>
-
         <div id="content-wrapper" class="d-flex flex-column">
-
             <div id="content">
-
-                <nav class="bg-white mb-4 static-top shadow">
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-                </nav>
-
+				<nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow" style="background-color: #20265C; padding-left: 0;">
+				    <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 10px; height: 80%; display: flex; align-items: center; margin-left: 0;"></div>
+				    <div class="ml-3">
+				        <h1 class="h5 mb-0 text-white">템플릿 상세정보</h1>
+				    </div>					
+				</nav>
                 <div class="container-fluid">
 
-                    <div class="d-sm-flex align-items-center mb-4 justify-content-between">
-                        <div>
-                            <h1 class="h3 mb-0 text-gray-800">템플릿 설정</h1>
-                        </div>
-                    </div>
-					
 					<!-- 요금제 -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
@@ -532,12 +521,8 @@
 	        <div class="modal-content">
 	            <form id="coordinate-form">
 	                <div class="modal-body">
-	                    <!-- 이미지와 텍스트 컨테이너 -->
 	                    <div class="image-container">
-	                        <!-- 이미지 -->
 	                        <img id="modal-image" src="/images/helloMobile/helloMobile_01.jpg" alt="이미지" class="img-fluid">
-
-	                        <!-- 동적으로 데이터를 출력할 컨테이너 -->
 	                        <div id="container">
 	                            <div id="modal-text" class="draggable-text"></div>
 	                        </div>
@@ -556,7 +541,6 @@
 	    </div>
 	</div>
 
-
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
@@ -565,7 +549,6 @@
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="/js/sb-admin-2.min.js"></script>
-
 </body>
 
 </html>

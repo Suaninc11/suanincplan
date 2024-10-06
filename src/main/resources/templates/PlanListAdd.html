@@ -16,9 +16,6 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 	<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
-</head>
-
-<body id="page-top">
 	<script>
 		function submitForm(actionType) {
 		    var form = document.getElementById("dataForm");
@@ -64,24 +61,21 @@
 		    });
 		}
 	</script>
+</head>
+
+<body id="page-top">
 
 	<div id="wrapper">
-
     	<div th:replace="sidebar :: sidebar"></div>
-
 		<div id="content-wrapper" class="d-flex flex-column">
 			<div id="content">
-                <nav class="bg-white mb-4 static-top shadow">
-					<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-						<i class="fa fa-bars"></i>
-					</button>
+				<nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow" style="background-color: #20265C; padding-left: 0;">
+				    <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 10px; height: 80%; display: flex; align-items: center; margin-left: 0;"></div>
+				    <div class="ml-3">
+				        <h1 class="h5 mb-0 text-white">요금제 등록</h1>
+				    </div>					
 				</nav>
 				<div class="container-fluid">
-					<div class="d-sm-flex align-items-center mb-4 justify-content-between">
-					    <div>
-					        <h1 class="h3 mb-0 text-gray-800">요금제 추가</h1>
-					    </div>
-					</div>
 					
 					<!-- 신청서 -->
 					<div class="card shadow mb-4">
@@ -98,7 +92,7 @@
 									    <label for="templateCode">통신사코드</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="templateCode" class="form-control form-control-user" value="ST001">
+										<input type="text" name="templateCode" class="form-control form-control-user">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -106,7 +100,7 @@
 									    <label for="carrierPlanName">통신사명</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="carrierPlanName" class="form-control form-control-user" value="7모바일">
+										<input type="text" name="carrierPlanName" class="form-control form-control-user">
 									</div>
 								</div>
 								
@@ -115,7 +109,7 @@
 									    <label for="mobileCarrier">요금제명</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="mobileCarrier" class="form-control form-control-user" value="LTE 알뜰 (7GB+/통화맘껏)">
+										<input type="text" name="mobileCarrier" class="form-control form-control-user">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -123,7 +117,7 @@
 									    <label for="monthlyBillingAmt">월청구요금</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="monthlyBillingAmt" class="form-control form-control-user" value="18700">
+										<input type="text" name="monthlyBillingAmt" class="form-control form-control-user">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -131,7 +125,7 @@
 									    <label for="basicAmt">기본료</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="basicAmt" class="form-control form-control-user" value="48400">
+										<input type="text" name="basicAmt" class="form-control form-control-user">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -139,7 +133,7 @@
 									    <label for="discountAmt">할인</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="discountAmt" class="form-control form-control-user" value="29700">
+										<input type="text" name="discountAmt" class="form-control form-control-user">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -147,7 +141,7 @@
 									    <label for="voiceCall">음성(부가통화)</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="voiceCall" class="form-control form-control-user" value="무제한(300분)">
+										<input type="text" name="voiceCall" class="form-control form-control-user">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -155,7 +149,7 @@
 									    <label for="mobileData">데이터</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="mobileData" class="form-control form-control-user" value="7GB">
+										<input type="text" name="mobileData" class="form-control form-control-user">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -163,7 +157,7 @@
 									    <label for="mobileQos">QOS(무제한)</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="mobileQos" class="form-control form-control-user" value="1Mbps">
+										<input type="text" name="mobileQos" class="form-control form-control-user">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -171,7 +165,7 @@
 									    <label for="mobileMessage">문자</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="mobileMessage" class="form-control form-control-user" value="무제한">
+										<input type="text" name="mobileMessage" class="form-control form-control-user">
 									</div>
 								</div>
 						    </div>
@@ -180,13 +174,12 @@
 					
 					<div class="d-sm-flex align-items-center mb-4 justify-content-end">
 					    <div>
-							
-							<!--a href="/homepage/carrierPlan/carrierPlanList"-->
 							<a href="/homepage/carrierPlan/carrierPlanList" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;">
-							    목록</a>
-								<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;"  onclick="submitForm('planAdd');">
-								    추가</a>
-								
+						    	목록
+							</a>
+							<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-primary shadow-sm" onclick="submitForm('planAdd');">
+							    등록
+							</a>
 					    </div>
 					</div>
 				</div>

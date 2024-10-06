@@ -13,9 +13,6 @@
 	<link href="/css/sb-admin-2.css" rel="stylesheet">
 	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
-</head>
-
-<body id="page-top">
 	<script>
 		function applyFormDownload(preview = false) {
 		    var formElement = document.getElementById('dataForm');
@@ -117,32 +114,21 @@
 		    }
 		}
 	</script>
-	
+</head>
+
+<body id="page-top">
+
     <div id="wrapper">
-
     	<div th:replace="sidebar :: sidebar"></div>
-		
         <div id="content-wrapper" class="d-flex flex-column">
-
             <div id="content">
-                <nav class="bg-white mb-4 static-top shadow">
-                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                        <i class="fa fa-bars"></i>
-                    </button>
-                </nav>
-				
+				<nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow" style="background-color: #20265C; padding-left: 0;">
+				    <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 10px; height: 80%; display: flex; align-items: center; margin-left: 0;"></div>
+				    <div class="ml-3">
+				        <h1 class="h5 mb-0 text-white">유모바일 가입신청서</h1>
+				    </div>					
+				</nav>
                 <div class="container-fluid">
-					<div class="d-sm-flex align-items-center mb-4 justify-content-between">
-					    <div>
-					        <h1 class="h3 mb-0 text-gray-800">유모바일 가입신청서</h1>
-					    </div>
-					    <div>
-					        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;" onclick="applyFormDownload(true)">
-					            <i class="fas fa-download fa-sm text-white-50"></i> 출력</a>
-					        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" onclick="applyFormDownload(false)">
-					            <i class="fas fa-download fa-sm text-white-50"></i> 다운로드</a>
-					    </div>
-					</div>
 					<form id="dataForm">
 						<input type="hidden" id="templateCode" name="templateCode" th:value="${form.templateCode}">
 						<input type="hidden" id="codeDescription" name="codeDescription">
@@ -156,16 +142,18 @@
 						<input type="hidden" id="mobileData" name="mobileData">
 						<input type="hidden" id="mobileQos" name="mobileQos">
 						<input type="hidden" id="mobileMessage" name="mobileMessage">
-						
 						<input type="hidden" name="commonCheck" value="commonCheck">
 						
 	                    <div class="row">
 							<div id="template" class="col-xl-12 col-lg-12">
 								<div class="card shadow mb-4">
 									
-									<!-- 신청서 -->
-									<div class="card-body" style="background-color: #f0f8ff; border: 2px solid lightgray;">
-										<div class="form-group row align-items-center d-flex text-center" style="margin-bottom: 0rem;">
+									<!-- 고객구분 -->
+									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									    <h6 class="m-0 font-weight-bold text-primary">고객구분</h6>
+									</div>
+									<div class="card-body">
+										<div class="form-group row align-items-center d-flex text-center">
 											<div class="col-sm-2 border-right">
 											    <label for="customerType">고객구분</label>
 											</div>
@@ -448,6 +436,14 @@
 							</div>
 	                    </div>
 					</form>
+					<div class="d-sm-flex align-items-center mb-4 justify-content-end">
+					    <div>
+					        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;" onclick="applyFormDownload(true)">
+					            <i class="fas fa-download fa-sm text-white-50"></i> 출력</a>
+					        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" onclick="applyFormDownload(false)">
+					            <i class="fas fa-download fa-sm text-white-50"></i> 다운로드</a>
+					    </div>
+					</div>
                 </div>
             </div>
 			<footer class="sticky-footer bg-white">
