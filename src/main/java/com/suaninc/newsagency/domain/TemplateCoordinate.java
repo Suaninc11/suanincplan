@@ -16,6 +16,8 @@ public class TemplateCoordinate {
     private Integer coordinateXAxis;
     private Integer coordinateYAxis;
     private Date registeredDatetime;
+    
+    private String templateImagePath; 
 
 	public Integer getTemplateCoordinateId() {
 		return templateCoordinateId;
@@ -88,6 +90,12 @@ public class TemplateCoordinate {
 	}
 	public void setRegisteredDatetime(Date registeredDatetime) {
 		this.registeredDatetime = registeredDatetime;
+	}
+	public String getTemplateImagePath() {
+		return templateImagePath;
+	}
+	public void setTemplateImagePath(String templateImagePath) {
+		this.templateImagePath = templateImagePath;
 	}
     
 }

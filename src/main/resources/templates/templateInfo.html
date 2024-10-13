@@ -76,6 +76,7 @@
 		        var templateCode = button.data('code');
 		        var x = button.data('x');
 		        var y = button.data('y');
+				var imagePath = button.data('path');  // 이미지 경로 가져오기
 
 		        var modal = $(this);
 		        modal.find('#modal-text').text(coordinateName);
@@ -83,6 +84,8 @@
 		            'left': x + 'px',
 		            'top': y + 'px'
 		        });
+				
+				modal.find('#modal-image').attr('src', '/images/' + imagePath);
 
 		        $('#templateCoordinateId').val(templateCoordinateId);
 		        $('#templateCode').val(templateCode);
@@ -204,7 +207,7 @@
 					                        </tr>
 					                    </thead>
 					                    <tbody>
-					                        <tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == 'customerType'">
+					                        <tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == 'carrierPlan'">
 					                            <td th:text="${template.templateCoordinateName}"></td>
 					                            <td th:text="${template.templateInputType}"></td>
 					                            <td th:text="${template.fontStyle}"></td>
@@ -220,7 +223,8 @@
 																 data-code=${template.templateCode}, 
 													             data-input-type=${template.templateInputType}, 
 													             data-x=${template.coordinateXAxis}, 
-													             data-y=${template.coordinateYAxis}"
+																 data-y=${template.coordinateYAxis},
+																 data-path=${template.templateImagePath}"
 													    data-toggle="modal" data-target="#editModal">
 													    수정
 													</button>
@@ -276,7 +280,8 @@
 																 data-code=${template.templateCode}, 
 													             data-input-type=${template.templateInputType}, 
 													             data-x=${template.coordinateXAxis}, 
-													             data-y=${template.coordinateYAxis}"
+																 data-y=${template.coordinateYAxis},
+																 data-path=${template.templateImagePath}"
 													    data-toggle="modal" data-target="#editModal">
 													    수정
 													</button>
@@ -330,7 +335,8 @@
 																 data-code=${template.templateCode}, 
 													             data-input-type=${template.templateInputType}, 
 													             data-x=${template.coordinateXAxis}, 
-													             data-y=${template.coordinateYAxis}"
+																 data-y=${template.coordinateYAxis},
+																 data-path=${template.templateImagePath}"
 													    data-toggle="modal" data-target="#editModal">
 													    수정
 													</button>
@@ -384,7 +390,8 @@
 																 data-code=${template.templateCode}, 
 													             data-input-type=${template.templateInputType}, 
 													             data-x=${template.coordinateXAxis}, 
-													             data-y=${template.coordinateYAxis}"
+													             data-y=${template.coordinateYAxis},
+ 													             data-path=${template.templateImagePath}"
 													    data-toggle="modal" data-target="#editModal">
 													    수정
 													</button>
@@ -438,7 +445,8 @@
 																 data-code=${template.templateCode}, 
 												                 data-input-type=${template.templateInputType}, 
 												                 data-x=${template.coordinateXAxis}, 
-												                 data-y=${template.coordinateYAxis}"
+																 data-y=${template.coordinateYAxis},
+																 data-path=${template.templateImagePath}"
 												        data-toggle="modal" data-target="#editModal">
 													    수정
 													</button>
@@ -492,7 +500,8 @@
 																 data-code=${template.templateCode}, 
 												                 data-input-type=${template.templateInputType}, 
 												                 data-x=${template.coordinateXAxis}, 
-												                 data-y=${template.coordinateYAxis}"
+																 data-y=${template.coordinateYAxis},
+																 data-path=${template.templateImagePath}"
 												        data-toggle="modal" data-target="#editModal">
 													    수정
 													</button>
@@ -522,7 +531,7 @@
 	            <form id="coordinate-form">
 	                <div class="modal-body">
 	                    <div class="image-container">
-	                        <img id="modal-image" src="/images/helloMobile/helloMobile_01.jpg" alt="이미지" class="img-fluid">
+	                        <img id="modal-image" src="" alt="이미지" class="img-fluid">
 	                        <div id="container">
 	                            <div id="modal-text" class="draggable-text"></div>
 	                        </div>

@@ -40,11 +40,16 @@
 			tc.font_size AS fontSize,
 			tc.coordinate_x_axis AS coordinateXAxis,
 			tc.coordinate_y_axis AS coordinateYAxis,
+			CONCAT(ct.template_code ,'/' , ct.template_image_name) AS templateImagePath,
 			tc.registered_datetime AS registeredDatetime
 		FROM
 			template_coordinate tc
+		INNER JOIN
+			carrier_template ct
+		ON tc.template_code = ct.template_code
+		AND tc.template_image_order = ct.template_image_order
 		WHERE
-			template_code = #{templateCode}
+			tc.template_code = #{templateCode}
     </select>
     
 	<update id="updateCoordinate" parameterType="com.suaninc.newsagency.domain.TemplateCoordinate">

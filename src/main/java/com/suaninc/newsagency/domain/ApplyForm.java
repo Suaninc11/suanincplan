@@ -31,12 +31,15 @@ public class ApplyForm {
     private String previousCarrier;  // 이전 통신사
 
     // 자동이체 관련 필드
-    private String depositorName;      // 예금주명
-    private String depositorBirthdate; // 예금주 생년월일
-    private String paymentName;        // 은행(카드사)명
-    private String effectiveDate;      // 유효기간
-    private String automaticTransfer;  // 자동이체
-    private String accountNumber;      // 계좌번호
+    private String automaticTransfer;  // 이전 통신사
+    private String cardName;  // 이전 통신사
+    private String cardBirthdate;  // 이전 통신사
+    private String cardCompany;  // 이전 통신사
+    private String cardNumber;  // 이전 통신사
+    private String cardDate;  // 이전 통신사
+    private String accountName;  // 이전 통신사
+    private String accountBank;  // 이전 통신사 
+    private String accountNumber;  // 이전 통신사
 
     // 청소년 법정대리인 관련 필드
     private String relationship;            // 관계
@@ -246,60 +249,84 @@ public class ApplyForm {
     }
 
     // 자동이체 관련 필드
-    public String getDepositorName() {
-        return depositorName;
-    }
-
-    public void setDepositorName(String depositorName) {
-        this.depositorName = depositorName;
-    }
-
-    public String getDepositorBirthdate() {
-        return depositorBirthdate;
-    }
-
-    public void setDepositorBirthdate(String depositorBirthdate) {
-        this.depositorBirthdate = depositorBirthdate;
-    }
-
-    public String getPaymentName() {
-        return paymentName;
-    }
-
-    public void setPaymentName(String paymentName) {
-        this.paymentName = paymentName;
-    }
-
-    public String getEffectiveDate() {
-        return effectiveDate;
-    }
-
-    public void setEffectiveDate(String effectiveDate) {
-        this.effectiveDate = effectiveDate;
-    }
-
     public String getAutomaticTransfer() {
-        return automaticTransfer;
-    }
+		return automaticTransfer;
+	}
 
-    public void setAutomaticTransfer(String automaticTransfer) {
-        this.automaticTransfer = automaticTransfer;
-    }
+	public void setAutomaticTransfer(String automaticTransfer) {
+		this.automaticTransfer = automaticTransfer;
+	}
 
-    public String getAccountNumber() {
-        return accountNumber;
-    }
+	public String getCardName() {
+		return cardName;
+	}
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
+	}
+
+	public String getCardBirthdate() {
+		return cardBirthdate;
+	}
+
+	public void setCardBirthdate(String cardBirthdate) {
+		this.cardBirthdate = cardBirthdate;
+	}
+
+	public String getCardCompany() {
+		return cardCompany;
+	}
+
+	public void setCardCompany(String cardCompany) {
+		this.cardCompany = cardCompany;
+	}
+	
+	public String getCardNumber() {
+		return cardNumber;
+	}
+
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+	public String getCardDate() {
+		return cardDate;
+	}
+
+	public void setCardDate(String cardDate) {
+		this.cardDate = cardDate;
+	}
+
+	public String getAccountName() {
+		return accountName;
+	}
+
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
+	}
+
+	public String getAccountBank() {
+		return accountBank;
+	}
+
+	public void setAccountBank(String accountBank) {
+		this.accountBank = accountBank;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
 
     // 청소년 법정대리인 관련 필드
     public String getRelationship() {
         return relationship;
     }
 
-    public void setRelationship(String relationship) {
+	public void setRelationship(String relationship) {
         this.relationship = relationship;
     }
 

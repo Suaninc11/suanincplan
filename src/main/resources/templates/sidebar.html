@@ -1,5 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<script>
+	function checkPassword() {
+	    var password = prompt("비밀번호를 입력하세요:");
+	
+	    if (password === null || password === "") {
+	        alert("비밀번호를 입력하지 않았습니다.");
+	        return false;
+	    }
+	    if (password === "8789") {
+	        return true;
+	    } else {
+	        alert("비밀번호가 틀렸습니다.");
+	        return false;
+	    }
+	}
+</script>
 <body>
     <ul th:fragment="sidebar" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
