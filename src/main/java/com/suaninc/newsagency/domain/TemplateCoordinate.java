@@ -12,7 +12,7 @@ public class TemplateCoordinate {
     private String templateInputType;
     private String templateInputOption;
     private String fontStyle;
-    private String fontSize;
+    private Integer fontSize;
     private Integer coordinateXAxis;
     private Integer coordinateYAxis;
     private Date registeredDatetime;
@@ -67,10 +67,10 @@ public class TemplateCoordinate {
 	public void setFontStyle(String fontStyle) {
 		this.fontStyle = fontStyle;
 	}
-	public String getFontSize() {
+	public Integer getFontSize() {
 		return fontSize;
 	}
-	public void setFontSize(String fontSize) {
+	public void setFontSize(Integer fontSize) {
 		this.fontSize = fontSize;
 	}
 	public Integer getCoordinateXAxis() {

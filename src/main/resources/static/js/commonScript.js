@@ -128,7 +128,7 @@ function toggleFormFields(form, enable) {
 
 function toggleMVNOField() {
     var selectElement = document.getElementById('previousCarrierSelect');
-    var eeeeField = document.getElementById('MVNO');
+    var eeeeField = document.getElementById('mvno');
 
     if (selectElement.value === 'previousCarrier4') {
         eeeeField.style.display = 'block';
@@ -142,6 +142,20 @@ function toggleMVNOField() {
 function formatCurrency(value) {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    var now = new Date();
+
+    var year = now.getFullYear();  // 연도
+	var shortYear = year.toString().slice(-2);
+    var month = ('0' + (now.getMonth() + 1)).slice(-2);  // 월 (0부터 시작하므로 +1)
+    var day = ('0' + now.getDate()).slice(-2);  // 일
+
+    document.getElementById('commonYear').value = year;
+	document.getElementById('commonShortYear').value = shortYear;
+    document.getElementById('commonMonth').value = month;
+    document.getElementById('commonDay').value = day;
+});
 
 window.onload = function() {
     document.getElementById('automaticTransferSelect').dispatchEvent(new Event('change'));

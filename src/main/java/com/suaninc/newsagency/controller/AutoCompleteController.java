@@ -101,7 +101,7 @@ public class AutoCompleteController {
 	                        if (text != null) {
 	                            // 텍스트를 그리기 위해 Graphics2D 객체 사용
 	                            Graphics2D g2d = image.createGraphics();
-	                            g2d.setFont(new Font("NanumGothic", Font.PLAIN, 11)); // Arial Malgun Gothic
+	                            g2d.setFont(new Font(coordinate.getFontStyle(), Font.PLAIN, coordinate.getFontSize())); // Arial Malgun Gothic
 	                            g2d.setColor(Color.BLACK);
 
 	                            // 텍스트 그리기
@@ -121,6 +121,7 @@ public class AutoCompleteController {
 	                                    g2d.drawImage(checkImage, x - (imgWidth / 2), y - (imgHeight / 2), null);
 	                                }
 	                            } else {
+	    	                        text = "TEST";
 	                                g2d.drawString(text, x, y); // 일반 텍스트 그리기
 	                            }
 	                            

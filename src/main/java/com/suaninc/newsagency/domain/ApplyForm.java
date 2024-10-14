@@ -29,6 +29,10 @@ public class ApplyForm {
     private String openingNumber;    // 개통 번호
     private String openingCategory;  // 개통 구분
     private String previousCarrier;  // 이전 통신사
+    private String commonMoveCheck; // 가입비
+    private String activationNumber;
+    private String portabilityNumber;
+    private String mvno;
 
     // 자동이체 관련 필드
     private String automaticTransfer;  // 이전 통신사
@@ -36,15 +40,18 @@ public class ApplyForm {
     private String cardBirthdate;  // 이전 통신사
     private String cardCompany;  // 이전 통신사
     private String cardNumber;  // 이전 통신사
-    private String cardDate;  // 이전 통신사
+    private String cardYear;  // 이전 통신사
+    private String cardMonth;  // 이전 통신사
     private String accountName;  // 이전 통신사
+    private String accountBirthdate;  // 이전 통신사
     private String accountBank;  // 이전 통신사 
     private String accountNumber;  // 이전 통신사
 
     // 청소년 법정대리인 관련 필드
+    private String depositorName;
+    private String depositorBirthdate;
     private String relationship;            // 관계
-    private String legalRepresentativeNumber; // 법대연락처
-    private String legalRepresentativeAddress; // 법대주소
+    private String depositorNumber; // 법대연락처
 
     // 부가기능 관련 필드
     private String additionalServices;  // 부가서비스
@@ -61,6 +68,10 @@ public class ApplyForm {
     private String carrierType;       // 통신사선택
 
 	private String commonCheck;    // 약관 동의
+	private String commonYear;    // 약관 동의	
+	private String commonShortYear;    // 약관 동의
+	private String commonMonth;    // 약관 동의
+	private String commonDay;    // 약관 동의
 
 	public String getCodeDescription() {
 		return codeDescription;
@@ -247,8 +258,40 @@ public class ApplyForm {
     public void setPreviousCarrier(String previousCarrier) {
         this.previousCarrier = previousCarrier;
     }
+    
+    public String getCommonMoveCheck() {
+		return commonMoveCheck;
+	}
 
-    // 자동이체 관련 필드
+	public void setCommonMoveCheck(String commonMoveCheck) {
+		this.commonMoveCheck = commonMoveCheck;
+	}
+
+	public String getActivationNumber() {
+		return activationNumber;
+	}
+
+	public void setActivationNumber(String activationNumber) {
+		this.activationNumber = activationNumber;
+	}
+
+	public String getPortabilityNumber() {
+		return portabilityNumber;
+	}
+
+	public void setPortabilityNumber(String portabilityNumber) {
+		this.portabilityNumber = portabilityNumber;
+	}
+	
+	public String getMvno() {
+		return mvno;
+	}
+
+	public void setMvno(String mvno) {
+		this.mvno = mvno;
+	}
+
+	// 자동이체 관련 필드
     public String getAutomaticTransfer() {
 		return automaticTransfer;
 	}
@@ -289,12 +332,20 @@ public class ApplyForm {
 		this.cardNumber = cardNumber;
 	}
 
-	public String getCardDate() {
-		return cardDate;
+	public String getCardYear() {
+		return cardYear;
 	}
 
-	public void setCardDate(String cardDate) {
-		this.cardDate = cardDate;
+	public void setCardYear(String cardYear) {
+		this.cardYear = cardYear;
+	}
+
+	public String getCardMonth() {
+		return cardMonth;
+	}
+
+	public void setCardMonth(String cardMonth) {
+		this.cardMonth = cardMonth;
 	}
 
 	public String getAccountName() {
@@ -303,6 +354,14 @@ public class ApplyForm {
 
 	public void setAccountName(String accountName) {
 		this.accountName = accountName;
+	}
+
+	public String getAccountBirthdate() {
+		return accountBirthdate;
+	}
+
+	public void setAccountBirthdate(String accountBirthdate) {
+		this.accountBirthdate = accountBirthdate;
 	}
 
 	public String getAccountBank() {
@@ -322,28 +381,36 @@ public class ApplyForm {
 	}
 
     // 청소년 법정대리인 관련 필드
+	public String getDepositorName() {
+		return depositorName;
+	}
+
+	public void setDepositorName(String depositorName) {
+		this.depositorName = depositorName;
+	}
+
+	public String getDepositorBirthdate() {
+		return depositorBirthdate;
+	}
+
+	public void setDepositorBirthdate(String depositorBirthdate) {
+		this.depositorBirthdate = depositorBirthdate;
+	}
+
+	public String getDepositorNumber() {
+		return depositorNumber;
+	}
+
+	public void setDepositorNumber(String depositorNumber) {
+		this.depositorNumber = depositorNumber;
+	}
+	
     public String getRelationship() {
         return relationship;
     }
 
 	public void setRelationship(String relationship) {
         this.relationship = relationship;
-    }
-
-    public String getLegalRepresentativeNumber() {
-        return legalRepresentativeNumber;
-    }
-
-    public void setLegalRepresentativeNumber(String legalRepresentativeNumber) {
-        this.legalRepresentativeNumber = legalRepresentativeNumber;
-    }
-
-    public String getLegalRepresentativeAddress() {
-        return legalRepresentativeAddress;
-    }
-
-    public void setLegalRepresentativeAddress(String legalRepresentativeAddress) {
-        this.legalRepresentativeAddress = legalRepresentativeAddress;
     }
 
     // 부가기능 관련 필드
@@ -411,13 +478,6 @@ public class ApplyForm {
     public void setMobilePayment(String mobilePayment) {
         this.mobilePayment = mobilePayment;
     }
-    public String getCommonCheck() {
-		return commonCheck;
-	}
-
-	public void setCommonCheck(String commonCheck) {
-		this.commonCheck = commonCheck;
-	}
     
     public String getCarrierType() {
 		return carrierType;
@@ -426,4 +486,45 @@ public class ApplyForm {
 	public void setCarrierType(String carrierType) {
 		this.carrierType = carrierType;
 	}
+	
+    public String getCommonCheck() {
+		return commonCheck;
+	}
+
+	public void setCommonCheck(String commonCheck) {
+		this.commonCheck = commonCheck;
+	}
+
+	public String getCommonYear() {
+		return commonYear;
+	}
+
+	public void setCommonYear(String commonYear) {
+		this.commonYear = commonYear;
+	}
+	
+	public String getCommonShortYear() {
+		return commonShortYear;
+	}
+
+	public void setCommonShortYear(String commonShortYear) {
+		this.commonShortYear = commonShortYear;
+	}
+
+	public String getCommonMonth() {
+		return commonMonth;
+	}
+
+	public void setCommonMonth(String commonMonth) {
+		this.commonMonth = commonMonth;
+	}
+
+	public String getCommonDay() {
+		return commonDay;
+	}
+
+	public void setCommonDay(String commonDay) {
+		this.commonDay = commonDay;
+	}
+	
 }

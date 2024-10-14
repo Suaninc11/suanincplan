@@ -13,96 +13,11 @@
 	<link href="/css/sb-admin-2.css" rel="stylesheet">
 	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
-	<script>
-		function applyFormDownload(preview = false) {
-		    var formElement = document.getElementById('dataForm');
-		    var dataForm = new FormData(formElement);
-			
-			var formattedDate = getFormattedDate();
-			var selectElement = document.getElementById('templateCode');
-
-		    fetch('/homepage/inscribeView/autoComplete', {
-		        method: 'POST',
-		        body: dataForm
-		    })
-		    .then(response => response.blob())
-		    .then(blob => {
-		        const url = window.URL.createObjectURL(blob);
-
-		        if (preview) {
-		            // PDF 미리보기 팝업 창 띄우기
-		            const pdfWindow = window.open("", "PDF Preview", "width=800,height=600");
-		            if (pdfWindow) {
-		                pdfWindow.document.write(
-		                    `<html>
-		                        <head><title>PDF Preview</title></head>
-		                        <body style="margin: 0;">
-		                            <embed width="100%" height="100%" src="${url}" type="application/pdf">
-		                        </body>
-		                    </html>`
-		                );
-		            } else {
-		                alert("팝업 차단이 설정되어 있습니다. 팝업 차단을 해제하고 다시 시도해 주세요.");
-		            }
-		        } else {
-		            // PDF 다운로드 기능
-		            const a = document.createElement('a');
-		            a.style.display = 'none';
-		            a.href = url;
-		            a.download = '헬로모바일_' + formattedDate; // 파일 이름을 PDF로 지정하고, 더 명확하게 변경
-		            document.body.appendChild(a);
-		            a.click();
-		            window.URL.revokeObjectURL(url);
-		            document.body.removeChild(a);
-		        }
-		    })
-		    .catch(error => console.error('Error downloading the document:', error));  // 오류 메시지 수정
-		}
-
-		function updateHiddenFields() {
-		    var selectElement = document.getElementById('carrierPlanSelect');
-		    var selectedOption = selectElement.options[selectElement.selectedIndex];
-
-		    // 선택된 옵션에서 data- 속성 값 가져오기
-		    var carrierPlanId = selectedOption.value;
-		    var carrierPlanName = selectedOption.getAttribute('data-plan-name');
-		    var mobileCarrier = selectedOption.getAttribute('data-mobile-carrier');
-		    var monthlyBillingAmt = selectedOption.getAttribute('data-monthly-billing');
-		    var basicAmt = selectedOption.getAttribute('data-basic-amt');
-		    var discountAmt = selectedOption.getAttribute('data-discount-amt');
-		    var voiceCall = selectedOption.getAttribute('data-voice-call');
-		    var mobileData = selectedOption.getAttribute('data-mobile-data');
-		    var mobileQos = selectedOption.getAttribute('data-mobile-qos');
-		    var mobileMessage = selectedOption.getAttribute('data-mobile-message');
-		    
-		    // Hidden input 필드에 값 설정하기
-		    document.getElementById('carrierPlanId').value = carrierPlanId;
-		    document.getElementById('carrierPlanName').value = carrierPlanName;
-		    document.getElementById('mobileCarrier').value = mobileCarrier;
-		    document.getElementById('monthlyBillingAmt').value = monthlyBillingAmt;
-		    document.getElementById('basicAmt').value = basicAmt;
-		    document.getElementById('discountAmt').value = discountAmt;
-		    document.getElementById('voiceCall').value = voiceCall;
-		    document.getElementById('mobileData').value = mobileData;
-		    document.getElementById('mobileQos').value = mobileQos;
-		    document.getElementById('mobileMessage').value = mobileMessage;
-		}
-
-		function getFormattedDate() {
-		    var now = new Date();
-		    var year = now.getFullYear();
-		    var month = ('0' + (now.getMonth() + 1)).slice(-2); // 월은 0부터 시작하므로 +1 필요
-		    var day = ('0' + now.getDate()).slice(-2);
-		    var hours = ('0' + now.getHours()).slice(-2);
-		    var minutes = ('0' + now.getMinutes()).slice(-2);
-
-		    return year + month + day + hours + minutes;
-		}
-	</script>
+	<script src="/js/commonScript.js"></script>
 </head>
 
 <body id="page-top">
-	
+
     <div id="wrapper">
     	<div th:replace="sidebar :: sidebar"></div>
         <div id="content-wrapper" class="d-flex flex-column">
@@ -110,7 +25,7 @@
 				<nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow" style="background-color: #20265C; padding-left: 0;">
 				    <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 10px; height: 80%; display: flex; align-items: center; margin-left: 0;"></div>
 				    <div class="ml-3">
-				        <h1 class="h5 mb-0 text-white">KTM 가입신청서</h1>
+				        <h1 class="h5 mb-0 text-white">KTM모바일 가입신청서</h1>
 				    </div>					
 				</nav>
                 <div class="container-fluid">
@@ -120,14 +35,17 @@
 						<input type="hidden" id="carrierPlanId" name="carrierPlanId">
 						<input type="hidden" id="carrierPlanName" name="carrierPlanName">
 						<input type="hidden" id="mobileCarrier" name="mobileCarrier">
-						<input type="hidden" id="monthlyBillingAmt" name="monthlyBillingAmt">
-						<input type="hidden" id="basicAmt" name="basicAmt">
-						<input type="hidden" id="discountAmt" name="discountAmt">
 						<input type="hidden" id="voiceCall" name="voiceCall">
 						<input type="hidden" id="mobileData" name="mobileData">
 						<input type="hidden" id="mobileQos" name="mobileQos">
 						<input type="hidden" id="mobileMessage" name="mobileMessage">
+
 						<input type="hidden" name="commonCheck" value="commonCheck">
+						<input type="hidden" id="commonYear" name="commonYear">
+						<input type="hidden" id="commonShortYear" name="commonShortYear">
+						<input type="hidden" id="commonMonth" name="commonMonth">
+						<input type="hidden" id="commonDay" name="commonDay">	
+						<input type="hidden" id="templateName" name="templateName" value="KTM모바일">
 						
 	                    <div class="row">
 							<div id="template" class="col-xl-12 col-lg-12">
@@ -145,9 +63,9 @@
 											<div class="col-sm-4">
 												<select name="customerType" aria-controls="dataTable" class="custom-select form-control form-control-sm">
 													<option value="customerType1">개인</option>
-													<option value="customerType2">사업자</option>
-													<option value="customerType3">청소년</option>
-													<option value="customerType4">법인</option>
+													<option value="customerType2">개인사업자</option>
+													<option value="customerType3">법인</option>
+													<option value="customerType4">기타</option>
 												</select>
 											</div>
 										</div>
@@ -160,15 +78,9 @@
 								    <div class="card-body">
 										<div class="form-group row align-items-center d-flex text-center">
 											<div class="col-sm-2 border-right">
-											    <label for="simSerialNumber">일련번호</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="simSerialNumber" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-											</div>
-											<div class="col-sm-2 border-right">
 										        <label for="carrierPlan">요금제</label>
 										    </div>
-											<div class="col-sm-4 mb-3 mb-sm-0">
+											<div class="col-sm-4">
 												<select id="carrierPlanSelect" name="carrierPlan" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="updateHiddenFields()">
 											        <th:block th:each="carrierPlan : ${carrierPlanList}">
 											            <option th:value="${carrierPlan.carrierPlanId}"
@@ -189,152 +101,248 @@
 										</div>
 										<div class="form-group row align-items-center d-flex text-center">
 											<div class="col-sm-2 border-right">
-											    <label for="simCost">유심 비용</label>
+											    <label for="basicAmt">기본료</label>
 											</div>
-											<div class="col-sm-4 mb-3 mb-sm-0">
-											    <select name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="simCost1">선납</option>
-													<option value="simCost2">후청구</option>
-												</select>
+											<div class="col-sm-2">
+											    <input type="text" name="basicAmtDisplay" id="basicAmtDisplay" class="form-control form-control-user" readonly>
+											    <input type="hidden" name="basicAmt" id="basicAmt">
+											</div>
+											<div class="col-sm-1 border-right">
+											    <label for="discountAmt">할인</label>
+											</div>
+											<div class="col-sm-2">
+											    <input type="text" name="discountAmtDisplay" id="discountAmtDisplay" class="form-control form-control-user" readonly>
+											    <input type="hidden" name="discountAmt" id="discountAmt">
 											</div>
 											<div class="col-sm-2 border-right">
-										        <label for="subscriptionCost">가입비</label>
-										    </div>
-											<div class="col-sm-4 mb-3 mb-sm-0">
-											    <select name="subscriptionCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="subscriptionCost1">일시불</option>
-													<option value="subscriptionCost2">3개월 분납</option>
-												</select>
+											    <label for="monthlyBillingAmt">월 청구요금</label>
+											</div>
+											<div class="col-sm-3">
+											    <input type="text" name="monthlyBillingAmtDisplay" id="monthlyBillingAmtDisplay" class="form-control form-control-user" readonly>
+											    <input type="hidden" name="monthlyBillingAmt" id="monthlyBillingAmt">
 											</div>
 										</div>
 								    </div>
 									
-									<!-- 고객정보 -->
+									<!-- 유심정보 -->
 									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									    <h6 class="m-0 font-weight-bold text-primary">고객정보</h6>
+									    <h6 class="m-0 font-weight-bold text-primary">유심정보</h6>
 									</div>
 									<div class="card-body">
 										<div class="form-group row align-items-center d-flex text-center">
 											<div class="col-sm-2 border-right">
-										        <label for="name">가입자명</label>
-										    </div>
+											    <label for="simName">모델명</label>
+											</div>
 											<div class="col-sm-4">
-										        <input type="text" name="name" class="form-control form-control-user">
-										    </div>
-											<div class="col-sm-2 border-right">
-										        <label for="birthdate">생년월일</label>
-										    </div>
-										    <div class="col-sm-4">
-										        <input type="text" name="birthdate" class="form-control form-control-user">
-										    </div>
-										</div>
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-										        <label for="address">주소</label>
-										    </div>
-										    <div class="col-sm-10">
-												<input type="text" name="address" class="form-control form-control-user">
-										    </div>
-										</div>
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-										        <label for="openingNumber">개통 번호</label>
-										    </div>
-											<div class="col-sm-4">
-											    <input type="text" name="openingNumber" class="form-control form-control-user">
+											    <input type="text" name="simName" class="form-control form-control-user">
 											</div>
 											<div class="col-sm-2 border-right">
-											    <label for="mobileNumber">가입자 연락처</label>
+											    <label for="simSerialNumber">일련번호</label>
+											</div>
+											<div class="col-sm-4">
+											    <input type="text" name="simSerialNumber" class="form-control form-control-user">
+											</div>
+										</div>
+										<div class="form-group row align-items-center d-flex text-center">
+											<div class="col-sm-2 border-right">
+											    <label for="simCost">유심 비용</label>
+											</div>
+											<div class="col-sm-4">
+											    <select name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+													<option value="simCost1">즉납(현금)</option>
+													<option value="simCost2">일반 후납청구</option>
+													<option value="simCost3">NFC 후납청구</option>
+												</select>
+											</div>
+											<div class="col-sm-2 border-right">
+											    <label for="subscriptionCost">가입비</label>
+											</div>
+											<div class="col-sm-4">
+											    <input type="text" name="subscriptionCost" class="form-control form-control-user">
+											</div>
+										</div>
+									</div>
+									
+									<!-- 고객정보 -->
+									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
+									    <h6 class="m-0 font-weight-bold text-primary" style="margin-right: 15px !important;">고객정보</h6>
+									    <div class="input-group" style="max-width: 150px;">
+									        <select id="openingCategorySelect" name="openingCategory" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleCustomerForm()">
+									            <option value="new" selected>신규</option>
+									            <option value="move">번호이동</option>
+									        </select>
+									    </div>
+									</div>
+
+									<!-- 신규 고객정보 폼 -->
+									<div id="newCustomerForm" class="card-body">
+									    <div class="form-group row align-items-center d-flex text-center">
+									        <div class="col-sm-2 border-right">
+									            <label for="name">가입자명</label>
+									        </div>
+									        <div class="col-sm-4">
+									            <input type="text" name="name" class="form-control form-control-user">
+									        </div>
+									        <div class="col-sm-2 border-right">
+									            <label for="birthdate">생년월일</label>
+									        </div>
+									        <div class="col-sm-4">
+									            <input type="text" name="birthdate" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+									        </div>
+									    </div>
+										<div class="form-group row align-items-center d-flex text-center">
+										    <div class="col-sm-2 border-right">
+										        <label for="activationNumber">개통 번호</label>
+										    </div>
+										    <div class="col-sm-4">
+										        <input type="text" name="activationNumber" class="form-control form-control-user">
+										    </div>
+											<div class="col-sm-2 border-right">
+											    <label for="mobileNumber">가입자 번호</label>
 											</div>
 											<div class="col-sm-4">
 											    <input type="text" name="mobileNumber" class="form-control form-control-user">
 											</div>
 										</div>
-										<div class="form-group row align-items-center d-flex text-center">
+									</div>
+
+									<!-- 번호이동 고객정보 폼 -->
+									<div id="moveCustomerForm" class="card-body" style="display: none;">
+									    <div class="form-group row align-items-center d-flex text-center">
+									        <div class="col-sm-2 border-right">
+									            <label for="name">가입자명</label>
+									        </div>
+									        <div class="col-sm-4">
+									            <input type="text" name="name" class="form-control form-control-user">
+									        </div>
 											<div class="col-sm-2 border-right">
-										        <label for="openingCategory">개통 구분</label>
-										    </div>
-											<div class="col-sm-4 mb-3 mb-sm-0">
-										        <select name="openingCategory" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="openingCategory1">신규</option>
-													<option value="openingCategory2">번호이동</option>
-												</select>
-										    </div>
-										</div>
-										<div class="form-group row align-items-center d-flex text-center">
+											    <label for="birthdate">생년월일</label>
+											</div>
+											<div class="col-sm-4">
+											    <input type="text" name="birthdate" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+											</div>
+									    </div>
+									    <div class="form-group row align-items-center d-flex text-center">
+									        <div class="col-sm-2 border-right">
+									            <label for="portabilityNumber">개통 번호</label>
+									        </div>
+									        <div class="col-sm-4">
+									            <input type="text" name="portabilityNumber" class="form-control form-control-user">
+									        </div>
 											<div class="col-sm-2 border-right">
-										        <label for="previousCarrierPlan">이동전 상품유형</label>
-										    </div>
-											<div class="col-sm-4 mb-3 mb-sm-0">
-										        <select name="previousCarrierPlan" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="previousCarrierPlan1">선불</option>
-													<option value="previousCarrierPlan2">후불</option>
-												</select>
-										    </div>
+											    <label for="mobileNumber">가입자 번호</label>
+											</div>
+											<div class="col-sm-4">
+											    <input type="text" name="mobileNumber" class="form-control form-control-user">
+											</div>
+									    </div>
+										<div class="form-group row align-items-center d-flex text-center">
 											<div class="col-sm-2 border-right">
 											    <label for="previousCarrier">이전 통신사</label>
 											</div>
-										    <div class="col-sm-4">
-												<select name="previousCarrier" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="previousCarrier1">SKT</option>
-													<option value="previousCarrier2">KT</option>
-													<option value="previousCarrier3">U+</option>
-													<option value="previousCarrier4">기타</option>
-												</select>
-										    </div>
+											<div class="col-sm-2">
+											    <select id="previousCarrierSelect" name="previousCarrier" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleMVNOField()">
+											        <option value="previousCarrier1">SKT</option>
+											        <option value="previousCarrier2">KT</option>
+											        <option value="previousCarrier3">U+</option>
+											        <option value="previousCarrier4">MVNO</option>
+											    </select>
+											</div>
+											<div class="col-sm-2">
+											    <input type="text" name="mvno" id="mvno" class="form-control form-control-user" style="display: none;" disabled>
+											</div>
 										</div>
+										<input type="hidden" name="commonMoveCheck">
 									</div>
 									
 									<!-- 자동이체 -->
-									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									    <h6 class="m-0 font-weight-bold text-primary">자동이체</h6>
+									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
+									    <h6 class="m-0 font-weight-bold text-primary" style="margin-right: 15px !important;">자동이체</h6>
+									    <div class="input-group" style="max-width: 150px;">
+									        <select id="automaticTransferSelect" name="automaticTransfer" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleTransferForm()">
+									            <option value="card" selected>카드</option>
+									            <option value="account">계좌</option>
+									        </select>
+									    </div>
 									</div>
-									<div class="card-body">
+
+									<!-- 카드 전용 폼 -->
+									<div id="cardForm" class="card-body">
+									    <div class="form-group row align-items-center d-flex text-center">
+									        <div class="col-sm-2 border-right">
+									            <label for="cardName">예금주명</label>
+									        </div>
+									        <div class="col-sm-4">
+									            <input type="text" name="cardName" class="form-control form-control-user">
+									        </div>
+									        <div class="col-sm-2 border-right">
+									            <label for="cardBirthdate">생년월일</label>
+									        </div>
+									        <div class="col-sm-4">
+									            <input type="text" name="cardBirthdate" class="form-control form-control-user">
+									        </div>
+									    </div>
+									    <div class="form-group row align-items-center d-flex text-center">
+									        <div class="col-sm-2 border-right">
+									            <label for="cardCompany">카드사명</label>
+									        </div>
+									        <div class="col-sm-4">
+									            <input type="text" name="cardCompany" class="form-control form-control-user">
+									        </div>
+									    </div>
 										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="depositorName">예금주명</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="depositorName" class="form-control form-control-user">
-											</div>
-											<div class="col-sm-2 border-right">
-										        <label for="depositorBirthdate">생년월일</label>
+										    <div class="col-sm-2 border-right">
+										        <label for="cardNumber">카드번호</label>
 										    </div>
 										    <div class="col-sm-4">
-										        <input type="text" name="depositorBirthdate" class="form-control form-control-user">
+										        <input type="text" name="cardNumber" class="form-control form-control-user">
 										    </div>
+										    <div class="col-sm-2 border-right">
+										        <label for="cardDate">유효기간</label>
+										    </div>
+										    <div class="col-sm-2">
+												<div class="input-group">
+												    <input type="text" name="cardYear" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="2">
+												    <div class="input-group-append">
+												        <span class="input-group-text">년</span>
+												    </div>
+												</div>
+										    </div>
+											<div class="col-sm-2">
+												<div class="input-group">
+												    <input type="text" name="cardMonth" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="2">
+												    <div class="input-group-append">
+												        <span class="input-group-text">월</span>
+												    </div>
+												</div>
+											</div>
 										</div>
-										<div class="form-group row align-items-center d-flex text-center">
+									</div>
+
+									<!-- 계좌 전용 폼 -->
+									<div id="accountForm" class="card-body" style="display: none;">
+									    <div class="form-group row align-items-center d-flex text-center">
+									        <div class="col-sm-2 border-right">
+									            <label for="accountName">예금주명</label>
+									        </div>
+									        <div class="col-sm-4">
+									            <input type="text" name="accountName" class="form-control form-control-user">
+									        </div>
+									    </div>
+									    <div class="form-group row align-items-center d-flex text-center">
 											<div class="col-sm-2 border-right">
-											    <label for="paymentName">은행(카드사)명</label>
+											    <label for="accountBank">은행명</label>
 											</div>
 											<div class="col-sm-4">
-										        <input type="text" name="paymentName" class="form-control form-control-user">
+											    <input type="text" name="accountBank" class="form-control form-control-user">
 											</div>
-											<div class="col-sm-2 border-right">
-											    <label for="effectiveDate">유효기간</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="effectiveDate" class="form-control form-control-user">
-											</div>
-										</div>
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-										        <label for="automaticTransfer">자동이체</label>
-										    </div>
-											<div class="col-sm-4 mb-3 mb-sm-0">
-										        <select name="automaticTransfer" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="automaticTransfer1">계좌</option>
-													<option value="automaticTransfer2">카드</option>
-												</select>
-										    </div>
-											<div class="col-sm-2 border-right">
-											    <label for="accountNumber">계좌번호</label>
-											</div>
-											<div class="col-sm-4">
-										        <input type="text" name="accountNumber" class="form-control form-control-user">
-										    </div>
-										</div>
+									        <div class="col-sm-2">
+									            <label for="accountNumber">계좌번호</label>
+									        </div>
+									        <div class="col-sm-4">
+									            <input type="text" name="accountNumber" class="form-control form-control-user">
+									        </div>
+									    </div>
 									</div>
 									
 									<!-- 청소년 법정대리인 -->
@@ -344,7 +352,7 @@
 									<div class="card-body">
 										<div class="form-group row align-items-center d-flex text-center">
 											<div class="col-sm-2 border-right">
-											    <label for="depositorName">예금주명</label>
+											    <label for="depositorName">법정대리인명</label>
 											</div>
 											<div class="col-sm-4">
 											    <input type="text" name="depositorName" class="form-control form-control-user">
@@ -358,10 +366,10 @@
 										</div>
 										<div class="form-group row align-items-center d-flex text-center">
 											<div class="col-sm-2 border-right">
-											    <label for="legalRepresentativeNumber">법대연락처</label>
+											    <label for="depositorNumber">법대연락처</label>
 											</div>
 											<div class="col-sm-4">
-											    <input type="text" name="legalRepresentativeNumber" class="form-control form-control-user">
+											    <input type="text" name="depositorNumber" class="form-control form-control-user">
 											</div>
 											<div class="col-sm-2 border-right">
 											    <label for="relationship">관계</label>
@@ -378,27 +386,6 @@
 									</div>
 									<div class="card-body">
 										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-										        <label for="additionalServices">부가서비스</label>
-										    </div>
-											<div class="col-sm-4">
-												<select name="additionalServices" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="없음">없음</option>
-													<option value="안심옵션">안심옵션</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="overseasData">해외데이터</label>
-											</div>
-											<div class="col-sm-4">
-												<select name="overseasData" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="overseasData1">데이터로밍완전차단</option>
-													<option value="overseasData2">차단</option>
-													<option value="overseasData3">이용</option>
-												</select>
-											</div>
 											<div class="col-sm-2 border-right">
 											    <label for="mobilePayment">통신과금서비스</label>
 											</div>
@@ -437,6 +424,7 @@
 											</div>
 										</div>
 									</div>
+									
 								</div>
 							</div>
 	                    </div>
@@ -458,8 +446,8 @@
 			        </div>
 			    </div>
 			</footer>
-	    </div>
-	</div>
+        </div>
+    </div>
 
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
