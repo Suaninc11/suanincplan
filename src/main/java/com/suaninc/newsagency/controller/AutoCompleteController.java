@@ -1,13 +1,10 @@
 package com.suaninc.newsagency.controller;
 
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
@@ -72,7 +69,8 @@ public class AutoCompleteController {
 	        List<CarrierTemplate> carrierTemplate = applyFormService.getCarrierTemplate(form);
 
 	        // 체크 이미지 캐싱 (필요시 캐싱하여 재사용)
-	        BufferedImage checkImage = ImageIO.read(new File("src/main/resources/static/images/checkmark.png"));
+        	InputStream checkImagePath = classLoader.getResourceAsStream("static/images/checkmark.png");
+            BufferedImage checkImage = ImageIO.read(checkImagePath);
 	        
 	        for (CarrierTemplate template : carrierTemplate) {
 	            try (InputStream is = classLoader.getResourceAsStream("static/images/" + template.getTemplateCode() + "/" + template.getTemplateImageName())) {
@@ -105,12 +103,10 @@ public class AutoCompleteController {
 
 	                            // 필드가 존재하는 경우 처리
 	                            Object value = field.get(form);  // 필드 값을 가져옴
-	                            if (value == null || (value instanceof String && ((String) value).isEmpty())) {
-	                                // 값이 null이거나 빈 문자열일 경우 해당 필드를 건너뜀
-	                                System.out.println("값이 비어있거나 null입니다: " + coordinate.getTemplateCoordinateName());
-	                                continue;
+	                            if (value == null) {
+	                                System.out.println("필드 값이 null입니다: " + coordinate.getTemplateCoordinateName());
+	                                continue;  // null인 경우 해당 좌표에 대한 처리를 건너뜀
 	                            }
-
 	                            // 값이 있는 경우, 텍스트 또는 체크박스 처리
 	                            String text = value.toString(); 
 

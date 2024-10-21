@@ -191,15 +191,15 @@
 									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
 									    <h6 class="m-0 font-weight-bold text-primary" style="margin-right: 15px !important;">고객정보</h6>
 									    <div class="input-group" style="max-width: 150px;">
-									        <select id="openingCategorySelect" name="openingCategory" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleCustomerForm()">
+									        <select id="openingCategorySelect" name="openingCategory" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleCustomerFields()">
 									            <option value="new" selected>신규</option>
 									            <option value="move">번호이동</option>
 									        </select>
 									    </div>
 									</div>
-
-									<!-- 신규 고객정보 폼 -->
-									<div id="newCustomerForm" class="card-body">
+									
+									<!-- 통합 고객정보 폼 -->
+									<div id="customerForm" class="card-body">
 									    <div class="form-group row align-items-center d-flex text-center">
 									        <div class="col-sm-2 border-right">
 									            <label for="name">가입자명</label>
@@ -214,69 +214,49 @@
 									            <input type="text" name="birthdate" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 									        </div>
 									    </div>
-										<div class="form-group row align-items-center d-flex text-center">
-										    <div class="col-sm-2 border-right">
-										        <label for="activationNumber">개통 번호</label>
-										    </div>
-										    <div class="col-sm-4">
-										        <input type="text" name="activationNumber" class="form-control form-control-user">
-										    </div>
-											<div class="col-sm-2 border-right">
-											    <label for="mobileNumber">가입자 번호</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="mobileNumber" class="form-control form-control-user">
-											</div>
-										</div>
-									</div>
+									    <div class="form-group row align-items-center d-flex text-center">
+									        <div class="col-sm-2 border-right">
+									            <label for="address">주소</label>
+									        </div>
+									        <div class="col-sm-10">
+									            <input type="text" name="address" class="form-control form-control-user">
+									        </div>
+									    </div>
 
-									<!-- 번호이동 고객정보 폼 -->
-									<div id="moveCustomerForm" class="card-body" style="display: none;">
+									    <!-- 개통 번호 필드: 신규 vs 번호이동에 따라 변경 -->
 									    <div class="form-group row align-items-center d-flex text-center">
 									        <div class="col-sm-2 border-right">
-									            <label for="name">가입자명</label>
+									            <label for="activationNumber" id="activationNumberLabel">개통 번호</label>
 									        </div>
 									        <div class="col-sm-4">
-									            <input type="text" name="name" class="form-control form-control-user">
+									            <input type="text" name="activationNumber" id="activationNumber" class="form-control form-control-user">
 									        </div>
-											<div class="col-sm-2 border-right">
-											    <label for="birthdate">생년월일</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="birthdate" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-											</div>
+									        <div class="col-sm-2 border-right">
+									            <label for="mobileNumber">가입자 번호</label>
+									        </div>
+									        <div class="col-sm-4">
+									            <input type="text" name="mobileNumber" class="form-control form-control-user">
+									        </div>
 									    </div>
+
+									    <!-- 이전 통신사 필드: 번호이동인 경우만 표시 -->
 									    <div class="form-group row align-items-center d-flex text-center">
 									        <div class="col-sm-2 border-right">
-									            <label for="portabilityNumber">개통 번호</label>
+									            <label for="previousCarrier" id="previousCarrierLabel" style="display: none;">이전 통신사</label>
 									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="portabilityNumber" class="form-control form-control-user">
+									        <div class="col-sm-2">
+									            <select id="previousCarrierSelect" name="previousCarrier" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleMVNOField()" style="display: none;">
+									                <option value="previousCarrier1">SKT</option>
+									                <option value="previousCarrier2">KT</option>
+									                <option value="previousCarrier3">U+</option>
+									                <option value="previousCarrier4">MVNO</option>
+									            </select>
 									        </div>
-											<div class="col-sm-2 border-right">
-											    <label for="mobileNumber">가입자 번호</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="mobileNumber" class="form-control form-control-user">
-											</div>
+									        <div class="col-sm-2">
+									            <input type="text" name="mvno" id="mvno" class="form-control form-control-user" style="display: none;" disabled>
+									        </div>
+											<input type="text" name="commonMoveCheck" id="commonMoveCheck" style="display: none;" disabled>
 									    </div>
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="previousCarrier">이전 통신사</label>
-											</div>
-											<div class="col-sm-2">
-											    <select id="previousCarrierSelect" name="previousCarrier" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleMVNOField()">
-											        <option value="previousCarrier1">SKT</option>
-											        <option value="previousCarrier2">KT</option>
-											        <option value="previousCarrier3">U+</option>
-											        <option value="previousCarrier4">MVNO</option>
-											    </select>
-											</div>
-											<div class="col-sm-2">
-											    <input type="text" name="mvno" id="mvno" class="form-control form-control-user" style="display: none;" disabled>
-											</div>
-										</div>
-										<input type="hidden" name="commonMoveCheck">
 									</div>
 									
 									<!-- 자동이체 -->

@@ -9,8 +9,12 @@ function applyFormDownload(preview = false) {
 	// disabled 필드를 폼에서 제거하는 로직
 	var inputs = formElement.querySelectorAll('input:disabled, select:disabled, textarea:disabled');
 	inputs.forEach(function(input) {
-	    dataForm.delete(input.name); // FormData에서 해당 필드를 삭제
+	    dataForm.delete(input.id); // FormData에서 해당 필드를 삭제
 	});
+	
+	for (var pair of dataForm.entries()) {
+	    console.log(pair[0] + ': ' + pair[1]);
+	}
 
     showLoadingMessage(); // 로딩 메시지 표시
 
@@ -52,17 +56,6 @@ function applyFormDownload(preview = false) {
     .catch(error => {
         console.error('Error downloading the document:', error);
         hideLoadingMessage(); // 에러 발생 시에도 로딩 메시지 숨기기
-    });
-}
-
-function removeDisabledFields() {
-    var formElement = document.getElementById('dataForm');
-    
-    // 모든 disabled 필드를 찾아서 삭제
-    var inputs = formElement.querySelectorAll('input:disabled, select:disabled');
-    inputs.forEach(function(input) {
-        input.disabled = false; // disabled를 제거하거나 input을 삭제할 수 있습니다.
-        input.remove(); // 혹은 아예 삭제
     });
 }
 
@@ -129,37 +122,40 @@ function toggleFormFields(form, enable) {
     });
 }
 
-function toggleCustomerForm() {
-    var selectElement = document.getElementById('openingCategorySelect');
-    var newCustomerForm = document.getElementById('newCustomerForm');
-    var moveCustomerForm = document.getElementById('moveCustomerForm');
-    var isNewCustomer = selectElement.value === 'new';
+function toggleCustomerFields() {
+    var category = document.getElementById('openingCategorySelect').value;
+    var activationNumberInput = document.getElementById('activationNumber');
+    var previousCarrierLabel = document.getElementById('previousCarrierLabel');
+	var previousCarrierSelect = document.getElementById('previousCarrierSelect');
+    var commonMoveCheck = document.getElementById('commonMoveCheck');
 
-    newCustomerForm.style.display = isNewCustomer ? 'block' : 'none';
-    moveCustomerForm.style.display = isNewCustomer ? 'none' : 'block';
-
-    toggleFormFields(newCustomerForm, isNewCustomer);
-    toggleFormFields(moveCustomerForm, !isNewCustomer);
+    if (category === 'new') {
+        // 신규 고객 폼: 이전 통신사 숨김
+        activationNumberInput.name = 'activationNumber';
+        previousCarrierLabel.style.display = 'none';
+		previousCarrierSelect.style.display = 'none';
+		previousCarrierSelect.disabled = true;
+        commonMoveCheck.disabled = true;
+    } else if (category === 'move') {
+        // 번호이동 고객 폼: 이전 통신사 보임
+        activationNumberInput.name = 'portabilityNumber';
+        previousCarrierLabel.style.display = 'block';
+		previousCarrierSelect.style.display = 'block';
+		previousCarrierSelect.disabled = false;
+        commonMoveCheck.disabled = false;
+    }
 }
-
-function toggleFormFields(form, enable) {
-    const inputs = form.querySelectorAll('input, select, textarea');
-    inputs.forEach(input => {
-        input.disabled = !enable;  // 활성화/비활성화 처리
-    });
-}
-
 
 function toggleMVNOField() {
-    var selectElement = document.getElementById('previousCarrierSelect');
-    var eeeeField = document.getElementById('mvno');
+    var previousCarrier = document.getElementById('previousCarrierSelect').value;
+    var mvnoField = document.getElementById('mvno');
 
-    if (selectElement.value === 'previousCarrier4') {
-        eeeeField.style.display = 'block';
-        eeeeField.disabled = false;
+    if (previousCarrier === 'previousCarrier4') {
+        mvnoField.style.display = 'block'; // MVNO 필드 표시
+        mvnoField.disabled = false;
     } else {
-        eeeeField.style.display = 'none';
-        eeeeField.disabled = true;
+        mvnoField.style.display = 'none'; // MVNO 필드 숨김
+        mvnoField.disabled = true;
     }
 }
 
@@ -198,7 +194,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 window.onload = function() {
+    // 자동이체 폼 필드 업데이트
     document.getElementById('automaticTransferSelect').dispatchEvent(new Event('change'));
-	document.getElementById('openingCategorySelect').dispatchEvent(new Event('change'));
+    // 고객구분에 따른 필드 업데이트
+    document.getElementById('openingCategorySelect').dispatchEvent(new Event('change'));
+    // 숨겨진 필드 업데이트
     updateHiddenFields();
-}
+    // 고객 필드 초기화
+    toggleCustomerFields();
+};
