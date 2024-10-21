@@ -9,7 +9,7 @@ function applyFormDownload(preview = false) {
 	// disabled 필드를 폼에서 제거하는 로직
 	var inputs = formElement.querySelectorAll('input:disabled, select:disabled, textarea:disabled');
 	inputs.forEach(function(input) {
-	    dataForm.delete(input.id); // FormData에서 해당 필드를 삭제
+	    dataForm.delete(input.name); // FormData에서 해당 필드를 삭제
 	});
 	
 	for (var pair of dataForm.entries()) {
