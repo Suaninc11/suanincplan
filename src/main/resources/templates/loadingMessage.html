@@ -1,0 +1,26 @@
+<!-- fragments/loadingMessage.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<style>
+		#loadingMessage {
+		    display: none;
+		    position: fixed;
+		    top: 50%;
+		    left: 50%;
+		    transform: translate(-50%, -50%);
+		    background: rgba(0, 0, 0, 0.5);
+		    color: white;
+		    padding: 20px;
+		    border-radius: 10px;
+		    z-index: 1000;
+		    visibility: hidden;
+		    opacity: 0;
+		    transition: opacity 0.5s ease;
+		}
+	</style>
+</head>
+<div id="loadingMessage" th:fragment="loadingMessage">
+  처리 중입니다. 잠시만 기다려 주세요...
+</div>
+</html>

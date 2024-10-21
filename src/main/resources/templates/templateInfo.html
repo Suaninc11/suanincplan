@@ -171,7 +171,7 @@
 <body id="page-top">
 
     <div id="wrapper">
-    	<div th:replace="sidebar :: sidebar"></div>
+		<div th:replace="fragments/sidebar :: sidebar"></div>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
 				<nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow" style="background-color: #20265C; padding-left: 0;">
@@ -182,6 +182,61 @@
 				</nav>
                 <div class="container-fluid">
 
+					<!-- 고객구분 -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3 d-flex align-items-center justify-content-between">
+						    <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
+							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseCustomerType" aria-expanded="true" aria-controls="collapseCustomerType">
+							    <i class="fas fa-chevron-up"></i>
+							</button>
+						</div>
+					    <div id="collapseCustomerType" class="collapse show">
+					        <div class="card-body">
+					            <div class="table-responsive">
+					                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					                    <thead>
+					                        <tr>
+					                            <th>템플릿코드</th>
+					                            <th>타입</th>
+					                            <th>폰트</th>
+					                            <th>크기</th>
+					                            <th>X값</th>
+					                            <th>Y값</th>
+					                            <th>페이지 번호</th>
+												<th class="fixed-width"></th>
+					                        </tr>
+					                    </thead>
+					                    <tbody>
+					                        <tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '고객구분'">
+					                            <td th:text="${template.templateCoordinateName}"></td>
+					                            <td th:text="${template.templateInputType}"></td>
+					                            <td th:text="${template.fontStyle}"></td>
+					                            <td th:text="${template.fontSize}"></td>
+					                            <td th:text="${template.coordinateXAxis}"></td>
+					                            <td th:text="${template.coordinateYAxis}"></td>
+					                            <td th:text="${template.templateImageOrder}"></td>
+					                            <td style="padding:0.5rem;">
+													<button type="button" class="btn btn-primary shadow-sm"
+													    style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
+													    th:attr="data-coordinate-name=${template.templateCoordinateName},
+																 data-coordinate-id=${template.templateCoordinateId}, 
+																 data-code=${template.templateCode}, 
+													             data-input-type=${template.templateInputType}, 
+													             data-x=${template.coordinateXAxis}, 
+																 data-y=${template.coordinateYAxis},
+																 data-path=${template.templateImagePath}"
+													    data-toggle="modal" data-target="#editModal">
+													    수정
+													</button>
+					                            </td>
+					                        </tr>
+					                    </tbody>
+					                </table>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+					
 					<!-- 요금제 -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
@@ -207,7 +262,62 @@
 					                        </tr>
 					                    </thead>
 					                    <tbody>
-					                        <tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == 'carrierPlan'">
+					                        <tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '요금제'">
+					                            <td th:text="${template.templateCoordinateName}"></td>
+					                            <td th:text="${template.templateInputType}"></td>
+					                            <td th:text="${template.fontStyle}"></td>
+					                            <td th:text="${template.fontSize}"></td>
+					                            <td th:text="${template.coordinateXAxis}"></td>
+					                            <td th:text="${template.coordinateYAxis}"></td>
+					                            <td th:text="${template.templateImageOrder}"></td>
+					                            <td style="padding:0.5rem;">
+													<button type="button" class="btn btn-primary shadow-sm"
+													    style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
+													    th:attr="data-coordinate-name=${template.templateCoordinateName},
+																 data-coordinate-id=${template.templateCoordinateId}, 
+																 data-code=${template.templateCode}, 
+													             data-input-type=${template.templateInputType}, 
+													             data-x=${template.coordinateXAxis}, 
+																 data-y=${template.coordinateYAxis},
+																 data-path=${template.templateImagePath}"
+													    data-toggle="modal" data-target="#editModal">
+													    수정
+													</button>
+					                            </td>
+					                        </tr>
+					                    </tbody>
+					                </table>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+					
+					<!-- 유심정보 -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3 d-flex align-items-center justify-content-between">
+						    <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
+							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseCustomerType" aria-expanded="true" aria-controls="collapseCustomerType">
+							    <i class="fas fa-chevron-up"></i>
+							</button>
+						</div>
+					    <div id="collapseCustomerType" class="collapse show">
+					        <div class="card-body">
+					            <div class="table-responsive">
+					                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					                    <thead>
+					                        <tr>
+					                            <th>템플릿코드</th>
+					                            <th>타입</th>
+					                            <th>폰트</th>
+					                            <th>크기</th>
+					                            <th>X값</th>
+					                            <th>Y값</th>
+					                            <th>페이지 번호</th>
+												<th class="fixed-width"></th>
+					                        </tr>
+					                    </thead>
+					                    <tbody>
+					                        <tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '유심정보'">
 					                            <td th:text="${template.templateCoordinateName}"></td>
 					                            <td th:text="${template.templateInputType}"></td>
 					                            <td th:text="${template.fontStyle}"></td>
@@ -263,7 +373,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == 'customerInfo'">
+											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '고객정보'">
 												<td th:text="${template.templateCoordinateId}"></td>												
 										        <td th:text="${template.templateCoordinateName}"></td>
 										        <td th:text="${template.templateInputType}"></td>
@@ -294,7 +404,7 @@
 						</div>
 					</div>
 					
-					<!-- 결제정보 -->
+					<!-- 자동이체 -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
 						    <h6 class="m-0 font-weight-bold text-primary">결제정보</h6>
@@ -319,7 +429,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == 'paymentInfo'">
+											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '자동이체'">
 										        <td th:text="${template.templateCoordinateName}"></td>
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
@@ -374,7 +484,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == 'legalRepresentative'">
+											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '법정대리인'">
 										        <td th:text="${template.templateCoordinateName}"></td>
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
@@ -429,7 +539,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == 'legalRepresentative'">
+											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '부가기능'">
 										        <td th:text="${template.templateCoordinateName}"></td>
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
@@ -484,7 +594,7 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == 'legalRepresentative'">
+											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '판매자정보'">
 										        <td th:text="${template.templateCoordinateName}"></td>
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
@@ -512,7 +622,62 @@
 								</div>
 							</div>
 						</div>
-					</div>						
+					</div>		
+					
+					<!-- 공통체크 -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3 d-flex align-items-center justify-content-between">
+						    <h6 class="m-0 font-weight-bold text-primary">판매자정보</h6>
+							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseSellerInfo" aria-expanded="true" aria-controls="collapseSellerInfo">
+							    <i class="fas fa-chevron-down"></i>
+							</button>
+						</div>
+						<div id="collapseSellerInfo" class="collapse">
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+										<thead>
+											<tr>
+												<th>템플릿코드</th>
+												<th>타입</th>
+												<th>폰트</th>
+												<th>크기</th>
+												<th>X값</th>
+												<th>Y값</th>
+												<th>페이지 번호</th>
+												<th class="fixed-width"></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '공통체크'">
+										        <td th:text="${template.templateCoordinateName}"></td>
+										        <td th:text="${template.templateInputType}"></td>
+												<td th:text="${template.fontStyle}"></td>
+												<td th:text="${template.fontSize}"></td>
+										        <td th:text="${template.coordinateXAxis}"></td>
+										        <td th:text="${template.coordinateYAxis}"></td>
+												<td th:text="${template.templateImageOrder}"></td>
+										        <td style="padding:0.5rem;">
+													<button type="button" class="btn btn-primary shadow-sm"
+												        style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
+												        th:attr="data-coordinate-name=${template.templateCoordinateName},
+																 data-coordinate-id=${template.templateCoordinateId}, 
+																 data-code=${template.templateCode}, 
+												                 data-input-type=${template.templateInputType}, 
+												                 data-x=${template.coordinateXAxis}, 
+																 data-y=${template.coordinateYAxis},
+																 data-path=${template.templateImagePath}"
+												        data-toggle="modal" data-target="#editModal">
+													    수정
+													</button>
+										        </td>
+										    </tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>					
                 </div>
             </div>
 			<footer class="sticky-footer bg-white">

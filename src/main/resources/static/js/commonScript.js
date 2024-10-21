@@ -1,9 +1,18 @@
 function applyFormDownload(preview = false) {
-    var formElement = document.getElementById('dataForm');
-    var dataForm = new FormData(formElement);
+	
+	var formElement = document.getElementById('dataForm');
+	var dataForm = new FormData(formElement);
 
-    var formattedDate = getFormattedDate();
-    var templateName = document.getElementById('templateName');
+	var formattedDate = getFormattedDate();
+	var templateName = document.getElementById('templateName').value;
+
+	// disabled 필드를 폼에서 제거하는 로직
+	var inputs = formElement.querySelectorAll('input:disabled, select:disabled, textarea:disabled');
+	inputs.forEach(function(input) {
+	    dataForm.delete(input.name); // FormData에서 해당 필드를 삭제
+	});
+
+    showLoadingMessage(); // 로딩 메시지 표시
 
     fetch('/homepage/inscribeView/autoComplete', {
         method: 'POST',
@@ -37,8 +46,24 @@ function applyFormDownload(preview = false) {
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
         }
+
+        hideLoadingMessage(); // 로딩 메시지 숨기기
     })
-    .catch(error => console.error('Error downloading the document:', error));
+    .catch(error => {
+        console.error('Error downloading the document:', error);
+        hideLoadingMessage(); // 에러 발생 시에도 로딩 메시지 숨기기
+    });
+}
+
+function removeDisabledFields() {
+    var formElement = document.getElementById('dataForm');
+    
+    // 모든 disabled 필드를 찾아서 삭제
+    var inputs = formElement.querySelectorAll('input:disabled, select:disabled');
+    inputs.forEach(function(input) {
+        input.disabled = false; // disabled를 제거하거나 input을 삭제할 수 있습니다.
+        input.remove(); // 혹은 아예 삭제
+    });
 }
 
 function updateHiddenFields() {
@@ -108,7 +133,6 @@ function toggleCustomerForm() {
     var selectElement = document.getElementById('openingCategorySelect');
     var newCustomerForm = document.getElementById('newCustomerForm');
     var moveCustomerForm = document.getElementById('moveCustomerForm');
-
     var isNewCustomer = selectElement.value === 'new';
 
     newCustomerForm.style.display = isNewCustomer ? 'block' : 'none';
@@ -141,6 +165,22 @@ function toggleMVNOField() {
 
 function formatCurrency(value) {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function showLoadingMessage() {
+    var loadingMessage = document.getElementById('loadingMessage');
+    loadingMessage.style.display = 'block';
+    loadingMessage.style.visibility = 'visible';
+    loadingMessage.style.opacity = '1';
+}
+
+function hideLoadingMessage() {
+    var loadingMessage = document.getElementById('loadingMessage');
+    loadingMessage.style.opacity = '0';
+    setTimeout(() => {
+        loadingMessage.style.visibility = 'hidden';
+        loadingMessage.style.display = 'none';
+    }, 500); // 0.5초 뒤에 display를 none으로 설정
 }
 
 document.addEventListener('DOMContentLoaded', function() {
