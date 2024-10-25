@@ -124,23 +124,26 @@ function toggleFormFields(form, enable) {
 
 function toggleCustomerFields() {
     var category = document.getElementById('openingCategorySelect').value;
-    var activationNumberInput = document.getElementById('activationNumber');
+    var activationNumber = document.getElementById('activationNumber');
+	var portabilityNumber = document.getElementById('portabilityNumber');
     var previousCarrierLabel = document.getElementById('previousCarrierLabel');
 	var previousCarrierSelect = document.getElementById('previousCarrierSelect');
     var commonMoveCheck = document.getElementById('commonMoveCheck');
 
     if (category === 'new') {
         // 신규 고객 폼: 이전 통신사 숨김
-        activationNumberInput.name = 'activationNumber';
         previousCarrierLabel.style.display = 'none';
 		previousCarrierSelect.style.display = 'none';
+		activationNumber.disabled = false;
+		portabilityNumber.disabled = true;
 		previousCarrierSelect.disabled = true;
         commonMoveCheck.disabled = true;
     } else if (category === 'move') {
         // 번호이동 고객 폼: 이전 통신사 보임
-        activationNumberInput.name = 'portabilityNumber';
         previousCarrierLabel.style.display = 'block';
 		previousCarrierSelect.style.display = 'block';
+        activationNumber.disabled = true;
+		portabilityNumber.disabled = false;
 		previousCarrierSelect.disabled = false;
         commonMoveCheck.disabled = false;
     }

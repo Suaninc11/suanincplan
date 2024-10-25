@@ -42,6 +42,7 @@ public class ApplyForm {
     private String cardName;  			// 예금주명
     private String cardBirthdate;  		// 생년월일
     private String cardCompany;  		// 카드사명
+    private String cardRelationship;	// 관계
     private String cardNumber;  		// 카드번호
     private String cardYear;  			// 유효기간(년)
     private String cardMonth;  			// 유효기간(월)
@@ -67,6 +68,7 @@ public class ApplyForm {
     
     // 공통체크
 	private String commonCheck;   		// 약관 동의
+	private String commonText;   		// 약관 동의
 	private String commonYear;    		// 약관 년도
 	private String commonShortYear;    	// 약관 년도 뒷자리
 	private String commonMonth;    		// 약관 월
@@ -259,6 +261,12 @@ public class ApplyForm {
 	public void setCardCompany(String cardCompany) {
 		this.cardCompany = cardCompany;
 	}
+	public String getCardRelationship() {
+		return cardRelationship;
+	}
+	public void setCardRelationship(String cardRelationship) {
+		this.cardRelationship = cardRelationship;
+	}
 	public String getCardNumber() {
 		return cardNumber;
 	}
@@ -360,6 +368,12 @@ public class ApplyForm {
 	}
 	public void setCommonCheck(String commonCheck) {
 		this.commonCheck = commonCheck;
+	}
+	public String getCommonText() {
+		return commonText;
+	}
+	public void setCommonText(String commonText) {
+		this.commonText = commonText;
 	}
 	public String getCommonYear() {
 		return commonYear;
