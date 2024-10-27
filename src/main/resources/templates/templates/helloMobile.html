@@ -62,6 +62,7 @@
 						<input type="hidden" name="commonCheck" value="commonCheck">
 						<input type="hidden" id="commonYear" name="commonYear">
 						<input type="hidden" id="commonShortYear" name="commonShortYear">
+						<input type="hidden" id="commonShortShortYear" name="commonShortShortYear">
 						<input type="hidden" id="commonMonth" name="commonMonth">
 						<input type="hidden" id="commonDay" name="commonDay">	
 						<input type="hidden" id="templateName" name="templateName" value="헬로모바일">
@@ -159,7 +160,7 @@
 											    <label for="simSerialNumber">일련번호</label>
 											</div>
 											<div class="col-sm-4">
-											    <input type="text" name="simSerialNumber" class="form-control form-control-user">
+											    <input type="text" name="simSerialNumber" class="form-control form-control-user" placeholder="자필기재" readonly>
 											</div>
 										</div>
 										<div class="form-group row align-items-center d-flex text-center">
@@ -170,6 +171,15 @@
 											    <select name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
 													<option value="simCost1">즉납</option>
 													<option value="simCost2">후납</option>
+												</select>
+											</div>
+											<div class="col-sm-2 border-right">
+											    <label for="subscriptionCost">가입비</label>
+											</div>
+											<div class="col-sm-4">
+												<select name="subscriptionCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+													<option value="subscriptionCost1">완납</option>
+													<option value="subscriptionCost2">3개월 분납</option>
 												</select>
 											</div>
 										</div>
@@ -193,13 +203,13 @@
 									            <label for="name">가입자명</label>
 									        </div>
 									        <div class="col-sm-4">
-									            <input type="text" name="name" class="form-control form-control-user">
+									            <input type="text" name="name" class="form-control form-control-user" placeholder="자필기재" readonly>
 									        </div>
 									        <div class="col-sm-2 border-right">
 									            <label for="birthdate">생년월일</label>
 									        </div>
 									        <div class="col-sm-4">
-									            <input type="text" name="birthdate" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+									            <input type="text" name="birthdate" class="form-control form-control-user" placeholder="자필기재" readonly>
 									        </div>
 									    </div>
 									    <div class="form-group row align-items-center d-flex text-center">
@@ -207,46 +217,62 @@
 									            <label for="address">주소</label>
 									        </div>
 									        <div class="col-sm-10">
-									            <input type="text" name="address" class="form-control form-control-user">
+									            <input type="text" name="address" class="form-control form-control-user" placeholder="자필기재" readonly>
 									        </div>
 									    </div>
 
 									    <!-- 개통 번호 필드: 신규 vs 번호이동에 따라 변경 -->
 									    <div class="form-group row align-items-center d-flex text-center">
 									        <div class="col-sm-2 border-right">
-									            <label for="activationNumber" id="activationNumberLabel">개통 번호</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="activationNumber" id="activationNumber" class="form-control form-control-user">
-									        </div>
-									        <div class="col-sm-2 border-right">
 									            <label for="mobileNumber">가입자 번호</label>
 									        </div>
 									        <div class="col-sm-4">
-									            <input type="text" name="mobileNumber" class="form-control form-control-user">
+									            <input type="text" name="mobileNumber" class="form-control form-control-user" placeholder="자필기재" readonly>
 									        </div>
+											<div class="col-sm-2 border-right">
+											    <label for="gender">성별</label>
+											</div>
+											<div class="col-sm-2">
+											    <select id="gender" name="gender" aria-controls="dataTable" class="custom-select form-control form-control-sm" disabled>
+											        <option value="gender1">남</option>
+											        <option value="gender2">여</option>
+											    </select>
+											</div>
 									    </div>
-
-									    <!-- 이전 통신사 필드: 번호이동인 경우만 표시 -->
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="previousCarrier" id="previousCarrierLabel" style="display: none;">이전 통신사</label>
-									        </div>
-									        <div class="col-sm-2">
-									            <select id="previousCarrierSelect" name="previousCarrier" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleMVNOField()" style="display: none;">
-									                <option value="previousCarrier1">SKT</option>
-									                <option value="previousCarrier2">KT</option>
-									                <option value="previousCarrier3">U+</option>
-									                <option value="previousCarrier4">MVNO</option>
-									            </select>
-									        </div>
-									        <div class="col-sm-2">
-									            <input type="text" name="mvno" id="mvno" class="form-control form-control-user" style="display: none;" disabled>
-									        </div>
+										
+										<!-- 개통 번호 필드: 신규 vs 번호이동에 따라 변경 -->
+										<div class="form-group row align-items-center d-flex text-center">
+											<div class="col-sm-2 border-right">
+											    <label for="activationNumber">희망번호 (뒷 4자리)</label>
+											</div>
+											<div class="col-sm-4">
+											    <input type="text" name="activationNumber" id="activationNumber" class="form-control form-control-user" placeholder="자필기재" readonly>
+											</div>
+										    <div class="col-sm-2 border-right">
+										        <label for="portabilityNumber">번호이동 번호</label>
+										    </div>
+										    <div class="col-sm-4">
+										        <input type="text" name="portabilityNumber" id="portabilityNumber" class="form-control form-control-user">
+										    </div>
+										</div>
+										
+										<!-- 이전 통신사 필드: 번호이동인 경우만 표시 -->
+										<div class="form-group row align-items-center d-flex text-center">
+										    <div class="col-sm-2 border-right">
+										        <label for="previousCarrier" id="previousCarrierLabel" style="display: none;">이전 통신사</label>
+										    </div>
+										    <div class="col-sm-2">
+										        <select id="previousCarrierSelect" name="previousCarrier" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleMVNOField()" style="display: none;" readonly>
+										            <option value="">자필기재</option>
+										        </select>
+										    </div>
+										    <div class="col-sm-2">
+										        <input type="text" name="mvno" id="mvno" class="form-control form-control-user" style="display: none;" readonly>
+										    </div>
 											<input type="text" name="commonMoveCheck" id="commonMoveCheck" style="display: none;" disabled>
-									    </div>
+										</div>
 									</div>
-									
+
 									<!-- 자동이체 -->
 									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
 									    <h6 class="m-0 font-weight-bold text-primary" style="margin-right: 15px !important;">자동이체</h6>

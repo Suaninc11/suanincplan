@@ -31,6 +31,23 @@
 		    transition: opacity 0.5s ease;
 		}
 	</style>
+	<script>
+		function toggleSimCostFields() {
+			var simCost = document.getElementById('simCost').value;
+		    var simCostValue = document.getElementById('simCostValue');
+		    var simCostValueLabel = document.getElementById('simCostValueLabel');
+
+		    if (simCost === 'simCost2') {
+				simCostValue.style.display = 'block';
+				simCostValueLabel.style.display = 'block';
+		        simCostValue.disabled = false;
+		    } else {
+				simCostValue.style.display = 'none';
+				simCostValueLabel.style.display = 'none';
+				simCostValue.disabled = true;
+		    }
+		}
+	</script>
 </head>
 
 <body id="page-top">
@@ -62,6 +79,7 @@
 						<input type="hidden" name="commonCheck" value="commonCheck">
 						<input type="hidden" id="commonYear" name="commonYear">
 						<input type="hidden" id="commonShortYear" name="commonShortYear">
+						<input type="hidden" id="commonShortShortYear" name="commonShortShortYear">
 						<input type="hidden" id="commonMonth" name="commonMonth">
 						<input type="hidden" id="commonDay" name="commonDay">	
 						<input type="hidden" id="templateName" name="templateName" value="스노우맨">
@@ -178,11 +196,17 @@
 											    <label for="simCost">유심 비용</label>
 											</div>
 											<div class="col-sm-4">
-											    <select name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+											    <select name="simCost" id="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleSimCostFields()">
 													<option value="simCost1">즉시납부</option>
 													<option value="simCost2">다음달 요금합산 납부</option>
 													<option value="simCost3">면제</option>
 												</select>
+											</div>
+											<div class="col-sm-2 border-right">
+											    <label for="simCostValue" id="simCostValueLabel" style="display: none;">유심 비용</label>
+											</div>
+											<div class="col-sm-4">
+											    <input type="text" name="simCostValue" id="simCostValue" class="form-control form-control-user" value="5,500" style="display: none;" readonly disabled>
 											</div>
 										</div>
 									</div>
@@ -223,21 +247,40 @@
 									        </div>
 									    </div>
 
-									    <!-- 개통 번호 필드: 신규 vs 번호이동에 따라 변경 -->
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="activationNumber" id="activationNumberLabel">개통 번호</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="activationNumber" id="activationNumber" class="form-control form-control-user">
-									        </div>
-									        <div class="col-sm-2 border-right">
-									            <label for="mobileNumber">가입자 번호</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="mobileNumber" class="form-control form-control-user">
-									        </div>
-									    </div>
+										<!-- 개통 번호 필드: 신규 vs 번호이동에 따라 변경 -->
+										<div class="form-group row align-items-center d-flex text-center">
+										    <div class="col-sm-2 border-right">
+										        <label for="mobileNumber">가입자 번호</label>
+										    </div>
+										    <div class="col-sm-4">
+										        <input type="text" name="mobileNumber" class="form-control form-control-user">
+										    </div>
+											<div class="col-sm-2 border-right">
+											    <label for="gender">성별</label>
+											</div>
+											<div class="col-sm-2">
+											    <select id="gender" name="gender" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+											        <option value="gender1">남</option>
+											        <option value="gender2">여</option>
+											    </select>
+											</div>
+										</div>
+
+										<!-- 개통 번호 필드: 신규 vs 번호이동에 따라 변경 -->
+										<div class="form-group row align-items-center d-flex text-center">
+											<div class="col-sm-2 border-right">
+											    <label for="activationNumber">희망번호 (뒷 4자리)</label>
+											</div>
+											<div class="col-sm-4">
+											    <input type="text" name="activationNumber" id="activationNumber" class="form-control form-control-user">
+											</div>
+										    <div class="col-sm-2 border-right">
+										        <label for="portabilityNumber">번호이동 번호</label>
+										    </div>
+										    <div class="col-sm-4">
+										        <input type="text" name="portabilityNumber" id="portabilityNumber" class="form-control form-control-user">
+										    </div>
+										</div>
 
 									    <!-- 이전 통신사 필드: 번호이동인 경우만 표시 -->
 									    <div class="form-group row align-items-center d-flex text-center">
@@ -381,11 +424,22 @@
 											<div class="col-sm-4">
 											    <input type="text" name="depositorNumber" class="form-control form-control-user">
 											</div>
+										</div>
+										<div class="form-group row align-items-center d-flex text-center">
 											<div class="col-sm-2 border-right">
 											    <label for="relationship">관계</label>
 											</div>
 											<div class="col-sm-4">
 											    <input type="text" name="relationship" class="form-control form-control-user">
+											</div>
+											<div class="col-sm-2 border-right">
+											    <label for="depositorGender">성별</label>
+											</div>
+											<div class="col-sm-4">
+												<select id="depositorGender" name="depositorGender" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+												    <option value="depositorGender1">남</option>
+												    <option value="depositorGender2">여</option>
+												</select>
 											</div>
 										</div>
 									</div>

@@ -124,23 +124,30 @@ function toggleFormFields(form, enable) {
 
 function toggleCustomerFields() {
     var category = document.getElementById('openingCategorySelect').value;
-    var activationNumberInput = document.getElementById('activationNumber');
+    var activationNumber = document.getElementById('activationNumber');
+	var portabilityNumber = document.getElementById('portabilityNumber');
     var previousCarrierLabel = document.getElementById('previousCarrierLabel');
 	var previousCarrierSelect = document.getElementById('previousCarrierSelect');
+	var mvno = document.getElementById('mvno');
     var commonMoveCheck = document.getElementById('commonMoveCheck');
 
     if (category === 'new') {
         // 신규 고객 폼: 이전 통신사 숨김
-        activationNumberInput.name = 'activationNumber';
-        previousCarrierLabel.style.display = 'none';
+		mvno.style.display = 'none';
+		previousCarrierLabel.style.display = 'none';
 		previousCarrierSelect.style.display = 'none';
+		activationNumber.disabled = false;
+		portabilityNumber.disabled = true;
 		previousCarrierSelect.disabled = true;
+		mvno.disabled = true;
         commonMoveCheck.disabled = true;
     } else if (category === 'move') {
         // 번호이동 고객 폼: 이전 통신사 보임
-        activationNumberInput.name = 'portabilityNumber';
         previousCarrierLabel.style.display = 'block';
 		previousCarrierSelect.style.display = 'block';
+   		activationNumber.value = '';
+        activationNumber.disabled = true;
+		portabilityNumber.disabled = false;
 		previousCarrierSelect.disabled = false;
         commonMoveCheck.disabled = false;
     }
@@ -184,11 +191,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var year = now.getFullYear();  // 연도
 	var shortYear = year.toString().slice(-2);
+	var shortShortYear = year.toString().slice(-1);
     var month = ('0' + (now.getMonth() + 1)).slice(-2);  // 월 (0부터 시작하므로 +1)
     var day = ('0' + now.getDate()).slice(-2);  // 일
 
     document.getElementById('commonYear').value = year;
 	document.getElementById('commonShortYear').value = shortYear;
+	document.getElementById('commonShortShortYear').value = shortShortYear;
     document.getElementById('commonMonth').value = month;
     document.getElementById('commonDay').value = day;
 });
