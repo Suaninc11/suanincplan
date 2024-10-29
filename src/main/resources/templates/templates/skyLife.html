@@ -186,11 +186,15 @@
 									<!-- 고객정보 -->
 									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
 									    <h6 class="m-0 font-weight-bold text-primary" style="margin-right: 15px !important;">고객정보</h6>
-									    <div class="input-group" style="max-width: 150px;">
-									        <select id="openingCategorySelect" name="openingCategory" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleCustomerFields()">
-									            <option value="new" selected>신규</option>
-									            <option value="move">번호이동</option>
-									        </select>
+									    <div class="input-group" style="max-width: 200px;">
+											<div class="form-check" style="margin-right: 15px;">
+											    <input type="radio" id="newOption" name="openingCategory" value="new" class="form-check-input" onclick="toggleCustomerFields()" checked>
+											    <label for="newOption" class="form-check-label">신규</label>
+											</div>
+											<div class="form-check">
+											    <input type="radio" id="moveOption" name="openingCategory" value="move" class="form-check-input" onclick="toggleCustomerFields()">
+											    <label for="moveOption" class="form-check-label">번호이동</label>
+											</div>
 									    </div>
 									</div>
 									
@@ -277,12 +281,16 @@
 									<!-- 자동이체 -->
 									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
 									    <h6 class="m-0 font-weight-bold text-primary" style="margin-right: 15px !important;">자동이체</h6>
-									    <div class="input-group" style="max-width: 150px;">
-									        <select id="automaticTransferSelect" name="automaticTransfer" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleTransferForm()">
-									            <option value="card" selected>카드</option>
-									            <option value="account">계좌</option>
-									        </select>
-									    </div>
+										<div class="input-group" style="max-width: 200px;">
+											<div class="form-check" style="margin-right: 15px;">
+											    <input type="radio" id="cardOption" name="automaticTransfer" value="card" class="form-check-input" onclick="toggleTransferForm()" checked>
+											    <label for="cardOption" class="form-check-label">카드</label>
+											</div>
+											<div class="form-check">
+											    <input type="radio" id="accountOption" name="automaticTransfer" value="account" class="form-check-input" onclick="toggleTransferForm()">
+											    <label for="accountOption" class="form-check-label">계좌</label>
+											</div>
+										</div>
 									</div>
 
 									<!-- 카드 전용 폼 -->

@@ -102,18 +102,15 @@ function getFormattedDate() {
 }
 
 function toggleTransferForm() {
-    const selectElement = document.getElementById('automaticTransferSelect');
-    const cardForm = document.getElementById('cardForm');
-    const accountForm = document.getElementById('accountForm');
+    // 라디오 버튼에서 선택된 값 가져오기
+    const isCard = document.querySelector('input[name="automaticTransfer"]:checked').value === 'card';
 
-    const isCard = selectElement.value === 'card';
-
-    cardForm.style.display = isCard ? 'block' : 'none';
-    accountForm.style.display = isCard ? 'none' : 'block';
-
-    toggleFormFields(cardForm, isCard);
-    toggleFormFields(accountForm, !isCard);
+    // 선택된 값에 따라 폼 보이기
+    document.getElementById('cardForm').style.display = isCard ? 'block' : 'none';
+    document.getElementById('accountForm').style.display = isCard ? 'none' : 'block';
 }
+
+
 
 function toggleFormFields(form, enable) {
     const inputs = form.querySelectorAll('input, select');
@@ -123,32 +120,34 @@ function toggleFormFields(form, enable) {
 }
 
 function toggleCustomerFields() {
-    var category = document.getElementById('openingCategorySelect').value;
-    var activationNumber = document.getElementById('activationNumber');
-	var portabilityNumber = document.getElementById('portabilityNumber');
-    var previousCarrierLabel = document.getElementById('previousCarrierLabel');
-	var previousCarrierSelect = document.getElementById('previousCarrierSelect');
-	var mvno = document.getElementById('mvno');
-    var commonMoveCheck = document.getElementById('commonMoveCheck');
+    // 라디오 버튼에서 선택된 값을 가져옴
+    const category = document.querySelector('input[name="openingCategory"]:checked').value;
+
+    const activationNumber = document.getElementById('activationNumber');
+    const portabilityNumber = document.getElementById('portabilityNumber');
+    const previousCarrierLabel = document.getElementById('previousCarrierLabel');
+    const previousCarrierSelect = document.getElementById('previousCarrierSelect');
+    const mvno = document.getElementById('mvno');
+    const commonMoveCheck = document.getElementById('commonMoveCheck');
 
     if (category === 'new') {
         // 신규 고객 폼: 이전 통신사 숨김
-		mvno.style.display = 'none';
-		previousCarrierLabel.style.display = 'none';
-		previousCarrierSelect.style.display = 'none';
-		activationNumber.disabled = false;
-		portabilityNumber.disabled = true;
-		previousCarrierSelect.disabled = true;
-		mvno.disabled = true;
+        mvno.style.display = 'none';
+        previousCarrierLabel.style.display = 'none';
+        previousCarrierSelect.style.display = 'none';
+        activationNumber.disabled = false;
+        portabilityNumber.disabled = true;
+        previousCarrierSelect.disabled = true;
+        mvno.disabled = true;
         commonMoveCheck.disabled = true;
     } else if (category === 'move') {
         // 번호이동 고객 폼: 이전 통신사 보임
         previousCarrierLabel.style.display = 'block';
-		previousCarrierSelect.style.display = 'block';
-   		activationNumber.value = '';
+        previousCarrierSelect.style.display = 'block';
+        activationNumber.value = ''; // 값 초기화
         activationNumber.disabled = true;
-		portabilityNumber.disabled = false;
-		previousCarrierSelect.disabled = false;
+        portabilityNumber.disabled = false;
+        previousCarrierSelect.disabled = false;
         commonMoveCheck.disabled = false;
     }
 }
