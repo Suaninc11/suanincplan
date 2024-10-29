@@ -23,6 +23,7 @@ public class ApplyForm {
 	private String simName;	 			// 모델명
     private String simSerialNumber;  	// 일련번호
     private String simCost;          	// 유심 비용
+    private String simCostValue;        // 유심 비용
     private String subscriptionCost; 	// 가입비
 
     // 고객정보 관련 필드
@@ -33,6 +34,7 @@ public class ApplyForm {
     private String activationNumber;	// 개통 번호
     private String portabilityNumber;	// 개통 번호
     private String mobileNumber;        // 가입자 번호
+    private String gender;        		// 성별
     private String previousCarrier;  	// 이전 통신사
     private String commonMoveCheck; 	// 번호 이동 기본 체크
     private String mvno;				// MVNO
@@ -41,6 +43,7 @@ public class ApplyForm {
     private String automaticTransfer;  	// 결제방식
     private String cardName;  			// 예금주명
     private String cardBirthdate;  		// 생년월일
+    private String cardAddress;			// 청구주소
     private String cardCompany;  		// 카드사명
     private String cardRelationship;	// 관계
     private String cardNumber;  		// 카드번호
@@ -48,6 +51,7 @@ public class ApplyForm {
     private String cardMonth;  			// 유효기간(월)
     private String accountName;  		// 예금주명
     private String accountBirthdate;  	// 생년월일
+    private String accountAddress;		// 청구주소
     private String accountBank;  		// 은행명
     private String accountNumber;  		// 계좌번호
 
@@ -55,6 +59,7 @@ public class ApplyForm {
     private String depositorName;		// 법정대리인명
     private String depositorBirthdate;	// 생년월일
     private String depositorNumber; 	// 법대연락처
+    private String depositorGender;     // 법대성별
     private String relationship;        // 관계
 
     // 부가기능 관련 필드
@@ -71,6 +76,7 @@ public class ApplyForm {
 	private String commonText;   		// 약관 동의
 	private String commonYear;    		// 약관 년도
 	private String commonShortYear;    	// 약관 년도 뒷자리
+	private String commonShortShortYear;// 약관 년도 뒷 한자리
 	private String commonMonth;    		// 약관 월
 	private String commonDay;    		// 약관 일
 	
@@ -171,6 +177,12 @@ public class ApplyForm {
 	public void setSimCost(String simCost) {
 		this.simCost = simCost;
 	}
+	public String getSimCostValue() {
+		return simCostValue;
+	}
+	public void setSimCostValue(String simCostValue) {
+		this.simCostValue = simCostValue;
+	}
 	public String getSubscriptionCost() {
 		return subscriptionCost;
 	}
@@ -219,6 +231,12 @@ public class ApplyForm {
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 	public String getPreviousCarrier() {
 		return previousCarrier;
 	}
@@ -254,6 +272,12 @@ public class ApplyForm {
 	}
 	public void setCardBirthdate(String cardBirthdate) {
 		this.cardBirthdate = cardBirthdate;
+	}
+	public String getCardAddress() {
+		return cardAddress;
+	}
+	public void setCardAddress(String cardAddress) {
+		this.cardAddress = cardAddress;
 	}
 	public String getCardCompany() {
 		return cardCompany;
@@ -297,6 +321,12 @@ public class ApplyForm {
 	public void setAccountBirthdate(String accountBirthdate) {
 		this.accountBirthdate = accountBirthdate;
 	}
+	public String getAccountAddress() {
+		return accountAddress;
+	}
+	public void setAccountAddress(String accountAddress) {
+		this.accountAddress = accountAddress;
+	}
 	public String getAccountBank() {
 		return accountBank;
 	}
@@ -326,6 +356,12 @@ public class ApplyForm {
 	}
 	public void setDepositorNumber(String depositorNumber) {
 		this.depositorNumber = depositorNumber;
+	}
+	public String getDepositorGender() {
+		return depositorGender;
+	}
+	public void setDepositorGender(String depositorGender) {
+		this.depositorGender = depositorGender;
 	}
 	public String getRelationship() {
 		return relationship;
@@ -386,6 +422,12 @@ public class ApplyForm {
 	}
 	public void setCommonShortYear(String commonShortYear) {
 		this.commonShortYear = commonShortYear;
+	}
+	public String getCommonShortShortYear() {
+		return commonShortShortYear;
+	}
+	public void setCommonShortShortYear(String commonShortShortYear) {
+		this.commonShortShortYear = commonShortShortYear;
 	}
 	public String getCommonMonth() {
 		return commonMonth;
