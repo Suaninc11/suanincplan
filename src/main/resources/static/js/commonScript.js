@@ -1,5 +1,19 @@
 function applyFormDownload(preview = false) {
 	
+	var templateName = document.getElementById("templateName").value;
+	
+	if (templateName === "7모바일") {
+        var skTelinkNumber = document.getElementById("skTelinkNumber");
+        
+        if (document.getElementById("newOption").checked) {
+            var mobileNumber = document.getElementById("mobileNumber").value;
+            skTelinkNumber.value = mobileNumber;
+        } else if (document.getElementById("moveOption").checked) {
+            var portabilityNumber = document.getElementById("portabilityNumber").value;
+            skTelinkNumber.value = portabilityNumber;
+        }
+    }
+	
 	var formElement = document.getElementById('dataForm');
 	var dataForm = new FormData(formElement);
 
@@ -24,10 +38,10 @@ function applyFormDownload(preview = false) {
     })
     .then(response => response.blob())
     .then(blob => {
-        const url = window.URL.createObjectURL(blob);
+        var url = window.URL.createObjectURL(blob);
 
         if (preview) {
-            const pdfWindow = window.open("", "PDF Preview", "width=800,height=600");
+            var pdfWindow = window.open("", "PDF Preview", "width=800,height=600");
             if (pdfWindow) {
                 pdfWindow.document.write(
                     `<html>
@@ -41,7 +55,7 @@ function applyFormDownload(preview = false) {
                 alert("팝업 차단이 설정되어 있습니다. 팝업 차단을 해제하고 다시 시도해 주세요.");
             }
         } else {
-            const a = document.createElement('a');
+            var a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
             a.download = templateName + '_' + formattedDate;
@@ -103,7 +117,7 @@ function getFormattedDate() {
 
 function toggleTransferForm() {
     // 라디오 버튼에서 선택된 값 가져오기
-    const isCard = document.querySelector('input[name="automaticTransfer"]:checked').value === 'card';
+    var isCard = document.querySelector('input[name="automaticTransfer"]:checked').value === 'card';
 
     // 선택된 값에 따라 폼 보이기
     document.getElementById('cardForm').style.display = isCard ? 'block' : 'none';
@@ -113,7 +127,7 @@ function toggleTransferForm() {
 
 
 function toggleFormFields(form, enable) {
-    const inputs = form.querySelectorAll('input, select');
+    var inputs = form.querySelectorAll('input, select');
     inputs.forEach(input => {
         input.disabled = !enable;  // 활성화/비활성화 처리
     });
@@ -121,14 +135,14 @@ function toggleFormFields(form, enable) {
 
 function toggleCustomerFields() {
     // 라디오 버튼에서 선택된 값을 가져옴
-    const category = document.querySelector('input[name="openingCategory"]:checked').value;
+    var category = document.querySelector('input[name="openingCategory"]:checked').value;
 
-    const activationNumber = document.getElementById('activationNumber');
-    const portabilityNumber = document.getElementById('portabilityNumber');
-    const previousCarrierLabel = document.getElementById('previousCarrierLabel');
-    const previousCarrierSelect = document.getElementById('previousCarrierSelect');
-    const mvno = document.getElementById('mvno');
-    const commonMoveCheck = document.getElementById('commonMoveCheck');
+    var activationNumber = document.getElementById('activationNumber');
+    var portabilityNumber = document.getElementById('portabilityNumber');
+    var previousCarrierLabel = document.getElementById('previousCarrierLabel');
+    var previousCarrierSelect = document.getElementById('previousCarrierSelect');
+    var mvno = document.getElementById('mvno');
+    var commonMoveCheck = document.getElementById('commonMoveCheck');
 
     if (category === 'new') {
         // 신규 고객 폼: 이전 통신사 숨김
@@ -202,10 +216,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 window.onload = function() {
-    // 자동이체 폼 필드 업데이트
-    document.getElementById('automaticTransferSelect').dispatchEvent(new Event('change'));
-    // 고객구분에 따른 필드 업데이트
-    document.getElementById('openingCategorySelect').dispatchEvent(new Event('change'));
     // 숨겨진 필드 업데이트
     updateHiddenFields();
     // 고객 필드 초기화

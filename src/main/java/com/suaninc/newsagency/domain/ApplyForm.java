@@ -38,6 +38,8 @@ public class ApplyForm {
     private String previousCarrier;  	// 이전 통신사
     private String commonMoveCheck; 	// 번호 이동 기본 체크
     private String mvno;				// MVNO
+    
+    private String skTelinkNumber;		// skTelink 가입자 or 번호이동 번호
 
     // 자동이체 관련 필드
     private String automaticTransfer;  	// 결제방식
@@ -51,6 +53,7 @@ public class ApplyForm {
     private String cardMonth;  			// 유효기간(월)
     private String accountName;  		// 예금주명
     private String accountBirthdate;  	// 생년월일
+    private String accountMobileNumber; // 예굼주 전화번호
     private String accountAddress;		// 청구주소
     private String accountBank;  		// 은행명
     private String accountNumber;  		// 계좌번호
@@ -65,6 +68,7 @@ public class ApplyForm {
     // 부가기능 관련 필드
     private String mobilePayment;  		// 통신과금서비스
     private String overseasData;        // 해외데이터
+    private String combination;         // 아무나 결합
 
     // 판매자정보 관련 필드
     private String retailerName;    	// 판매점 상호
@@ -255,6 +259,12 @@ public class ApplyForm {
 	public void setMvno(String mvno) {
 		this.mvno = mvno;
 	}
+	public String getSkTelinkNumber() {
+		return skTelinkNumber;
+	}
+	public void setSkTelinkNumber(String skTelinkNumber) {
+		this.skTelinkNumber = skTelinkNumber;
+	}
 	public String getAutomaticTransfer() {
 		return automaticTransfer;
 	}
@@ -321,6 +331,12 @@ public class ApplyForm {
 	public void setAccountBirthdate(String accountBirthdate) {
 		this.accountBirthdate = accountBirthdate;
 	}
+	public String getAccountMobileNumber() {
+		return accountMobileNumber;
+	}
+	public void setAccountMobileNumber(String accountMobileNumber) {
+		this.accountMobileNumber = accountMobileNumber;
+	}
 	public String getAccountAddress() {
 		return accountAddress;
 	}
@@ -380,6 +396,12 @@ public class ApplyForm {
 	}
 	public void setOverseasData(String overseasData) {
 		this.overseasData = overseasData;
+	}
+	public String getCombination() {
+		return combination;
+	}
+	public void setCombination(String combination) {
+		this.combination = combination;
 	}
 	public String getRetailerName() {
 		return retailerName;
