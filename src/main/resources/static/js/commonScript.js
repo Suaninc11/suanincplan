@@ -215,6 +215,21 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('commonDay').value = day;
 });
 
+function checkPassword() {
+    var password = prompt("비밀번호를 입력하세요:");
+
+    if (password === null || password === "") {
+        alert("비밀번호를 입력하지 않았습니다.");
+        return false;
+    }
+    if (password === "8789") {
+        return true;
+    } else {
+        alert("비밀번호가 틀렸습니다.");
+        return false;
+    }
+}
+
 window.onload = function() {
     // 숨겨진 필드 업데이트
     updateHiddenFields();
