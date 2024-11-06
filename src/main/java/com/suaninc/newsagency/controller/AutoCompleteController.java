@@ -21,16 +21,13 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.suaninc.config.FileStorageProperties;
 import com.suaninc.newsagency.domain.ApplyForm;
 import com.suaninc.newsagency.domain.CarrierPlan;
 import com.suaninc.newsagency.domain.CarrierTemplate;
@@ -45,7 +42,8 @@ public class AutoCompleteController {
 	@Autowired
 	private ApplyFormService applyFormService;
 	
-	private final Path imagePath = Paths.get("uploads");
+    @Autowired
+    private FileStorageProperties fileStorageProperties;
 	
 	@GetMapping("/homepage/templates/{templateCode}")
 	public String mainPage(@PathVariable String templateCode, ApplyForm form, Model model) throws Exception {
@@ -73,7 +71,9 @@ public class AutoCompleteController {
             BufferedImage checkImage = ImageIO.read(checkImagePath);
 	        
 	        for (CarrierTemplate template : carrierTemplate) {
-	            try (InputStream is = classLoader.getResourceAsStream("static/images/" + template.getTemplateCode() + "/" + template.getTemplateImageName())) {
+	        	Path imagePath = Paths.get(fileStorageProperties.getUploadDir(), template.getTemplateCode(), template.getTemplateImageName());
+	        	
+	        	try (InputStream is = Files.newInputStream(imagePath)) {
 	                CarrierTemplate templateImageOrder = new CarrierTemplate();
 	                templateImageOrder.setTemplateCode(template.getTemplateCode());
 	                templateImageOrder.setTemplateImageOrder(template.getTemplateImageOrder());
@@ -163,24 +163,6 @@ public class AutoCompleteController {
 	        e.printStackTrace();
 	    }
 	}
-	
-    @GetMapping("/images/{filename}")
-    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
-        try {
-            Path file = imagePath.resolve(filename);
-            Resource resource = new UrlResource(file.toUri());
-
-            if (resource.exists() || resource.isReadable()) {
-                return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"")
-                        .body(resource);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(500).build();
-        }
-    }
     
     @GetMapping("/homepage/inscribeView/modify")
     	public String modifyInscribeView(Model model) throws Exception {

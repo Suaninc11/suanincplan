@@ -32,4 +32,14 @@ public class TemplateServiceImpl implements TemplateService {
 		return templateDao.updateCoordinate(form);
 	}
 
+    @Override
+    public List<CarrierTemplate> getTemplateImageList(String templateCode) {
+        return templateDao.selectTemplateImageList(templateCode);
+    }
+    
+    @Override
+    public int updateImageName(CarrierTemplate form) {
+    	return templateDao.updateTemplateImageName(form);
+    }
+	
 }

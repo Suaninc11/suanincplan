@@ -9,9 +9,11 @@ public class CarrierTemplate {
     private String templateName;
     private Integer templateImageOrder;
     private String templateImageName;
+    private String templateImageUrl;
     private Date registeredDatetime;
     
     private String templateCount;
+    private Integer rowNum;
     
 	public Integer getCarrierTemplateId() {
 		return carrierTemplateId;
@@ -43,6 +45,12 @@ public class CarrierTemplate {
 	public void setTemplateImageName(String templateImageName) {
 		this.templateImageName = templateImageName;
 	}
+	public String getTemplateImageUrl() {
+		return templateImageUrl;
+	}
+	public void setTemplateImageUrl(String templateImageUrl) {
+		this.templateImageUrl = templateImageUrl;
+	}
 	public Date getRegisteredDatetime() {
 		return registeredDatetime;
 	}
@@ -55,5 +63,11 @@ public class CarrierTemplate {
 	public void setTemplateCount(String templateCount) {
 		this.templateCount = templateCount;
 	}
-    
+	public Integer getRowNum() {
+		return rowNum;
+	}
+	public void setRowNum(Integer rowNum) {
+		this.rowNum = rowNum;
+	}
+	
 }

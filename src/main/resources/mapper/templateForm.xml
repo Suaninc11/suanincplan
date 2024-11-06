@@ -59,5 +59,27 @@
 	        coordinate_y_axis = #{coordinateYAxis}
 	    WHERE template_coordinate_id = #{templateCoordinateId}
 	</update>
+	
+    <select id="selectTemplateImageList" resultType="com.suaninc.newsagency.domain.CarrierTemplate">
+		SELECT
+		    ROW_NUMBER() OVER (ORDER BY ct.registered_datetime) AS rowNum,
+		    ct.carrier_template_id AS carrierTemplateId,
+		    ct.template_code AS templateCode,
+		    ct.template_name AS templateName,
+		    ct.template_image_order AS templateImageOrder,
+		    ct.template_image_name AS templateImageName,
+		    DATE_FORMAT(ct.registered_datetime, '%Y-%m-%d') AS registeredDatetime
+		FROM
+		    carrier_template ct
+		WHERE
+		    ct.template_code = #{templateCode}
+		ORDER BY ct.registered_datetime DESC
+    </select>
+    
+	<update id="updateTemplateImageName" parameterType="com.suaninc.newsagency.domain.CarrierTemplate">
+	    UPDATE carrier_template
+	    SET template_image_name = #{templateImageName}
+	    WHERE carrier_template_id = #{carrierTemplateId}
+	</update>
 
 </mapper>

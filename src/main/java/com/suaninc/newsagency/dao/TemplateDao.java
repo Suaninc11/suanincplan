@@ -15,5 +15,8 @@ public interface TemplateDao {
 	public List<TemplateCoordinate> selectTemplateInfo(String templateCode);
 	
 	public int updateCoordinate(TemplateCoordinate form);
+	
+	public List<CarrierTemplate> selectTemplateImageList(String templateCode);
 
+	public int updateTemplateImageName(CarrierTemplate form);
 }

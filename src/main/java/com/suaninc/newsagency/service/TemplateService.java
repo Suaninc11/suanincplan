@@ -19,4 +19,9 @@ public interface TemplateService {
 	// 템플릿 좌표 수정
 	public int modifyCoordinate(TemplateCoordinate form);
 	
+	// 템플릿 이미지
+	public List<CarrierTemplate> getTemplateImageList(String templateCode);
+	
+    public int updateImageName(CarrierTemplate form);
+    
 }

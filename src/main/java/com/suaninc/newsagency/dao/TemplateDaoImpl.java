@@ -47,5 +47,15 @@ public class TemplateDaoImpl implements TemplateDao {
 	public int updateCoordinate(TemplateCoordinate form) {
 		return sqlSession.update("templateForm.updateCoordinate", form);
 	}
+	
+	@Override
+	public List<CarrierTemplate> selectTemplateImageList(String templateCode) {
+		return sqlSession.selectList("templateForm.selectTemplateImageList", templateCode);
+	}
+
+	@Override
+	public int updateTemplateImageName(CarrierTemplate form) {
+		return sqlSession.update("templateForm.updateTemplateImageName", form);
+	}
 
 }
