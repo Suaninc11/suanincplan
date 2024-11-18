@@ -35,8 +35,8 @@ public class CarrierPlanServiceImpl implements CarrierPlanService {
 	}
 	
 	@Override
-	public int addCarrierPlan(CarrierPlan form) {
-		return carrierPlanDao.addCarrierPlan(form);
+	public int createCarrierPlan(CarrierPlan form) {
+		return carrierPlanDao.createCarrierPlan(form);
 	}
 	
 	

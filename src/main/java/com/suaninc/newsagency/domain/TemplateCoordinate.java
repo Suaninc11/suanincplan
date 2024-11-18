@@ -15,6 +15,7 @@ public class TemplateCoordinate {
     private Integer fontSize;
     private Integer coordinateXAxis;
     private Integer coordinateYAxis;
+    private Date lastUpdatedDatetime;
     private Date registeredDatetime;
     
     private String templateImagePath; 
@@ -84,6 +85,12 @@ public class TemplateCoordinate {
 	}
 	public void setCoordinateYAxis(Integer coordinateYAxis) {
 		this.coordinateYAxis = coordinateYAxis;
+	}
+	public Date getLastUpdatedDatetime() {
+		return lastUpdatedDatetime;
+	}
+	public void setLastUpdatedDatetime(Date lastUpdatedDatetime) {
+		this.lastUpdatedDatetime = lastUpdatedDatetime;
 	}
 	public Date getRegisteredDatetime() {
 		return registeredDatetime;

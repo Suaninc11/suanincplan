@@ -55,11 +55,10 @@ public class TemplateController {
 	    List<TemplateCoordinate> templateInfo = templateService.getTemplateInfo(templateCode);
 	    List<CarrierTemplate> templateImageList = templateService.getTemplateImageList(templateCode);
 
-	    String baseUrl = "/images/" + templateCode + "/";
-
+	    String uploadDir = fileStorageProperties.getUploadDir();
 	    templateImageList.forEach(image -> {
-	        String imageUrl = baseUrl + image.getTemplateImageName(); // 이미지 URL 생성
-	        image.setTemplateImageUrl(imageUrl);
+	        Path imagePath = Paths.get(uploadDir, templateCode, image.getTemplateImageName());
+	        image.setTemplateImageUrl(imagePath.toString());
 	    });
 
 	    model.addAttribute("templateCode", templateCode);
@@ -73,7 +72,6 @@ public class TemplateController {
 	@PostMapping("/homepage/template/modifyCoordinate")
 	public ResponseEntity<String> modifyTemplate(@RequestBody TemplateCoordinate form) {
 
-	    // 유효성 검사: 필수 필드가 비어 있으면 400 오류 반환
 	    if (form.getCoordinateXAxis() == null || form.getCoordinateYAxis() == null) {
 	        return ResponseEntity.badRequest().body("좌표 값이 누락되었습니다.");
 	    }

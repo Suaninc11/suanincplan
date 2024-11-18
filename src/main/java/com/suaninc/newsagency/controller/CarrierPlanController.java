@@ -87,18 +87,19 @@ public class CarrierPlanController {
 	}
 	
 	
-	@GetMapping("/homepage/carrierPlan/PlanListAdd.html")
-	public String getPlanListAdd() {
-	    return "PlanListAdd";  
+	@GetMapping("/homepage/carrierPlan/carrierPlanForm")
+	public String carrierPlanForm() {
+		
+	    return "carrierPlanForm";  
 	}
 
-	@PostMapping("/homepage/carrierPlan/addCarrierPlan")
+	@PostMapping("/homepage/carrierPlan/createCarrierPlan")
 	@ResponseBody
-	public Map<String, Object> addCarrierPlan(CarrierPlan form) {
+	public Map<String, Object> createCarrierPlan(CarrierPlan form) {
 	    Map<String, Object> response = new HashMap<>();
 
 	    try {
-	        carrierPlanService.addCarrierPlan(form);
+	        carrierPlanService.createCarrierPlan(form);
 	        response.put("success", true);
 	        response.put("message", "추가가 완료되었습니다.");
 	        response.put("redirectUrl", "/homepage/carrierPlan/carrierPlanList");

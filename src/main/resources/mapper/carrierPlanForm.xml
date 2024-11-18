@@ -26,6 +26,7 @@
 			mobile_data AS mobileData,
 			mobile_qos AS mobileQos,
 			mobile_message AS mobileMessage,
+			last_updated_datetime AS lastUpdatedDatetime,
 			registered_datetime AS registeredDatetime
 		FROM
 			carrier_plan cp
@@ -51,6 +52,7 @@
 			mobile_data AS mobileData,
 			mobile_qos AS mobileQos,
 			mobile_message AS mobileMessage,
+			last_updated_datetime AS lastUpdatedDatetime,
 			registered_datetime AS registeredDatetime
 		FROM
 			carrier_plan cp
@@ -78,7 +80,7 @@
 	    WHERE carrier_plan_id = #{carrierPlanId}
 	</delete>
 
-	<insert id="addCarrierPlan" parameterType="com.suaninc.newsagency.domain.CarrierPlan">
+	<insert id="createCarrierPlan" parameterType="com.suaninc.newsagency.domain.CarrierPlan">
 	    INSERT INTO carrier_plan 
 		    (template_code,
 		    carrier_plan_name,
@@ -90,21 +92,19 @@
 		    mobile_data,
 		    mobile_qos,
 		    mobile_message,
-		    registered_datetime)
-	    VALUES
-			    (#{templateCode},
-			    #{carrierPlanName},
-			    #{mobileCarrier},
-			    #{monthlyBillingAmt},
-			    #{basicAmt},
-			    #{discountAmt},
-			    #{voiceCall},
-			    #{mobileData},
-			    #{mobileQos},
-			    #{mobileMessage},
-			    now())
+		    registered_datetime
+		) VALUES (
+			#{templateCode},
+		    #{carrierPlanName},
+		    #{mobileCarrier},
+		    #{monthlyBillingAmt},
+		    #{basicAmt},
+		    #{discountAmt},
+		    #{voiceCall},
+		    #{mobileData},
+		    #{mobileQos},
+		    #{mobileMessage},
+		    now())
 	</insert>
-
-
 
 </mapper>

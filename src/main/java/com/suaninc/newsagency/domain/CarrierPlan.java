@@ -15,6 +15,7 @@ public class CarrierPlan {
     private String mobileData;
     private String mobileQos;
     private String mobileMessage;
+    private Date lastUpdatedDatetime;
     private Date registeredDatetime;
     
     private Long offset;
@@ -85,6 +86,12 @@ public class CarrierPlan {
 	}
 	public void setMobileMessage(String mobileMessage) {
 		this.mobileMessage = mobileMessage;
+	}
+	public Date getLastUpdatedDatetime() {
+		return lastUpdatedDatetime;
+	}
+	public void setLastUpdatedDatetime(Date lastUpdatedDatetime) {
+		this.lastUpdatedDatetime = lastUpdatedDatetime;
 	}
 	public Date getRegisteredDatetime() {
 		return registeredDatetime;

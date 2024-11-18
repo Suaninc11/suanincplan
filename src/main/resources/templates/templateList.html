@@ -39,6 +39,7 @@
 											<th>템플릿코드</th>
 											<th>템플릿명</th>
 											<th>템플릿페이지수</th>
+											<th>수정일자</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -48,6 +49,7 @@
 												<a th:href="@{/homepage/template/templateInfo(templateCode=${template.templateCode})}" th:text="${template.templateName}"></a>
 											</td>
 										    <td th:text="${template.templateCount}"></td>
+											<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 										</tr>
 									</tbody>
 								</table>

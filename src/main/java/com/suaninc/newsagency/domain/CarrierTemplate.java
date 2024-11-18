@@ -10,6 +10,7 @@ public class CarrierTemplate {
     private Integer templateImageOrder;
     private String templateImageName;
     private String templateImageUrl;
+    private Date lastUpdatedDatetime;
     private Date registeredDatetime;
     
     private String templateCount;
@@ -50,6 +51,12 @@ public class CarrierTemplate {
 	}
 	public void setTemplateImageUrl(String templateImageUrl) {
 		this.templateImageUrl = templateImageUrl;
+	}
+	public Date getLastUpdatedDatetime() {
+		return lastUpdatedDatetime;
+	}
+	public void setLastUpdatedDatetime(Date lastUpdatedDatetime) {
+		this.lastUpdatedDatetime = lastUpdatedDatetime;
 	}
 	public Date getRegisteredDatetime() {
 		return registeredDatetime;

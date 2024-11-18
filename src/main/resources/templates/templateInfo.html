@@ -15,157 +15,58 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
 	<style>
-		/* 테이블 레이아웃 고정 */
-		table {
-		    table-layout: fixed; /* 고정 레이아웃 설정 */
-		    width: 100%; /* 전체 테이블 너비 설정 (필요에 따라 조정 가능) */
+		.td-no-padding {
+		    padding: 0.5rem !important;
 		}
-
-		/* 특정 열 너비 고정 */
-		th.fixed-width {
-		    width: 70px; /* 원하는 고정 너비 설정 */
-		}
-	    /* 이미지 컨테이너 */
-	    .image-container {
-	        position: relative;
-	        display: inline-block;
-	    }
-
-	    /* 이미지 위에 나타날 텍스트 */
-	    .draggable-text {
-	        position: absolute;
-	        cursor: move;
-	        background-color: rgba(255, 255, 255, 0.7);
-	        padding: 5px;
-	        border-radius: 5px;
-	        user-select: none;
-	    }
-		
-		#modal-text {
-		    position: absolute; /* 좌표 기반의 배치를 가능하게 함 */
-		    color: black;
-		    background-color: rgba(255, 255, 255, 0.8);
-		    border: 1px solid #ddd;
-		    padding: 5px;
-		}
-		
-		.image-container img {
-		    pointer-events: none; /* 이미지는 마우스 이벤트를 받지 않음 */
-		}
-		
-		.image-container {
-		    position: relative; /* 부모 요소를 기준으로 자식 요소의 위치 계산 */
-		}
-		
-		.btn-primary:focus, 
-		.btn-primary.focus {
-		    outline: none;         /* 외곽선 제거 */
-		    box-shadow: none;      /* 클릭 시 빛나는 효과 제거 */
+		.input-full {
+			width: 100%;
+			height: 100%;
+			padding: 5px;
+			box-sizing: border-box; /* 테두리 크기를 포함하여 크기 계산 */
 		}
 	</style>
 	<script>
 		$(document).ready(function () {
-		    let isDragging = false;
-		    let offsetX, offsetY;
+		    // 수정 버튼 클릭 시
+		    $('.btn-primary').on('click', function () {
+		        // 클릭한 버튼의 행 가져오기
+		        var row = $(this).closest('tr');
 
-		    // 모달 열릴 때 좌표값 초기화
-		    $('#editModal').on('show.bs.modal', function (event) {
-		        var button = $(event.relatedTarget);
-		        var coordinateName = button.data('coordinate-name');
-		        var templateCoordinateId = button.data('coordinate-id');
-		        var templateCode = button.data('code');
-		        var x = button.data('x');
-		        var y = button.data('y');
-				var imagePath = button.data('path');  // 이미지 경로 가져오기
+		        // 입력된 값 가져오기
+		        var coordinateXAxis = row.find('input').eq(0).val(); // X 좌표값
+		        var coordinateYAxis = row.find('input').eq(1).val(); // Y 좌표값
+		        var templateCoordinateId = $(this).data('coordinate-id'); // 데이터 ID
+		        var templateCode = $(this).data('code'); // 템플릿 코드
 
-		        var modal = $(this);
-		        modal.find('#modal-text').text(coordinateName);
-		        modal.find('#modal-text').css({
-		            'left': x + 'px',
-		            'top': y + 'px'
-		        });
-				
-				modal.find('#modal-image').attr('src', '/images/' + imagePath);
+		        // 서버로 보낼 데이터 생성
+		        var payload = {
+		            templateCoordinateId: templateCoordinateId,
+		            templateCode: templateCode,
+		            coordinateXAxis: coordinateXAxis,
+		            coordinateYAxis: coordinateYAxis
+		        };
 
-		        $('#templateCoordinateId').val(templateCoordinateId);
-		        $('#templateCode').val(templateCode);
-		    });
-
-		    // 드래그 앤 드롭 기능
-		    $('#modal-text').on('mousedown', function (e) {
-		        isDragging = true;
-
-		        var rect = this.getBoundingClientRect();
-		        offsetX = e.clientX - rect.left;
-		        offsetY = e.clientY - rect.top;
-
-		        e.preventDefault();
-		    });
-
-		    $(document).on('mousemove', function (e) {
-		        if (isDragging) {
-		            var modalRect = $('#editModal .modal-content')[0].getBoundingClientRect();
-
-		            $('#modal-text').css({
-		                'left': e.clientX - modalRect.left - offsetX + 'px',
-		                'top': e.clientY - modalRect.top - offsetY + 'px'
-		            });
-		        }
-		    });
-
-		    $(document).on('mouseup', function () {
-		        isDragging = false;
-		    });
-
-		    // 저장 버튼 클릭 시 좌표값 서버로 전송
-		    $('#save-position').on('click', function () {
-		        var textElement = $('#modal-text');
-		        var templateCoordinateId = $('#templateCoordinateId').val();
-		        var templateCode = $('#templateCode').val();
-				let coordinateXAxis = parseInt(textElement.css('left').replace('px', ''), 10);
-				let coordinateYAxis = parseInt(textElement.css('top').replace('px', ''), 10);
-
-		        // Ajax 요청
+		        // Ajax로 서버에 데이터 전송
 		        $.ajax({
 		            url: '/homepage/template/modifyCoordinate',
 		            method: 'POST',
 		            contentType: 'application/json',
-		            data: JSON.stringify({
-		                templateCoordinateId: templateCoordinateId,
-		                templateCode: templateCode,
-		                coordinateXAxis: coordinateXAxis,
-		                coordinateYAxis: coordinateYAxis
-		            }),
-		            success: function(response) {
-						console.log('응답 성공:', response);  // 응답이 성공적으로 들어오는지 확인
-		                alert('좌표가 성공적으로 업데이트되었습니다!');
-						
-						var row = $('td').filter(function() {
-						    return $(this).text().trim() === templateCoordinateId.toString().trim();
-						}).closest('tr');
+		            data: JSON.stringify(payload),
+		            success: function (response) {
+		                alert('데이터가 성공적으로 수정되었습니다.');
 
-						console.log('선택된 row:', row);  // 선택된 row 확인
-
-						if (row.length > 0) {
-						    row.find('td').eq(4).text(coordinateXAxis); // X 값 업데이트
-						    row.find('td').eq(5).text(coordinateYAxis); // Y 값 업데이트
-						} else {
-						    console.error('해당 templateCoordinateId에 해당하는 행을 찾을 수 없습니다.');
-						}
-						
-		                $('#editModal').modal('hide');
+		                // 성공 시 수정된 값으로 화면 갱신
+		                row.find('input').eq(0).val(coordinateXAxis); // X 좌표값
+		                row.find('input').eq(1).val(coordinateYAxis); // Y 좌표값
 		            },
-		            error: function(error) {
-		                console.error('좌표 업데이트 중 오류 발생:', error);
-		                alert('좌표 업데이트 중 오류가 발생했습니다.');
-		            },
-				    complete: function(xhr, status) {
-				        console.log('AJAX 요청이 완료되었습니다. 상태:', status);
-				    }
+		            error: function (error) {
+		                console.error('수정 중 오류 발생:', error);
+		                alert('데이터 수정에 실패했습니다.');
+		            }
 		        });
 		    });
 		});
-		
+
 		function openImageModal(image) {
 		    const modalImage = document.getElementById("modalImage");
 		    modalImage.src = image.src; // 클릭한 이미지의 src를 모달 이미지에 설정
@@ -237,7 +138,6 @@
 		    })
 		    .catch(error => console.error("Error replacing image:", error));
 		}
-
 	</script>
 </head>
 
@@ -276,6 +176,7 @@
 					                            <th>X값</th>
 					                            <th>Y값</th>
 					                            <th>페이지 번호</th>
+												<th>수정일자</th>
 												<th class="fixed-width"></th>
 					                        </tr>
 					                    </thead>
@@ -285,20 +186,21 @@
 					                            <td th:text="${template.templateInputType}"></td>
 					                            <td th:text="${template.fontStyle}"></td>
 					                            <td th:text="${template.fontSize}"></td>
-					                            <td th:text="${template.coordinateXAxis}"></td>
-					                            <td th:text="${template.coordinateYAxis}"></td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateXAxis}">
+												</td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateYAxis}">
+												</td>
 					                            <td th:text="${template.templateImageOrder}"></td>
+												<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 					                            <td style="padding:0.5rem;">
 													<button type="button" class="btn btn-primary shadow-sm"
 													    style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
 													    th:attr="data-coordinate-name=${template.templateCoordinateName},
-																 data-coordinate-id=${template.templateCoordinateId}, 
-																 data-code=${template.templateCode}, 
-													             data-input-type=${template.templateInputType}, 
-													             data-x=${template.coordinateXAxis}, 
-																 data-y=${template.coordinateYAxis},
-																 data-path=${template.templateImagePath}"
-													    data-toggle="modal" data-target="#editModal">
+													             data-coordinate-id=${template.templateCoordinateId}, 
+													             data-code=${template.templateCode}, 
+													             data-input-type=${template.templateInputType}">
 													    수정
 													</button>
 					                            </td>
@@ -331,6 +233,7 @@
 					                            <th>X값</th>
 					                            <th>Y값</th>
 					                            <th>페이지 번호</th>
+												<th>수정일자</th>
             									<th class="fixed-width"></th>
 					                        </tr>
 					                    </thead>
@@ -340,9 +243,14 @@
 					                            <td th:text="${template.templateInputType}"></td>
 					                            <td th:text="${template.fontStyle}"></td>
 					                            <td th:text="${template.fontSize}"></td>
-					                            <td th:text="${template.coordinateXAxis}"></td>
-					                            <td th:text="${template.coordinateYAxis}"></td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateXAxis}">
+												</td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateYAxis}">
+												</td>
 					                            <td th:text="${template.templateImageOrder}"></td>
+												<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 					                            <td style="padding:0.5rem;">
 													<button type="button" class="btn btn-primary shadow-sm"
 													    style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
@@ -365,10 +273,10 @@
 					    </div>
 					</div>
 					
-					<!-- 유심정보 -->
+					<!-- 가입비 및 유심정보 -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
-						    <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
+						    <h6 class="m-0 font-weight-bold text-primary">가입비 및 유심정보</h6>
 							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseCustomerType" aria-expanded="true" aria-controls="collapseCustomerType">
 							    <i class="fas fa-chevron-up"></i>
 							</button>
@@ -386,18 +294,24 @@
 					                            <th>X값</th>
 					                            <th>Y값</th>
 					                            <th>페이지 번호</th>
+												<th>수정일자</th>
 												<th class="fixed-width"></th>
 					                        </tr>
 					                    </thead>
 					                    <tbody>
-					                        <tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '유심정보'">
+					                        <tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '가입비 및 유심정보'">
 					                            <td th:text="${template.templateCoordinateName}"></td>
 					                            <td th:text="${template.templateInputType}"></td>
 					                            <td th:text="${template.fontStyle}"></td>
 					                            <td th:text="${template.fontSize}"></td>
-					                            <td th:text="${template.coordinateXAxis}"></td>
-					                            <td th:text="${template.coordinateYAxis}"></td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateXAxis}">
+												</td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateYAxis}">
+												</td>
 					                            <td th:text="${template.templateImageOrder}"></td>
+												<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 					                            <td style="padding:0.5rem;">
 													<button type="button" class="btn btn-primary shadow-sm"
 													    style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
@@ -434,7 +348,6 @@
 									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 										<thead>
 											<tr>
-												<th>번호</th>
 												<th>템플릿코드</th>
 												<th>타입</th>
 												<th>폰트</th>
@@ -442,19 +355,24 @@
 												<th>X값</th>
 												<th>Y값</th>
 												<th>페이지 번호</th>
+												<th>수정일자</th>
             									<th class="fixed-width"></th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '고객정보'">
-												<td th:text="${template.templateCoordinateId}"></td>												
 										        <td th:text="${template.templateCoordinateName}"></td>
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
 												<td th:text="${template.fontSize}"></td>
-										        <td th:text="${template.coordinateXAxis}"></td>
-										        <td th:text="${template.coordinateYAxis}"></td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateXAxis}">
+												</td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateYAxis}">
+												</td>
 												<td th:text="${template.templateImageOrder}"></td>
+												<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 										        <td style="padding:0.5rem;">
 													<button type="button" class="btn btn-primary shadow-sm"
 													    style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
@@ -498,6 +416,7 @@
 												<th>X값</th>
 												<th>Y값</th>
 												<th>페이지 번호</th>
+												<th>수정일자</th>
             									<th class="fixed-width"></th>
 											</tr>
 										</thead>
@@ -507,9 +426,14 @@
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
 												<td th:text="${template.fontSize}"></td>
-										        <td th:text="${template.coordinateXAxis}"></td>
-										        <td th:text="${template.coordinateYAxis}"></td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateXAxis}">
+												</td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateYAxis}">
+												</td>
 												<td th:text="${template.templateImageOrder}"></td>
+												<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 										        <td style="padding:0.5rem;">
 													<button type="button" class="btn btn-primary shadow-sm"
 													    style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
@@ -553,6 +477,7 @@
 												<th>X값</th>
 												<th>Y값</th>
 												<th>페이지 번호</th>
+												<th>수정일자</th>
             									<th class="fixed-width"></th>
 											</tr>
 										</thead>
@@ -562,9 +487,14 @@
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
 												<td th:text="${template.fontSize}"></td>
-										        <td th:text="${template.coordinateXAxis}"></td>
-										        <td th:text="${template.coordinateYAxis}"></td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateXAxis}">
+												</td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateYAxis}">
+												</td>
 												<td th:text="${template.templateImageOrder}"></td>
+												<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 										        <td style="padding:0.5rem;">
 													<button type="button" class="btn btn-primary shadow-sm"
 													    style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
@@ -608,6 +538,7 @@
 												<th>X값</th>
 												<th>Y값</th>
 												<th>페이지 번호</th>
+												<th>수정일자</th>
             									<th class="fixed-width"></th>
 											</tr>
 										</thead>
@@ -617,9 +548,14 @@
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
 												<td th:text="${template.fontSize}"></td>
-										        <td th:text="${template.coordinateXAxis}"></td>
-										        <td th:text="${template.coordinateYAxis}"></td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateXAxis}">
+												</td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateYAxis}">
+												</td>
 												<td th:text="${template.templateImageOrder}"></td>
+												<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 										        <td style="padding:0.5rem;">
 													<button type="button" class="btn btn-primary shadow-sm"
 												        style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
@@ -663,6 +599,7 @@
 												<th>X값</th>
 												<th>Y값</th>
 												<th>페이지 번호</th>
+												<th>수정일자</th>
             									<th class="fixed-width"></th>
 											</tr>
 										</thead>
@@ -672,9 +609,14 @@
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
 												<td th:text="${template.fontSize}"></td>
-										        <td th:text="${template.coordinateXAxis}"></td>
-										        <td th:text="${template.coordinateYAxis}"></td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateXAxis}">
+												</td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateYAxis}">
+												</td>
 												<td th:text="${template.templateImageOrder}"></td>
+												<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 										        <td style="padding:0.5rem;">
 													<button type="button" class="btn btn-primary shadow-sm"
 												        style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
@@ -700,12 +642,12 @@
 					<!-- 공통체크 -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
-						    <h6 class="m-0 font-weight-bold text-primary">판매자정보</h6>
-							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseSellerInfo" aria-expanded="true" aria-controls="collapseSellerInfo">
+						    <h6 class="m-0 font-weight-bold text-primary">공통체크</h6>
+							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseCommonInfo" aria-expanded="true" aria-controls="collapseCommonInfo">
 							    <i class="fas fa-chevron-down"></i>
 							</button>
 						</div>
-						<div id="collapseSellerInfo" class="collapse">
+						<div id="collapseCommonInfo" class="collapse">
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -718,6 +660,7 @@
 												<th>X값</th>
 												<th>Y값</th>
 												<th>페이지 번호</th>
+												<th>수정일자</th>
 												<th class="fixed-width"></th>
 											</tr>
 										</thead>
@@ -727,20 +670,17 @@
 										        <td th:text="${template.templateInputType}"></td>
 												<td th:text="${template.fontStyle}"></td>
 												<td th:text="${template.fontSize}"></td>
-										        <td th:text="${template.coordinateXAxis}"></td>
-										        <td th:text="${template.coordinateYAxis}"></td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateXAxis}">
+												</td>
+												<td class="td-no-padding">
+												    <input type="text" class="form-control input-full" th:value="${template.coordinateYAxis}">
+												</td>
 												<td th:text="${template.templateImageOrder}"></td>
+												<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 										        <td style="padding:0.5rem;">
 													<button type="button" class="btn btn-primary shadow-sm"
-												        style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
-												        th:attr="data-coordinate-name=${template.templateCoordinateName},
-																 data-coordinate-id=${template.templateCoordinateId}, 
-																 data-code=${template.templateCode}, 
-												                 data-input-type=${template.templateInputType}, 
-												                 data-x=${template.coordinateXAxis}, 
-																 data-y=${template.coordinateYAxis},
-																 data-path=${template.templateImagePath}"
-												        data-toggle="modal" data-target="#editModal">
+												        style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;">
 													    수정
 													</button>
 										        </td>
@@ -770,7 +710,7 @@
 												<th>이미지</th>
 					                            <th>이미지명</th>
 					                            <th class="fixed-width">순서</th>
-												<th>등록일</th>
+												<th>수정일자</th>
 												<th class="fixed-width"></th>
 					                        </tr>
 					                    </thead>
@@ -778,12 +718,12 @@
 										    <tr th:each="templateImage : ${templateImageList}">
 										        <td th:text="${templateImage.rowNum}" class="text-center align-middle"></td>
 										        <td class="text-center align-middle">
-										            <img th:src="${templateImage.templateImageUrl}" alt="Image" class="img-thumbnail" width="100" height="100"
-										                 onclick="openImageModal(this)">
+										            <img th:src="@{/external-images/{templateCode}/{imageName}(templateCode=${templateImage.templateCode}, imageName=${templateImage.templateImageName})}"
+														alt="Image" class="img-thumbnail" width="100" height="100" onclick="openImageModal(this)">
 										        </td>
 										        <td th:text="${templateImage.templateImageName}" class="text-center align-middle"></td>
 										        <td th:text="${templateImage.templateImageOrder}" class="text-center align-middle"></td>
-										        <td th:text="${#dates.format(templateImage.registeredDatetime, 'yyyy-MM-dd')}" class="text-center align-middle"></td>
+										        <td th:text="${#dates.format(templateImage.lastUpdatedDatetime, 'yyyy-MM-dd')}" class="text-center align-middle"></td>
 										        <td class="text-center align-middle" style="padding:0.5rem;">
 										            <button type="button" class="btn btn-primary shadow-sm"
 										                style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
@@ -816,31 +756,6 @@
 			</footer>
         </div>
     </div>
-	
-	<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-	    <div class="modal-dialog modal-lg">
-	        <div class="modal-content">
-	            <form id="coordinate-form">
-	                <div class="modal-body">
-	                    <div class="image-container">
-	                        <img id="modal-image" src="" alt="이미지" class="img-fluid">
-	                        <div id="container">
-	                            <div id="modal-text" class="draggable-text"></div>
-	                        </div>
-	                    </div>
-	                </div>
-	                <div class="modal-footer">
-						<input type="hidden" name="templateCoordinateId" id="templateCoordinateId">
-						<input type="hidden" name="templateCode" id="templateCode" th:value="${templateCode}">
-	                    <input type="hidden" name="coordinateXAxis" id="coordinateXAxis">
-	                    <input type="hidden" name="coordinateYAxis" id="coordinateYAxis">
-	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-	                    <button type="button" class="btn btn-primary" id="save-position">저장</button>
-	                </div>
-	            </form>
-	        </div>
-	    </div>
-	</div>
 	
 	<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
 	    <div class="modal-dialog modal-lg">

@@ -49,8 +49,8 @@ public class CarrierPlanDaoImpl implements CarrierPlanDao {
 	}
 
 	@Override
-	public int addCarrierPlan(CarrierPlan form) {
-		return sqlSession.insert("carrierPlanForm.addCarrierPlan", form);
+	public int createCarrierPlan(CarrierPlan form) {
+		return sqlSession.insert("carrierPlanForm.createCarrierPlan", form);
 	}
 
 	

@@ -3,27 +3,27 @@ package com.suaninc.newsagency.domain;
 public class ApplyForm {
 
 	// 고객구분 관련 필드
-	private String customerType;
+	private String customerType;		// 고객구분
 	
 	// 요금제 관련 필드
-	private String templateCode; 		// 일련번호
-	private String carrierType;
+	private String templateCode; 		// 통신사코드
+	private String carrierType;			// 통신사종류
 	private String carrierPlan;      	// 요금제
-	private String carrierPlanName;		// 요금제명
-	private String mobileCarrier;		// 일련번호
-	private Integer monthlyBillingAmt;	// 월 청구요금
+	private String carrierPlanName;		// 통신사종류
+	private String mobileCarrier;		// 요금제
+	private Integer monthlyBillingAmt;	// 월청구요금
 	private Integer basicAmt; 			// 기본료
 	private Integer discountAmt; 		// 할인
-	private String voiceCall;		 	// 일련번호
-	private String mobileData; 			// 일련번호
-	private String mobileQos; 			// 일련번호
-	private String mobileMessage; 		// 일련번호
+	private String voiceCall;		 	// 음성
+	private String mobileData; 			// 데이터
+	private String mobileQos; 			// QOS
+	private String mobileMessage; 		// 메시지
     
 	// 가입비 및 유심정보 관련 필드
 	private String simName;	 			// 모델명
     private String simSerialNumber;  	// 일련번호
-    private String simCost;          	// 유심 비용
-    private String simCostValue;        // 유심 비용
+    private String simCost;          	// 유심비용
+    private String simCostValue;        // 유심고정비용
     private String subscriptionCost; 	// 가입비
 
     // 고객정보 관련 필드
@@ -31,12 +31,12 @@ public class ApplyForm {
     private String name;            	// 가입자명
     private String birthdate;        	// 생년월일
     private String address;          	// 주소
-    private String activationNumber;	// 개통 번호
-    private String portabilityNumber;	// 개통 번호
-    private String mobileNumber;        // 가입자 번호
+    private String activationNumber;	// 개통번호
+    private String portabilityNumber;	// 이동번호
+    private String mobileNumber;        // 가입자번호
     private String gender;        		// 성별
-    private String previousCarrier;  	// 이전 통신사
-    private String commonMoveCheck; 	// 번호 이동 기본 체크
+    private String previousCarrier;  	// 이전통신사
+    private String commonMoveCheck; 	// 번호이동 기본체크
     private String mvno;				// MVNO
     
     private String skTelinkNumber;		// skTelink 가입자 or 번호이동 번호
@@ -76,13 +76,13 @@ public class ApplyForm {
     private String sellerNumber;    	// 판매자 연락처
     
     // 공통체크
-	private String commonCheck;   		// 약관 동의
-	private String commonText;   		// 약관 동의
-	private String commonYear;    		// 약관 년도
-	private String commonShortYear;    	// 약관 년도 뒷자리
-	private String commonShortShortYear;// 약관 년도 뒷 한자리
-	private String commonMonth;    		// 약관 월
-	private String commonDay;    		// 약관 일
+	private String commonCheck;   		// 공통체크
+	private String commonText;   		// 공통문구
+	private String commonYear;    		// 약관년도
+	private String commonShortYear;    	// 약관년도 뒷자리
+	private String commonShortShortYear;// 약관년도 뒷한자리
+	private String commonMonth;    		// 약관월
+	private String commonDay;    		// 약관일
 	
 	
 	public String getCustomerType() {

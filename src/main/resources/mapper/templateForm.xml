@@ -20,7 +20,8 @@
 		SELECT
 			ct.template_code AS templateCode,
 			ct.template_name AS templateName,
-			COUNT(ct.template_code) as templateCount
+			COUNT(ct.template_code) as templateCount,
+			MAX(ct.last_updated_datetime) AS lastUpdatedDatetime
 		FROM
 			carrier_template ct
 		group by template_code, template_name
@@ -41,6 +42,7 @@
 			tc.coordinate_x_axis AS coordinateXAxis,
 			tc.coordinate_y_axis AS coordinateYAxis,
 			CONCAT(ct.template_code ,'/' , ct.template_image_name) AS templateImagePath,
+			tc.last_updated_datetime AS lastUpdatedDatetime,
 			tc.registered_datetime AS registeredDatetime
 		FROM
 			template_coordinate tc
@@ -68,6 +70,7 @@
 		    ct.template_name AS templateName,
 		    ct.template_image_order AS templateImageOrder,
 		    ct.template_image_name AS templateImageName,
+		    DATE_FORMAT(ct.last_updated_datetime, '%Y-%m-%d') AS lastUpdatedDatetime,
 		    DATE_FORMAT(ct.registered_datetime, '%Y-%m-%d') AS registeredDatetime
 		FROM
 		    carrier_template ct

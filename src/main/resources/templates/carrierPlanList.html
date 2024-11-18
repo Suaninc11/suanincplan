@@ -63,6 +63,7 @@
 											<th>기본료</th>
 											<th>할인</th>
 											<th>문자</th>
+											<th>수정일자</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -75,6 +76,7 @@
 										    <td th:text="${carrierPlan.basicAmt + '원'}"></td>
 										    <td th:text="${carrierPlan.discountAmt + '원'}"></td>
 										    <td th:text="${carrierPlan.voiceCall}"></td>
+											<td th:text="${#dates.format(carrierPlan.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -83,7 +85,7 @@
 							<div class="row">
 							  
 								<div style="display: flex; justify-content: flex-end; width: 100%;">
-									<a href="/homepage/carrierPlan/PlanListAdd.html" class=" btn btn-primary shadow-sm " style="margin-right: 10px; ">요금제 추가</a>
+									<a href="/homepage/carrierPlan/carrierPlanForm" class=" btn btn-primary shadow-sm " style="margin-right: 10px; ">요금제 추가</a>
 								</div>
 								<div class="col-sm-12 col-md-12">
 									<div class="pagination justify-content-center">

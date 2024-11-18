@@ -18,14 +18,9 @@ public interface CarrierPlanService {
 	
 	// 요금제 삭제
 	public int deleteCarrierPlan(CarrierPlan form);
-
-	
-	
-	
-	public int addCarrierPlan(CarrierPlan form);
-
-	
 	
 	// 요금제 작성
+	public int createCarrierPlan(CarrierPlan form);
+
 	
 }
