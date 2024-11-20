@@ -1,14 +1,19 @@
 package com.suaninc.newsagency.controller;
 
 
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -52,19 +57,37 @@ public class TemplateController {
 	public String templateInfo(@RequestParam("templateCode") String templateCode, TemplateCoordinate form, Model model,
 	                           @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) throws Exception {
 	    
+	    // 1. 템플릿 정보 가져오기
 	    List<TemplateCoordinate> templateInfo = templateService.getTemplateInfo(templateCode);
 	    List<CarrierTemplate> templateImageList = templateService.getTemplateImageList(templateCode);
 
+	    // 2. 이미지 URL 설정
 	    String uploadDir = fileStorageProperties.getUploadDir();
 	    templateImageList.forEach(image -> {
 	        Path imagePath = Paths.get(uploadDir, templateCode, image.getTemplateImageName());
 	        image.setTemplateImageUrl(imagePath.toString());
 	    });
 
+	    // 3. 프로퍼티 파일에서 매핑 데이터 읽기
+	    Properties properties = new Properties();
+	    try (InputStreamReader reader = new InputStreamReader(
+	            new ClassPathResource("mapping.properties").getInputStream(), StandardCharsets.UTF_8)) {
+	        properties.load(reader);
+	    }
+	    // 4. Properties 객체를 Map<String, String>으로 변환
+	    Map<String, String> coordinateNameMapping = properties.entrySet()
+	        .stream()
+	        .collect(Collectors.toMap(
+	            e -> e.getKey().toString(),
+	            e -> e.getValue().toString()
+	        ));
+
+	    // 5. Model에 데이터 추가
 	    model.addAttribute("templateCode", templateCode);
 	    model.addAttribute("templateInfo", templateInfo);
 	    model.addAttribute("templateImageList", templateImageList);
-	    
+	    model.addAttribute("coordinateNameMapping", coordinateNameMapping); // 매핑 데이터 추가
+
 	    return "templateInfo";
 	}
 
