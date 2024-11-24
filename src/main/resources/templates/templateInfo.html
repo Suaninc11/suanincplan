@@ -15,14 +15,23 @@
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
 	<style>
-		#coordinateCanvas {
-		    width: 100%; /* 화면 너비에 맞게 */
-		    height: auto; /* 비율 유지하며 높이 자동 조정 */
-		    border: 1px solid black;
+		.fixed-width {
+		    width: 70px; /* 원하는 고정 너비 */
+		    text-align: center; /* 중앙 정렬 */
 		}
 	</style>
 	<script>
 		$(document).ready(function () {
+			// Collapse 버튼 클릭 시 아이콘 변경
+			$('.btn-toggle').on('click', function () {
+			    const icon = $(this).find('i'); // 현재 버튼의 아이콘
+			    if (icon.hasClass('fa-chevron-up')) {
+			        icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+			    } else {
+			        icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+			    }
+			});
+			
 		    let canvas, ctx;
 		    let text = ""; // 텍스트 내용
 		    let image = new Image(); // 체크박스 이미지를 위한 객체
@@ -59,9 +68,11 @@
 		        // 배경 이미지 로드 및 캔버스 설정
 		        background.src = backgroundImageUrl;
 
-		        background.onload = function () {
-		            setupCanvas();
-		        };
+				// 배경 이미지 로드 후 캔버스 초기화
+				background.onload = function () {
+				    setupCanvas();
+				    drawCanvas(); // 이미지 로드 후에만 캔버스에 그리기 실행
+				};
 
 		        background.onerror = function () {
 		            console.error("Failed to load background image:", background.src);
@@ -70,6 +81,16 @@
 
 		        $('#coordinateModal').modal('show');
 		    });
+			
+			$('#coordinateModal').on('shown.bs.modal', function () {
+			    if (background.complete && background.naturalWidth !== 0) {
+			        drawCanvas(); // 배경 이미지가 로드된 후 캔버스 그리기
+			    } else {
+			        background.onload = function () {
+			            drawCanvas();
+			        };
+			    }
+			});
 
 		    // 캔버스 설정
 		    function setupCanvas() {
@@ -78,40 +99,38 @@
 
 		        canvas.width = background.width || 2000; // 배경 이미지의 너비
 		        canvas.height = background.height || 2828; // 배경 이미지의 높이
-
-		        drawCanvas();
 		    }
 
 		    // 캔버스에 이미지와 텍스트/체크박스 그리기
-		    function drawCanvas() {
-		        ctx.clearRect(0, 0, canvas.width, canvas.height);
+			function drawCanvas() {
+			    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-		        // 배경 이미지 그리기
-		        if (background.complete && background.naturalWidth !== 0) {
-		            ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-		        } else {
-		            console.error("Background image not loaded:", background.src);
-		            return; // 이미지를 로드하지 못했으므로 종료
-		        }
+			    // 배경 이미지 그리기
+			    if (background.complete && background.naturalWidth !== 0) {
+			        ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+			    } else {
+			        console.error("Background image not loaded:", background.src);
+			        return;
+			    }
 
-		        // 텍스트 또는 체크박스 표시
-		        if (templateInputType === "text") {
-		            ctx.font = `${fontSize}px Arial`;
-		            ctx.fillStyle = "red";
-		            ctx.fillText(text, textX, textY);
-		        } else if (templateInputType === "check") {
-		            if (image.complete && image.naturalWidth !== 0) {
-		                const imgWidth = image.width; // 체크박스 이미지의 원본 너비
-		                const imgHeight = image.height; // 체크박스 이미지의 원본 높이
-		                const centerX = textX - (imgWidth / 2); // X 좌표 중심 계산
-		                const centerY = textY - (imgHeight / 2); // Y 좌표 중심 계산
+			    // 텍스트 또는 체크박스 그리기
+			    if (templateInputType === "text" && text) {
+			        ctx.font = `${fontSize}px Arial`;
+			        ctx.fillStyle = "red";
+			        ctx.fillText(text, textX, textY);
+			    } else if (templateInputType === "check") {
+			        if (image.complete && image.naturalWidth !== 0) {
+			            const imgWidth = image.width;
+			            const imgHeight = image.height;
+			            const centerX = textX - imgWidth / 2;
+			            const centerY = textY - imgHeight / 2;
 
-		                ctx.drawImage(image, centerX, centerY, imgWidth, imgHeight);
-		            } else {
-		                console.error("Checkbox image not loaded:", image.src);
-		            }
-		        }
-		    }
+			            ctx.drawImage(image, centerX, centerY, imgWidth, imgHeight);
+			        } else {
+			            console.error("Checkbox image not loaded:", image.src);
+			        }
+			    }
+			}
 
 		    // 좌표 입력 시 텍스트/체크박스 이동
 		    $('#xInput, #yInput').on('input', function () {
@@ -238,7 +257,7 @@
 					<!-- 고객구분 -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
-						    <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
+						    <h6 class="m-0 font-weight-bold text-primary">고객구분</h6>
 							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseCustomerType" aria-expanded="true" aria-controls="collapseCustomerType">
 							    <i class="fas fa-chevron-up"></i>
 							</button>
@@ -247,20 +266,20 @@
 					        <div class="card-body">
 					            <div class="table-responsive">
 					                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-					                    <thead>
+					                    <thead class="text-center">
 					                        <tr>
-					                            <th>템플릿코드</th>
+					                            <th>입력구분</th>
 					                            <th>타입</th>
 					                            <th>폰트</th>
 					                            <th>크기</th>
-					                            <th>X값</th>
-					                            <th>Y값</th>
+					                            <th>X좌표</th>
+					                            <th>Y좌표</th>
 					                            <th>페이지 번호</th>
-												<th>수정일자</th>
+												<th style="width: 165px;">수정일자</th>
 												<th class="fixed-width"></th>
 					                        </tr>
 					                    </thead>
-					                    <tbody>
+					                    <tbody class="text-center">
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '고객구분'">
 											    <td th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></td>
 											    <td th:text="${template.templateInputType}"></td>
@@ -294,28 +313,28 @@
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
 						    <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
-							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseCustomerType" aria-expanded="true" aria-controls="collapseCustomerType">
-							    <i class="fas fa-chevron-up"></i>
+							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseMobileCarrier" aria-expanded="true" aria-controls="collapseMobileCarrier">
+							    <i class="fas fa-chevron-down"></i>
 							</button>
 						</div>
-					    <div id="collapseCustomerType" class="collapse show">
+					    <div id="collapseMobileCarrier" class="collapse">
 					        <div class="card-body">
 					            <div class="table-responsive">
 					                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-					                    <thead>
+					                    <thead class="text-center">
 					                        <tr>
-					                            <th>템플릿코드</th>
+					                            <th>입력구분</th>
 					                            <th>타입</th>
 					                            <th>폰트</th>
 					                            <th>크기</th>
-					                            <th>X값</th>
-					                            <th>Y값</th>
+					                            <th>X좌표</th>
+					                            <th>Y좌표</th>
 					                            <th>페이지 번호</th>
-												<th>수정일자</th>
+												<th style="width: 165px;">수정일자</th>
             									<th class="fixed-width"></th>
 					                        </tr>
 					                    </thead>
-					                    <tbody>
+					                    <tbody class="text-center">
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '요금제'">
 											    <td th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></td>
 											    <td th:text="${template.templateInputType}"></td>
@@ -349,28 +368,28 @@
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
 						    <h6 class="m-0 font-weight-bold text-primary">가입비 및 유심정보</h6>
-							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseCustomerType" aria-expanded="true" aria-controls="collapseCustomerType">
-							    <i class="fas fa-chevron-up"></i>
+							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseSIMInformation" aria-expanded="true" aria-controls="collapseSIMInformation">
+							    <i class="fas fa-chevron-down"></i>
 							</button>
 						</div>
-					    <div id="collapseCustomerType" class="collapse show">
+					    <div id="collapseSIMInformation" class="collapse">
 					        <div class="card-body">
 					            <div class="table-responsive">
 					                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-					                    <thead>
+					                    <thead class="text-center">
 					                        <tr>
-					                            <th>템플릿코드</th>
+					                            <th>입력구분</th>
 					                            <th>타입</th>
 					                            <th>폰트</th>
 					                            <th>크기</th>
-					                            <th>X값</th>
-					                            <th>Y값</th>
+					                            <th>X좌표</th>
+					                            <th>Y좌표</th>
 					                            <th>페이지 번호</th>
-												<th>수정일자</th>
+												<th style="width: 165px;">수정일자</th>
 												<th class="fixed-width"></th>
 					                        </tr>
 					                    </thead>
-					                    <tbody>
+					                    <tbody class="text-center">
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '가입비 및 유심정보'">
 											    <td th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></td>
 											    <td th:text="${template.templateInputType}"></td>
@@ -405,27 +424,27 @@
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
 						    <h6 class="m-0 font-weight-bold text-primary">고객정보</h6>
 						    <button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseCustomerInfo" aria-expanded="true" aria-controls="collapseCustomerInfo">
-						        <i class="fas fa-chevron-up"></i>
+						        <i class="fas fa-chevron-down"></i>
 						    </button>
 						</div>
-						<div id="collapseCustomerInfo" class="collapse show">
+						<div id="collapseCustomerInfo" class="collapse">
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-										<thead>
+										<thead class="text-center">
 											<tr>
-												<th>템플릿코드</th>
+												<th>입력구분</th>
 												<th>타입</th>
 												<th>폰트</th>
 												<th>크기</th>
-												<th>X값</th>
-												<th>Y값</th>
+												<th>X좌표</th>
+												<th>Y좌표</th>
 												<th>페이지 번호</th>
-												<th>수정일자</th>
+												<th style="width: 165px;">수정일자</th>
             									<th class="fixed-width"></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody class="text-center">
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '고객정보'">
 											    <td th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></td>
 											    <td th:text="${template.templateInputType}"></td>
@@ -467,20 +486,20 @@
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-										<thead>
+										<thead class="text-center">
 											<tr>
-												<th>템플릿코드</th>
+												<th>입력구분</th>
 												<th>타입</th>
 												<th>폰트</th>
 												<th>크기</th>
-												<th>X값</th>
-												<th>Y값</th>
+												<th>X좌표</th>
+												<th>Y좌표</th>
 												<th>페이지 번호</th>
-												<th>수정일자</th>
+												<th style="width: 165px;">수정일자</th>
             									<th class="fixed-width"></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody class="text-center">
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '자동이체'">
 											    <td th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></td>
 											    <td th:text="${template.templateInputType}"></td>
@@ -522,20 +541,20 @@
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-										<thead>
+										<thead class="text-center">
 											<tr>
-												<th>템플릿코드</th>
+												<th>입력구분</th>
 												<th>타입</th>
 												<th>폰트</th>
 												<th>크기</th>
-												<th>X값</th>
-												<th>Y값</th>
+												<th>X좌표</th>
+												<th>Y좌표</th>
 												<th>페이지 번호</th>
-												<th>수정일자</th>
+												<th style="width: 165px;">수정일자</th>
             									<th class="fixed-width"></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody class="text-center">
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '법정대리인'">
 											    <td th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></td>
 											    <td th:text="${template.templateInputType}"></td>
@@ -577,20 +596,20 @@
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-										<thead>
+										<thead class="text-center">
 											<tr>
-												<th>템플릿코드</th>
+												<th>입력구분</th>
 												<th>타입</th>
 												<th>폰트</th>
 												<th>크기</th>
-												<th>X값</th>
-												<th>Y값</th>
+												<th>X좌표</th>
+												<th>Y좌표</th>
 												<th>페이지 번호</th>
-												<th>수정일자</th>
+												<th style="width: 165px;">수정일자</th>
             									<th class="fixed-width"></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody class="text-center">
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '부가기능'">
 											    <td th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></td>
 											    <td th:text="${template.templateInputType}"></td>
@@ -632,20 +651,20 @@
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-										<thead>
+										<thead class="text-center">
 											<tr>
-												<th>템플릿코드</th>
+												<th>입력구분</th>
 												<th>타입</th>
 												<th>폰트</th>
 												<th>크기</th>
-												<th>X값</th>
-												<th>Y값</th>
+												<th>X좌표</th>
+												<th>Y좌표</th>
 												<th>페이지 번호</th>
-												<th>수정일자</th>
+												<th style="width: 165px;">수정일자</th>
             									<th class="fixed-width"></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody class="text-center">
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '판매자정보'">
 											    <td th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></td>
 											    <td th:text="${template.templateInputType}"></td>
@@ -687,20 +706,20 @@
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-										<thead>
+										<thead class="text-center">
 											<tr>
-												<th>템플릿코드</th>
+												<th>입력구분</th>
 												<th>타입</th>
 												<th>폰트</th>
 												<th>크기</th>
-												<th>X값</th>
-												<th>Y값</th>
+												<th>X좌표</th>
+												<th>Y좌표</th>
 												<th>페이지 번호</th>
-												<th>수정일자</th>
+												<th style="width: 165px;">수정일자</th>
 												<th class="fixed-width"></th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody class="text-center">
 											<tr th:each="template : ${templateInfo}" th:if="${template.templateType != null} and ${template.templateType} == '공통체크'">
 											    <td th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></td>
 											    <td th:text="${template.templateInputType}"></td>
@@ -734,21 +753,21 @@
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 d-flex align-items-center justify-content-between">
 						    <h6 class="m-0 font-weight-bold text-primary">이미지</h6>
-							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseCustomerType" aria-expanded="true" aria-controls="collapseCustomerType">
+							<button class="btn btn-toggle shadow-sm ml-auto toggle-btn" type="button" data-toggle="collapse" data-target="#collapseTemplateImage" aria-expanded="true" aria-controls="collapseTemplateImage">
 							    <i class="fas fa-chevron-up"></i>
 							</button>
 						</div>
-					    <div id="collapseCustomerType" class="collapse show">
+					    <div id="collapseTemplateImage" class="collapse show">
 					        <div class="card-body">
 					            <div class="table-responsive">
 					                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-					                    <thead>
+					                    <thead class="text-center">
 					                        <tr>
 												<th>No</th>
 												<th>이미지</th>
 					                            <th>이미지명</th>
 					                            <th class="fixed-width">순서</th>
-												<th>수정일자</th>
+												<th style="width: 165px;">수정일자</th>
 												<th class="fixed-width"></th>
 					                        </tr>
 					                    </thead>
@@ -761,7 +780,7 @@
 										        </td>
 										        <td th:text="${templateImage.templateImageName}" class="text-center align-middle"></td>
 										        <td th:text="${templateImage.templateImageOrder}" class="text-center align-middle"></td>
-										        <td th:text="${#dates.format(templateImage.lastUpdatedDatetime, 'yyyy-MM-dd')}" class="text-center align-middle"></td>
+										        <td th:text="${#dates.format(templateImage.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}" class="text-center align-middle"></td>
 										        <td class="text-center align-middle" style="padding:0.5rem;">
 										            <button type="button" class="btn btn-primary shadow-sm"
 										                style="background-color:#FE9F29; border-color:#FE9F29; padding:0.15rem 0.45rem;"
@@ -811,28 +830,23 @@
 	<div class="modal fade" id="coordinateModal" tabindex="-1" aria-labelledby="coordinateModalLabel" aria-hidden="true">
 	    <div class="modal-dialog modal-lg">
 	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h5 class="modal-title" id="coordinateModalLabel">텍스트 위치 수정</h5>
-	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	                    <span aria-hidden="true">&times;</span>
-	                </button>
-	            </div>
-	            <div class="modal-body text-center">
-	                <!-- 캔버스 -->
-	                <canvas id="coordinateCanvas" style="border: 1px solid black; width: 100%; height: auto;"></canvas>
-
-	                <!-- 좌표 입력 필드 -->
-	                <div class="mt-3">
-	                    <label for="xInput">X 좌표:</label>
-	                    <input type="number" id="xInput" class="form-control d-inline-block" style="width: 100px;">
-	                    <label for="yInput" class="ml-3">Y 좌표:</label>
-	                    <input type="number" id="yInput" class="form-control d-inline-block" style="width: 100px;">
-	                </div>
-	            </div>
-	            <div class="modal-footer">
-	                <button type="button" class="btn btn-primary" id="saveCoordinate">저장</button>
-	                <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-	            </div>
+				<div class="modal-body text-center">
+                	<canvas id="coordinateCanvas" style="width: 100%; height: auto;"></canvas>
+				</div>		
+				<div class="modal-footer d-flex justify-content-between align-items-center">
+				    <!-- 좌표 입력 필드 (왼쪽 정렬) -->
+				    <div class="d-flex align-items-center">
+						<label for="xInput" class="ml-3 mr-2">X 좌표:</label>
+				        <input type="number" id="xInput" class="form-control d-inline-block" style="width: 100px;">
+				        <label for="yInput" class="ml-3 mr-2">Y 좌표:</label>
+				        <input type="number" id="yInput" class="form-control d-inline-block" style="width: 100px;">
+				    </div>
+				    <!-- 버튼들 (오른쪽 정렬) -->
+				    <div>
+				        <button type="button" class="btn btn-primary mr-2" id="saveCoordinate">저장</button>
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+				    </div>
+				</div>
 	        </div>
 	    </div>
 	</div>

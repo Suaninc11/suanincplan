@@ -34,21 +34,19 @@
 						<div class="card-body">
 							<div class="table-responsive">
 								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-									<thead>
+									<thead class="text-center">
 										<tr>
-											<th>템플릿코드</th>
 											<th>템플릿명</th>
-											<th>템플릿페이지수</th>
-											<th>수정일자</th>
+											<th style="width: 100px;">페이지수</th>
+            								<th style="width: 165px;">수정일자</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr th:each="template : ${templateList}">
-											<td th:text="${template.templateCode}"></td>
 											<td>
 												<a th:href="@{/homepage/template/templateInfo(templateCode=${template.templateCode})}" th:text="${template.templateName}"></a>
 											</td>
-										    <td th:text="${template.templateCount}"></td>
+										    <td th:text="${template.templateCount}" class="text-center"></td>
 											<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
 										</tr>
 									</tbody>
