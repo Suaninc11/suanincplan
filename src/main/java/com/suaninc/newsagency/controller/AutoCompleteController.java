@@ -48,7 +48,11 @@ public class AutoCompleteController {
 	@GetMapping("/homepage/templates/{templateCode}")
 	public String mainPage(@PathVariable String templateCode, ApplyForm form, Model model) throws Exception {
 		
-		form.setTemplateCode(templateCode);
+		if (templateCode.startsWith("uplusuMobile")) {
+		    form.setTemplateCode("uplusuMobile");
+		} else {
+			form.setTemplateCode(templateCode);
+		}
 		
 		List<CarrierPlan> carrierPlanList = applyFormService.getCarrierPlan(form);
 		

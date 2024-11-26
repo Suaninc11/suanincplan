@@ -17,30 +17,27 @@
 	<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 	<script>
-		function submitForm(actionType) {
+	    function updateCarrierPlanName() {
+	        var selectElement = document.getElementById('templateCodeSelect');
+	        var selectedText = selectElement.options[selectElement.selectedIndex].text;
+	        document.getElementById('carrierPlanName').value = selectedText;
+	    } 
+
+	    document.addEventListener('DOMContentLoaded', function () {
+	        updateCarrierPlanName();
+	    });
+
+	    document.getElementById('templateCodeSelect').addEventListener('change', updateCarrierPlanName);
+		
+		function submitForm() {
 		    var form = document.getElementById("dataForm");
 		    var formData = new FormData(form);
 		    
-		    var actionUrl = "";
-		    if (actionType === 'modify') {
-		        var userConfirmed = confirm("수정하시겠습니까?");
-		        if (!userConfirmed) {
-		            return;
-		        }
-		        actionUrl = "/homepage/carrierPlan/carrierPlanModify";
-		    } else if (actionType === 'delete') {
-		        var userConfirmed = confirm("삭제하시겠습니까?");
-		        if (!userConfirmed) {
-		            return;
-		        }
-		        actionUrl = "/homepage/carrierPlan/deleteCarrierPlan";
-		    }else if(actionType === 'planAdd') {
-		        var userConfirmed = confirm("추가하시겠습니까?");
-		        if (!userConfirmed) {
-		            return;
-		        }
-		        actionUrl = "/homepage/carrierPlan/addCarrierPlan";
-		    }
+		    var actionUrl = "/homepage/carrierPlan/createCarrierPlan";
+	        var userConfirmed = confirm("추가하시겠습니까?");
+	        if (!userConfirmed) {
+	            return;
+	        }
 
 		    fetch(actionUrl, {
 		        method: 'POST',
@@ -76,22 +73,26 @@
 				    </div>					
 				</nav>
 				<div class="container-fluid">
-					
 					<!-- 신청서 -->
 					<div class="card shadow mb-4">
 						<form id="dataForm" method="POST">
-							<input type="hidden" name="carrierPlanId" value="130">
-							<!-- 요금제 -->
 						    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 						        <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
 						    </div>
 							<div class="card-body">
 								<div class="form-group row align-items-center d-flex text-center">
 									<div class="col-sm-2 border-right">
-									    <label for="carrierPlanName">통신사명</label>
+									    <label for="templateCode">통신사명</label>
 									</div>
 									<div class="col-sm-4 mb-3 mb-sm-0">
-										<input type="text" name="templateCode" class="form-control form-control-user">
+										<select id="templateCodeSelect" name="templateCode" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+											<option value="helloMobile">헬로모바일</option>
+											<option value="skyLife">SKYLIFE</option>
+											<option value="ktmMobile">KTM</option>
+											<option value="skTelink">7모바일</option>
+											<option value="uplusuMobile">유모바일</option>
+										</select>
+										<input type="hidden" id="carrierPlanName" name="carrierPlanName">
 									</div>
 								</div>
 								<div class="form-group row align-items-center d-flex text-center">
@@ -167,7 +168,7 @@
 							<a href="/homepage/carrierPlan/carrierPlanList" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;">
 						    	목록
 							</a>
-							<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-primary shadow-sm" onclick="submitForm('planAdd');">
+							<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-primary shadow-sm" onclick="submitForm();">
 							    등록
 							</a>
 					    </div>
