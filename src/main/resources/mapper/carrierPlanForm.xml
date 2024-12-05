@@ -26,8 +26,8 @@
 			mobile_data AS mobileData,
 			mobile_qos AS mobileQos,
 			mobile_message AS mobileMessage,
-			last_updated_datetime AS lastUpdatedDatetime,
-			registered_datetime AS registeredDatetime
+			DATE_FORMAT(last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
+			DATE_FORMAT(registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
 		FROM
 			carrier_plan cp
 	    <where>
@@ -52,13 +52,12 @@
 			mobile_data AS mobileData,
 			mobile_qos AS mobileQos,
 			mobile_message AS mobileMessage,
-			last_updated_datetime AS lastUpdatedDatetime,
-			registered_datetime AS registeredDatetime
+			DATE_FORMAT(last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
+			DATE_FORMAT(registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
 		FROM
 			carrier_plan cp
 		WHERE	
             carrier_plan_id = #{carrierPlanId}
-		ORDER BY carrier_plan_id
     </select>
     
 	<update id="updateCarrierPlan" parameterType="com.suaninc.newsagency.domain.CarrierPlan">

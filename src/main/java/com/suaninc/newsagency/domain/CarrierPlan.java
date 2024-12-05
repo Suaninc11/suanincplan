@@ -15,8 +15,8 @@ public class CarrierPlan {
     private String mobileData;
     private String mobileQos;
     private String mobileMessage;
-    private Date lastUpdatedDatetime;
-    private Date registeredDatetime;
+    private String lastUpdatedDatetime;
+    private String registeredDatetime;
     
     private Long offset;
     private Integer pageSize;
@@ -87,16 +87,16 @@ public class CarrierPlan {
 	public void setMobileMessage(String mobileMessage) {
 		this.mobileMessage = mobileMessage;
 	}
-	public Date getLastUpdatedDatetime() {
+	public String getLastUpdatedDatetime() {
 		return lastUpdatedDatetime;
 	}
-	public void setLastUpdatedDatetime(Date lastUpdatedDatetime) {
+	public void setLastUpdatedDatetime(String lastUpdatedDatetime) {
 		this.lastUpdatedDatetime = lastUpdatedDatetime;
 	}
-	public Date getRegisteredDatetime() {
+	public String getRegisteredDatetime() {
 		return registeredDatetime;
 	}
-	public void setRegisteredDatetime(Date registeredDatetime) {
+	public void setRegisteredDatetime(String registeredDatetime) {
 		this.registeredDatetime = registeredDatetime;
 	}
 	

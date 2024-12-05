@@ -47,7 +47,7 @@
 												<a th:href="@{/homepage/template/templateInfo(templateCode=${template.templateCode})}" th:text="${template.templateName}"></a>
 											</td>
 										    <td th:text="${template.templateCount}" class="text-center"></td>
-											<td th:text="${#dates.format(template.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
+											<td th:text="${template.lastUpdatedDatetime}"></td>
 										</tr>
 									</tbody>
 								</table>

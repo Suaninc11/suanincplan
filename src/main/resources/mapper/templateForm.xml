@@ -42,8 +42,8 @@
 			tc.coordinate_x_axis AS coordinateXAxis,
 			tc.coordinate_y_axis AS coordinateYAxis,
 			CONCAT(ct.template_code ,'/' , ct.template_image_name) AS templateImagePath,
-			tc.last_updated_datetime AS lastUpdatedDatetime,
-			tc.registered_datetime AS registeredDatetime
+			DATE_FORMAT(tc.last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
+			DATE_FORMAT(tc.registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
 		FROM
 			template_coordinate tc
 		INNER JOIN
@@ -70,8 +70,8 @@
 		    ct.template_name AS templateName,
 		    ct.template_image_order AS templateImageOrder,
 		    ct.template_image_name AS templateImageName,
-		    DATE_FORMAT(ct.last_updated_datetime, '%Y-%m-%d') AS lastUpdatedDatetime,
-		    DATE_FORMAT(ct.registered_datetime, '%Y-%m-%d') AS registeredDatetime
+			DATE_FORMAT(ct.last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
+			DATE_FORMAT(ct.registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
 		FROM
 		    carrier_template ct
 		WHERE

@@ -76,7 +76,7 @@
 										    <td th:text="${carrierPlan.basicAmt + '원'}" class="text-center"></td>
 										    <td th:text="${carrierPlan.discountAmt + '원'}" class="text-center"></td>
 										    <td th:text="${carrierPlan.voiceCall}" class="text-center"></td>
-											<td th:text="${#dates.format(carrierPlan.lastUpdatedDatetime, 'yyyy-MM-dd hh:mm')}"></td>
+											<td th:text="${carrierPlan.lastUpdatedDatetime}"></td>
 										</tr>
 									</tbody>
 								</table>

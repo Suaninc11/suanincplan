@@ -17,19 +17,11 @@
 	<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 	<script>
-	    function updateCarrierPlanName() {
-	        var selectElement = document.getElementById('templateCodeSelect');
-	        var selectedText = selectElement.options[selectElement.selectedIndex].text;
-	        document.getElementById('carrierPlanName').value = selectedText;
-	    } 
-
-	    document.addEventListener('DOMContentLoaded', function () {
-	        updateCarrierPlanName();
-	    });
-
-	    document.getElementById('templateCodeSelect').addEventListener('change', updateCarrierPlanName);
-		
 		function submitForm() {
+			var selectElement = document.getElementById('templateCodeSelect');
+			var selectedText = selectElement.options[selectElement.selectedIndex].text;
+			document.getElementById('carrierPlanName').value = selectedText;
+			
 		    var form = document.getElementById("dataForm");
 		    var formData = new FormData(form);
 		    
