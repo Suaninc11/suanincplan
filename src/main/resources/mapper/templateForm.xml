@@ -21,7 +21,7 @@
 			ct.template_code AS templateCode,
 			ct.template_name AS templateName,
 			COUNT(ct.template_code) as templateCount,
-			MAX(ct.last_updated_datetime) AS lastUpdatedDatetime
+			MAX(DATE_FORMAT(ct.last_updated_datetime ,'%Y-%m-%d %H:%i')) AS lastUpdatedDatetime
 		FROM
 			carrier_template ct
 		group by template_code, template_name

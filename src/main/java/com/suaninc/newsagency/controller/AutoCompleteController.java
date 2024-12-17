@@ -26,7 +26,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.suaninc.JwtTokenUtil;
 import com.suaninc.config.FileStorageProperties;
 import com.suaninc.newsagency.domain.ApplyForm;
 import com.suaninc.newsagency.domain.CarrierPlan;
@@ -35,6 +37,7 @@ import com.suaninc.newsagency.domain.TemplateCoordinate;
 import com.suaninc.newsagency.service.ApplyFormService;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AutoCompleteController {
@@ -44,22 +47,37 @@ public class AutoCompleteController {
 	
     @Autowired
     private FileStorageProperties fileStorageProperties;
+    
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 	
+    @GetMapping("/")
+    public String storeTokenInSession(@RequestParam("token") String token, HttpSession session) {
+        // JWT 검증 (이미 구현된 JwtTokenUtil 사용)
+        if (jwtTokenUtil.validateToken(token, jwtTokenUtil.extractClientId(token))) {
+            session.setAttribute("jwtToken", token); // 세션에 토큰 저장
+            System.out.println("Token stored in session: " + token);
+        } else {
+            throw new RuntimeException("Invalid Token");
+        }
+        // 리다이렉트
+        return "redirect:/homepage/templates/skTelink";
+    }
+    
 	@GetMapping("/homepage/templates/{templateCode}")
 	public String mainPage(@PathVariable String templateCode, ApplyForm form, Model model) throws Exception {
 		
+		form.setTemplateCode(templateCode);
 		if (templateCode.startsWith("uplusuMobile")) {
-		    form.setTemplateCode("uplusuMobile");
-		} else {
-			form.setTemplateCode(templateCode);
+			templateCode = "uplusuMobile";
 		}
 		
-		List<CarrierPlan> carrierPlanList = applyFormService.getCarrierPlan(form);
+		List<CarrierPlan> carrierPlanList = applyFormService.getCarrierPlan(templateCode);
 		
 		model.addAttribute("form", form);
 		model.addAttribute("carrierPlanList", carrierPlanList);
 		
-		return "templates/" + templateCode;
+		return "templates/" + form.getTemplateCode();
 	}
 	
 	@PostMapping("/homepage/inscribeView/autoComplete")

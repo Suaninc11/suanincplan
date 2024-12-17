@@ -23,8 +23,8 @@ public class ApplyFormServiceImpl implements ApplyFormService {
 	}
 	
 	@Override
-	public List<CarrierPlan> getCarrierPlan(ApplyForm form) {
-		return applyFormDao.selectCarrierPlan(form);
+	public List<CarrierPlan> getCarrierPlan(String templateCode) {
+		return applyFormDao.selectCarrierPlan(templateCode);
 	}
 
 	@Override

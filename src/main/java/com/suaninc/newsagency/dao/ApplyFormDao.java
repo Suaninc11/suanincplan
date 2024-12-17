@@ -11,7 +11,7 @@ public interface ApplyFormDao {
 
 	public List<CarrierTemplate> selectCarrierTemplate(ApplyForm form);
 	
-	public List<CarrierPlan> selectCarrierPlan(ApplyForm form);
+	public List<CarrierPlan> selectCarrierPlan(String templateCode);
 
 	public List<TemplateCoordinate> selectTemplateCoordinateList(CarrierTemplate templateImageOrder);
 

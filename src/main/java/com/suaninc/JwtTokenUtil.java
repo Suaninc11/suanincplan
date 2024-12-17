@@ -1,20 +1,28 @@
 package com.suaninc;
+import java.util.Base64;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenUtil {
 
-    private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);  // JWT 서명 키
-    private final long validityInMillis = 3600000; // 1시간 (밀리초 단위)
+	private static final String SECRET_KEY_STRING = "my-fixed-secret-key-which-is-very-secure";
+	private final SecretKey key;
+
+	public JwtTokenUtil() {
+	    byte[] decodedKey = Base64.getEncoder().encode(SECRET_KEY_STRING.getBytes());
+	    this.key = new SecretKeySpec(decodedKey, SignatureAlgorithm.HS256.getJcaName());
+	}
+	
+    private final long validityInMillis = 7200000; // 2시간 (밀리초 단위)
 
     // JWT 생성 메서드
     public String generateToken(String clientId) {
@@ -31,8 +39,11 @@ public class JwtTokenUtil {
         try {
             String subject = Jwts.parserBuilder().setSigningKey(key).build()
                     .parseClaimsJws(token).getBody().getSubject();
-            return subject.equals(clientId);  // 토큰의 clientId와 비교
+            System.out.println("Received ClientId: " + subject);
+            System.out.println("Expected ClientId: " + clientId);
+            return subject.equals(clientId);
         } catch (JwtException | IllegalArgumentException e) {
+            System.out.println("Token validation failed: " + e.getMessage());
             return false;
         }
     }

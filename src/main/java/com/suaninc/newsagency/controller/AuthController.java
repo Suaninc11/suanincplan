@@ -19,11 +19,14 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<String> generateToken(@RequestBody LoginRequest loginRequest) {
         String clientId = loginRequest.getClientId();
+        System.out.println("Received clientId: " + clientId); // 로그 추가
 
         if ("WEB_CLIENT_ID".equals(clientId) || "APP_CLIENT_ID".equals(clientId)) {
             String token = jwtTokenUtil.generateToken(clientId);
+            System.out.println("Generated JWT Token: " + token); // 토큰 로그 출력
             return ResponseEntity.ok(token);
         } else {
+            System.out.println("Unauthorized client: " + clientId); // 로그 추가
             return ResponseEntity.status(401).body("Unauthorized client");
         }
     }

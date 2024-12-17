@@ -31,8 +31,21 @@
 		    transition: opacity 0.5s ease;
 		}
 	</style>
-</head>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+	        const simCostSelect = document.getElementById('simCost');
+	        const commonTextInput = document.getElementById('commonText');
 
+	        simCostSelect.addEventListener('change', function() {
+	            if (this.value === 'simCost1') {
+	                commonTextInput.value = '0원';
+	            } else if (this.value === 'simCost2') {
+	                commonTextInput.value = '6,600원';
+	            }
+	        });
+	    });
+	</script>
+</head>
 <body id="page-top">
 
     <div id="wrapper">
@@ -60,7 +73,7 @@
 						<input type="hidden" id="mobileMessage" name="mobileMessage">
 
 						<input type="hidden" name="commonCheck" value="commonCheck">
-						<input type="hidden" name="commonText" value="6,600원">
+						<input type="hidden" id="commonText" name="commonText" value="0원">
 						<input type="hidden" id="commonYear" name="commonYear">
 						<input type="hidden" id="commonShortYear" name="commonShortYear">
 						<input type="hidden" id="commonShortShortYear" name="commonShortShortYear">
@@ -172,7 +185,7 @@
 											    <label for="simCost">유심 비용</label>
 											</div>
 											<div class="col-sm-4">
-											    <select name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+											    <select id="simCost" name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
 													<option value="simCost1">즉납</option>
 													<option value="simCost2">후납</option>
 												</select>

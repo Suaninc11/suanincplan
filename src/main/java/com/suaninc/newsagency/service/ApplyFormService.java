@@ -11,7 +11,7 @@ public interface ApplyFormService {
 
     public List<CarrierTemplate> getCarrierTemplate(ApplyForm form);
 
-	public List<CarrierPlan> getCarrierPlan(ApplyForm form);
+	public List<CarrierPlan> getCarrierPlan(String templateCode);
 	
 	public List<TemplateCoordinate> getTemplateCoordinateList(CarrierTemplate templateImageOrder);
 	

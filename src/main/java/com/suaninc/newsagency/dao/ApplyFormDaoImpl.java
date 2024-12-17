@@ -23,8 +23,8 @@ public class ApplyFormDaoImpl implements ApplyFormDao {
 	}
 	
 	@Override
-	public List<CarrierPlan> selectCarrierPlan(ApplyForm form) {
-		return sqlSession.selectList("applyForm.selectCarrierPlan", form);
+	public List<CarrierPlan> selectCarrierPlan(String templateCode) {
+		return sqlSession.selectList("applyForm.selectCarrierPlan", templateCode);
 	}
 
 	@Override
