@@ -64,6 +64,7 @@ public class ApplyForm {
     private String depositorNumber; 	// 법대연락처
     private String depositorGender;     // 법대성별
     private String relationship;        // 관계
+    private String relationshipOption;  // 관계
 
     // 부가기능 관련 필드
     private String mobilePayment;  		// 통신과금서비스
@@ -384,6 +385,12 @@ public class ApplyForm {
 	}
 	public void setRelationship(String relationship) {
 		this.relationship = relationship;
+	}
+	public String getRelationshipOption() {
+		return relationshipOption;
+	}
+	public void setRelationshipOption(String relationshipOption) {
+		this.relationshipOption = relationshipOption;
 	}
 	public String getMobilePayment() {
 		return mobilePayment;

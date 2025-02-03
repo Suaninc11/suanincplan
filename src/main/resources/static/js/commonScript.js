@@ -12,7 +12,18 @@ function applyFormDownload(preview = false) {
             var portabilityNumber = document.getElementById("portabilityNumber").value;
             skTelinkNumber.value = portabilityNumber;
         }
-    }
+    } else if (templateName == "KTM모바일") {
+		var relationshipOption = document.getElementById("relationshipOption").value;
+		var relationship = "";
+	    if (relationshipOption == "relationshipOption1") {
+	        relationship = "부";
+	    } else if (relationshipOption == "relationshipOption2") {
+	        relationship = "모";
+	    } else if (relationshipOption == "") {
+	        relationship = "";
+	    }
+		document.getElementById('relationship').value = relationship;
+	}
 	
 	var formElement = document.getElementById('dataForm');
 	var dataForm = new FormData(formElement);
