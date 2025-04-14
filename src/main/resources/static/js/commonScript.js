@@ -22,6 +22,15 @@ function applyFormDownload(preview = false) {
 	    } else if (relationshipOption == "") {
 	        relationship = "";
 	    }
+		
+		var category = document.querySelector('input[name="openingCategory"]:checked').value;
+		var mobileNumber = document.getElementById("mobileNumber").value;
+		var portabilityNumber = document.getElementById("portabilityNumber").value;
+		
+		if (category === 'move' && mobileNumber == "") {
+			document.getElementById('mobileNumber').value = portabilityNumber;
+		}
+			
 		document.getElementById('relationship').value = relationship;
 	}
 	
