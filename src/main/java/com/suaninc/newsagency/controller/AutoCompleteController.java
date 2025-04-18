@@ -52,16 +52,15 @@ public class AutoCompleteController {
     private JwtTokenUtil jwtTokenUtil;
 	
     @GetMapping("/")
-    public String storeTokenInSession(@RequestParam("token") String token, HttpSession session) {
-        // JWT 검증 (이미 구현된 JwtTokenUtil 사용)
-        if (jwtTokenUtil.validateToken(token, jwtTokenUtil.extractClientId(token))) {
+    public String storeTokenInSession(@RequestParam(value = "token", required = false) String token, HttpSession session) {
+        if (token != null && jwtTokenUtil.validateToken(token, jwtTokenUtil.extractClientId(token))) {
             session.setAttribute("jwtToken", token); // 세션에 토큰 저장
             System.out.println("Token stored in session: " + token);
         } else {
-            throw new RuntimeException("Invalid Token");
+            System.out.println("No token provided or invalid token. Skipping session storage.");
         }
         // 리다이렉트
-        return "redirect:/homepage/templates/skTelink";
+        return "redirect:/homepage/templates/ktmMobile";
     }
     
 	@GetMapping("/homepage/templates/{templateCode}")

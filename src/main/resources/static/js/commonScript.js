@@ -1,4 +1,29 @@
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("/session/status")
+        .then(res => res.json())
+        .then(data => {
+            if (data.valid) {
+                document.querySelectorAll(".auth-only").forEach(item => {
+                    // 태그 종류별로 display 속성 지정
+                    if (item.tagName === "LI" || item.tagName === "DIV") {
+                        item.style.display = "block";
+                    } else if (item.tagName === "HR") {
+                        item.style.display = "block";
+                    } else {
+                        item.style.display = "inline-block";
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            console.error("세션 상태 확인 실패:", err);
+        });
+});
+
 function applyFormDownload(preview = false) {
+	
+	var formElement = document.getElementById('dataForm');
+	var dataForm = new FormData(formElement);
 	
 	var templateName = document.getElementById("templateName").value;
 	
@@ -32,10 +57,17 @@ function applyFormDownload(preview = false) {
 		}
 			
 		document.getElementById('relationship').value = relationship;
+	} else if (templateName == "조이텔") {
+		
+		var depositorName = document.querySelector("input[name='depositorName']").value;
+		var depositorBirthdate = document.querySelector("input[name='depositorBirthdate']").value;
+		var depositorNumber = document.querySelector("input[name='depositorNumber']").value;
+		var relationship = document.querySelector("input[name='relationship']").value;
+
+		if (depositorName || depositorBirthdate || depositorNumber || relationship) {
+		    dataForm.append("depositorCheck", "depositorCheck");
+		}
 	}
-	
-	var formElement = document.getElementById('dataForm');
-	var dataForm = new FormData(formElement);
 
 	var formattedDate = getFormattedDate();
 	var templateName = document.getElementById('templateName').value;
@@ -248,6 +280,14 @@ function checkPassword() {
         alert("비밀번호가 틀렸습니다.");
         return false;
     }
+}
+
+function openExternalSite(event) {
+	event.preventDefault(); // 기본 링크 동작 방지
+	var confirmMove = confirm("해당 사이트는 외부로 연결됩니다.\n계속하시겠습니까?");
+	if (confirmMove) {
+		window.open("https://smvno.sk7mobile.com/main.do", "_blank");
+	}
 }
 
 window.onload = function() {

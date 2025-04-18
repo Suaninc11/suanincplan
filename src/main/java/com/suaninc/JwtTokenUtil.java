@@ -25,9 +25,10 @@ public class JwtTokenUtil {
     private final long validityInMillis = 7200000; // 2시간 (밀리초 단위)
 
     // JWT 생성 메서드
-    public String generateToken(String clientId) {
+    public String generateToken(String clientId, String role) {
         return Jwts.builder()
                 .setSubject(clientId)  // clientId를 JWT에 포함
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + validityInMillis))
                 .signWith(key)
@@ -53,4 +54,11 @@ public class JwtTokenUtil {
         return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
+    
+    public String extractRole(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody()
+                .get("role", String.class);
+    }
+
 }

@@ -14,12 +14,13 @@
 			</div>
 		    <div class="collapse show">
 		        <div class="bg-white py-2 collapse-inner rounded">
-		            <a class="collapse-item" href="/homepage/templates/skTelink">SK 7모바일(텔링크)</a>
+					<a class="collapse-item" href="/homepage/templates/joytel" onclick="return checkPassword();">조이텔(개발중)</a>
+					<a class="collapse-item" href="/homepage/templates/skTelink">SK 7모바일(텔링크)</a>
 		        </div>
 		    </div>
 		</li>
 		
-		<li class="nav-item">
+		<li class="nav-item auth-only">
 		    <div class="nav-link">
 		        <span>KT 알뜰</span>
 		    </div>
@@ -27,7 +28,6 @@
 		        <div class="bg-white py-2 collapse-inner rounded">
 					<a class="collapse-item" href="/homepage/templates/ktmMobile">KTM 모바일</a>
 					<a class="collapse-item" href="/homepage/templates/skyLife">KT 스카이라이프</a>
-					<!--<a class="collapse-item" href="/homepage/templates/snowman">스노우맨</a>-->
 				</div>
 		    </div>
 		</li>
@@ -40,15 +40,14 @@
 		        <div class="bg-white py-2 collapse-inner rounded">
 					<a class="collapse-item" href="/homepage/templates/uplusuMobile">유모바일(미디어로그)</a>
 					<a class="collapse-item" href="/homepage/templates/uplusuMobileYouth">유모바일(청소년)</a>
-				<!--<a class="collapse-item" href="/homepage/templates/uplusuMobileChange">유모바일(변경)</a>-->
 					<a class="collapse-item" href="/homepage/templates/helloMobile">헬로모바일</a>
 				</div>
 		    </div>
 		</li>
 
-        <hr class="sidebar-divider">
+        <hr class="sidebar-divider" sec:authorize="hasAuthority('AD')">
 
-		<li class="nav-item">
+		<li class="nav-item" sec:authorize="hasAuthority('AD')">
 		    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo"
 		       aria-expanded="true" aria-controls="collapseTwo">
 		        <i class="fas fa-fw fa-cog"></i>

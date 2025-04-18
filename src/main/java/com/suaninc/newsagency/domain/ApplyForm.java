@@ -3,6 +3,9 @@ package com.suaninc.newsagency.domain;
 public class ApplyForm {
 
 	// 고객구분 관련 필드
+	private String serviceType;		// 서비스구분
+	private String walkInCustomerType;		// 고객구분
+	private String workType;		// 업무구분
 	private String customerType;		// 고객구분
 	
 	// 요금제 관련 필드
@@ -65,6 +68,7 @@ public class ApplyForm {
     private String depositorGender;     // 법대성별
     private String relationship;        // 관계
     private String relationshipOption;  // 관계
+    private String depositorCheck;  // 법정대리인 체크
 
     // 부가기능 관련 필드
     private String mobilePayment;  		// 통신과금서비스
@@ -85,7 +89,24 @@ public class ApplyForm {
 	private String commonMonth;    		// 약관월
 	private String commonDay;    		// 약관일
 	
-	
+	public String getServiceType() {
+		return serviceType;
+	}
+	public void setServiceType(String serviceType) {
+		this.serviceType = serviceType;
+	}
+	public String getWalkInCustomerType() {
+		return walkInCustomerType;
+	}
+	public void setWalkInCustomerType(String walkInCustomerType) {
+		this.walkInCustomerType = walkInCustomerType;
+	}
+	public String getWorkType() {
+		return workType;
+	}
+	public void setWorkType(String workType) {
+		this.workType = workType;
+	}
 	public String getCustomerType() {
 		return customerType;
 	}
@@ -391,6 +412,12 @@ public class ApplyForm {
 	}
 	public void setRelationshipOption(String relationshipOption) {
 		this.relationshipOption = relationshipOption;
+	}
+	public String getDepositorCheck() {
+		return depositorCheck;
+	}
+	public void setDepositorCheck(String depositorCheck) {
+		this.depositorCheck = depositorCheck;
 	}
 	public String getMobilePayment() {
 		return mobilePayment;

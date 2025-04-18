@@ -2,12 +2,15 @@ package com.suaninc;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -61,29 +64,39 @@ public class SecurityConfig {
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                 throws ServletException, IOException {
 
-            HttpSession session = request.getSession(false); // 세션 가져오기 (존재하지 않으면 null 반환)
+            // 🚀 로컬 요청이면 JWT 검증을 건너뛰고 다음 필터로 넘김
+            if (isLocalRequest(request)) {
+                System.out.println("✅ Local request detected, skipping JWT authentication.");
+                SecurityContextHolder.getContext().setAuthentication(
+                        new UsernamePasswordAuthenticationToken("localUser", null, new ArrayList<>())
+                );
+                filterChain.doFilter(request, response);
+                return;
+            }
 
+            HttpSession session = request.getSession(false);
             if (session != null) {
-                String token = (String) session.getAttribute("jwtToken"); // 세션에서 토큰 가져오기
+                String token = (String) session.getAttribute("jwtToken");
+                System.out.println("🔍 Token from session: " + token);
 
                 if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     try {
-                        // 토큰 검증
                         if (jwtTokenUtil.validateToken(token, jwtTokenUtil.extractClientId(token))) {
+
+                            String role = jwtTokenUtil.extractRole(token);
+                            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
+
                             UsernamePasswordAuthenticationToken authentication =
-                                    new UsernamePasswordAuthenticationToken(jwtTokenUtil.extractClientId(token), null, new ArrayList<>());
+                                    new UsernamePasswordAuthenticationToken(jwtTokenUtil.extractClientId(token), null, authorities);
+
                             SecurityContextHolder.getContext().setAuthentication(authentication);
                         }
+
                     } catch (io.jsonwebtoken.ExpiredJwtException e) {
-                        // 토큰 만료 시 JavaScript 메시지와 함께 리다이렉트
-                        System.out.println("Token expired: " + e.getMessage());
-                        session.invalidate(); // 세션 무효화
-                        sendRedirectWithMessage(response, "세션이 만료되었습니다. 다시 로그인해 주세요.", "https://visionm.kr/login/login.php");
-                        return;
+                        System.out.println("⚠️ Token expired but ignored: " + e.getMessage());
+                        // 인증 없이 통과 (로그인 안 된 상태로 계속 진행)
                     } catch (Exception e) {
-                        System.out.println("Invalid token in session.");
-                        sendRedirectWithMessage(response, "잘못된 인증 정보입니다. 다시 로그인해 주세요.", "https://visionm.kr/login/login.php");
-                        return;
+                        System.out.println("❗ JWT 처리 중 오류: " + e.getMessage());
                     }
                 }
             }
@@ -91,14 +104,13 @@ public class SecurityConfig {
             filterChain.doFilter(request, response);
         }
 
-        // 리다이렉트 전 메시지 출력
-        private void sendRedirectWithMessage(HttpServletResponse response, String message, String redirectUrl) throws IOException {
-            String script = "<html><head><script>" +
-                    "alert('" + message + "');" +
-                    "window.location.href = '" + redirectUrl + "';" +
-                    "</script></head><body></body></html>";
-            response.setContentType("text/html; charset=UTF-8");
-            response.getWriter().write(script);
+        // 로컬 요청 감지 함수
+        private boolean isLocalRequest(HttpServletRequest request) {
+            String remoteAddr = request.getRemoteAddr();
+            return remoteAddr.startsWith("127.") 
+                || remoteAddr.startsWith("0:0:0:0:0:0:0:1") 
+                || remoteAddr.startsWith("192.168."); 
         }
+
     }
 }
