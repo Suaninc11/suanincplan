@@ -54,11 +54,10 @@ public class JwtTokenUtil {
         return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody().getSubject();
     }
-    
+
     public String extractRole(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token).getBody()
                 .get("role", String.class);
     }
-
 }

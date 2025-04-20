@@ -36,20 +36,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/auth/**").permitAll() // 인증이 필요하지 않은 경로
-                .requestMatchers(request -> isLocalRequest(request)).permitAll() // 로컬 요청 허용
-                .anyRequest().authenticated() // 나머지는 인증 필요
+                .anyRequest().permitAll() // 나머지는 인증 필요
             )
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    // 로컬 요청 감지 함수
-    private boolean isLocalRequest(HttpServletRequest request) {
-        String remoteAddr = request.getRemoteAddr();
-        return remoteAddr.startsWith("127.") || remoteAddr.startsWith("0:0:0:0:0:0:0:1") 
-               || remoteAddr.startsWith("192.168."); // 로컬 네트워크 대역 허용
     }
 
     // JwtAuthenticationFilter 내부 클래스
@@ -64,15 +55,23 @@ public class SecurityConfig {
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                 throws ServletException, IOException {
 
-            // 🚀 로컬 요청이면 JWT 검증을 건너뛰고 다음 필터로 넘김
-            if (isLocalRequest(request)) {
-                System.out.println("✅ Local request detected, skipping JWT authentication.");
-                SecurityContextHolder.getContext().setAuthentication(
-                        new UsernamePasswordAuthenticationToken("localUser", null, new ArrayList<>())
-                );
-                filterChain.doFilter(request, response);
-                return;
-            }
+        	// 로컬 요청이면 JWT 검증을 건너뛰고 다음 필터로 넘김
+            // 로컬 처리 부분을 활성화한 경우
+        	if (isLocalRequest(request)) {
+        	    System.out.println("✅ Local request detected, setting fake authentication.");
+
+        	    List<GrantedAuthority> authorities = new ArrayList<>();
+        	    authorities.add(new SimpleGrantedAuthority("AD")); // ✅ 로컬 권한 부여
+
+        	    UsernamePasswordAuthenticationToken authentication =
+        	            new UsernamePasswordAuthenticationToken("localUser", null, authorities);
+
+        	    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        	    filterChain.doFilter(request, response);
+        	    return;
+        	}
+
 
             HttpSession session = request.getSession(false);
             if (session != null) {
@@ -82,23 +81,28 @@ public class SecurityConfig {
                 if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     try {
                         if (jwtTokenUtil.validateToken(token, jwtTokenUtil.extractClientId(token))) {
+                        	String role = jwtTokenUtil.extractRole(token);
+                        	List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
 
-                            String role = jwtTokenUtil.extractRole(token);
-                            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
-
-                            UsernamePasswordAuthenticationToken authentication =
-                                    new UsernamePasswordAuthenticationToken(jwtTokenUtil.extractClientId(token), null, authorities);
-
-                            SecurityContextHolder.getContext().setAuthentication(authentication);
+                        	UsernamePasswordAuthenticationToken authentication =
+                        	    new UsernamePasswordAuthenticationToken(jwtTokenUtil.extractClientId(token), null, authorities);
+                        	SecurityContextHolder.getContext().setAuthentication(authentication);
                         }
-
                     } catch (io.jsonwebtoken.ExpiredJwtException e) {
                         System.out.println("⚠️ Token expired but ignored: " + e.getMessage());
                         // 인증 없이 통과 (로그인 안 된 상태로 계속 진행)
                     } catch (Exception e) {
                         System.out.println("❗ JWT 처리 중 오류: " + e.getMessage());
                     }
+                } else {
+                    // 토큰이 없으면, 인증 정보가 없다고 처리됨
+                    System.out.println("❗ No token found, user is not authenticated.");
                 }
+            } else {
+                // ✅ 토큰 없으면 "익명 사용자"로 인증 객체 등록 (권한 없음)
+                SecurityContextHolder.getContext().setAuthentication(
+                    new UsernamePasswordAuthenticationToken("anonymousUser", null, new ArrayList<>())
+                );
             }
 
             filterChain.doFilter(request, response);

@@ -14,13 +14,13 @@
 			</div>
 		    <div class="collapse show">
 		        <div class="bg-white py-2 collapse-inner rounded">
-					<a class="collapse-item" href="/homepage/templates/joytel" onclick="return checkPassword();">조이텔(개발중)</a>
-					<a class="collapse-item" href="/homepage/templates/skTelink">SK 7모바일(텔링크)</a>
+					<a class="collapse-item" href="/homepage/templates/joytel">조이텔</a>
+					<a class="collapse-item" href="/homepage/templates/skTelink" sec:authorize="hasAuthority('AD')">SK 7모바일(텔링크)</a>
 		        </div>
 		    </div>
 		</li>
 		
-		<li class="nav-item auth-only">
+		<li class="nav-item auth-only" sec:authorize="hasAuthority('AD')">
 		    <div class="nav-link">
 		        <span>KT 알뜰</span>
 		    </div>
@@ -32,7 +32,7 @@
 		    </div>
 		</li>
 		
-		<li class="nav-item">
+		<li class="nav-item" sec:authorize="hasAuthority('AD')">
 		    <div class="nav-link">
 		        <span>LG 알뜰</span>
 		    </div>

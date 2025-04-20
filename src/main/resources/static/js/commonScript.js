@@ -63,6 +63,12 @@ function applyFormDownload(preview = false) {
 		var depositorBirthdate = document.querySelector("input[name='depositorBirthdate']").value;
 		var depositorNumber = document.querySelector("input[name='depositorNumber']").value;
 		var relationship = document.querySelector("input[name='relationship']").value;
+		
+		var mobileCarrier = document.querySelector("input[name='mobileCarrier']").value;
+		var monthlyBillingAmt = document.querySelector("input[name='monthlyBillingAmt']").value;
+		
+		var mobileCarrierMonthlyBillingAmt = mobileCarrier + " (" + monthlyBillingAmt + "원)"; 
+		dataForm.set("mobileCarrier", mobileCarrierMonthlyBillingAmt);
 
 		if (depositorName || depositorBirthdate || depositorNumber || relationship) {
 		    dataForm.append("depositorCheck", "depositorCheck");

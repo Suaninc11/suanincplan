@@ -10,6 +10,7 @@
     <title>suaninc</title>
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<link href="/css/sb-admin-2.css" rel="stylesheet">
 	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
@@ -221,17 +222,8 @@
 											</div>
 											<div class="col-sm-4">
 											    <select name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="simCost1">즉납</option>
-													<option value="simCost2">후납</option>
-												</select>
-											</div>
-											<div class="col-sm-2 border-right">
-											    <label for="subscriptionCost">가입비</label>
-											</div>
-											<div class="col-sm-4">
-												<select name="subscriptionCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="subscriptionCost1">완납</option>
-													<option value="subscriptionCost2">3개월 분납</option>
+													<option value="simCost1">익월요금합산납부</option>
+													<option value="simCost2">즉납</option>
 												</select>
 											</div>
 										</div>

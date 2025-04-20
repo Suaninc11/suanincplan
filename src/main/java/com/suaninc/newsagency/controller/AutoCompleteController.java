@@ -50,7 +50,7 @@ public class AutoCompleteController {
     
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-	
+    
     @GetMapping("/")
     public String storeTokenInSession(@RequestParam(value = "token", required = false) String token, HttpSession session) {
         if (token != null && jwtTokenUtil.validateToken(token, jwtTokenUtil.extractClientId(token))) {
@@ -60,7 +60,7 @@ public class AutoCompleteController {
             System.out.println("No token provided or invalid token. Skipping session storage.");
         }
         // 리다이렉트
-        return "redirect:/homepage/templates/ktmMobile";
+        return "redirect:/homepage/templates/joytel";
     }
     
 	@GetMapping("/homepage/templates/{templateCode}")
