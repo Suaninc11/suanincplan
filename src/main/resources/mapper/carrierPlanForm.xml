@@ -26,6 +26,7 @@
 			mobile_data AS mobileData,
 			mobile_qos AS mobileQos,
 			mobile_message AS mobileMessage,
+			carrier_plan_order AS carrierPlanOrder,
 			DATE_FORMAT(last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
 			DATE_FORMAT(registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
 		FROM
@@ -52,6 +53,7 @@
 			mobile_data AS mobileData,
 			mobile_qos AS mobileQos,
 			mobile_message AS mobileMessage,
+			carrier_plan_order AS carrierPlanOrder,
 			DATE_FORMAT(last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
 			DATE_FORMAT(registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
 		FROM
@@ -70,7 +72,8 @@
 	        voice_call = #{voiceCall},
 	        mobile_data = #{mobileData},
 	        mobile_qos = #{mobileQos},
-	        mobile_message = #{mobileMessage}
+	        mobile_message = #{mobileMessage},
+	        carrier_plan_order = #{carrierPlanOrder}
 	    WHERE carrier_plan_id = #{carrierPlanId}
 	</update>
 
@@ -91,6 +94,7 @@
 		    mobile_data,
 		    mobile_qos,
 		    mobile_message,
+		    carrier_plan_order,
 		    registered_datetime
 		) VALUES (
 			#{templateCode},
@@ -103,6 +107,7 @@
 		    #{mobileData},
 		    #{mobileQos},
 		    #{mobileMessage},
+		    #{carrierPlanOrder},
 		    now())
 	</insert>
 

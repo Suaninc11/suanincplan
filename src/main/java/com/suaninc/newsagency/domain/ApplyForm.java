@@ -74,6 +74,8 @@ public class ApplyForm {
     private String mobilePayment;  		// 통신과금서비스
     private String overseasData;        // 해외데이터
     private String combination;         // 아무나 결합
+    private String catchCallPlusName;	// 캐치콜플러스
+    private Integer catchCallPlusAmt;	// 캐치콜플러스 금액
 
     // 판매자정보 관련 필드
     private String retailerName;    	// 판매점 상호
@@ -436,6 +438,18 @@ public class ApplyForm {
 	}
 	public void setCombination(String combination) {
 		this.combination = combination;
+	}
+	public String getCatchCallPlusName() {
+		return catchCallPlusName;
+	}
+	public void setCatchCallPlusName(String catchCallPlusName) {
+		this.catchCallPlusName = catchCallPlusName;
+	}
+	public Integer getCatchCallPlusAmt() {
+		return catchCallPlusAmt;
+	}
+	public void setCatchCallPlusAmt(Integer catchCallPlusAmt) {
+		this.catchCallPlusAmt = catchCallPlusAmt;
 	}
 	public String getRetailerName() {
 		return retailerName;

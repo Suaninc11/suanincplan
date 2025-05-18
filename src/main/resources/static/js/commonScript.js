@@ -57,6 +57,12 @@ function applyFormDownload(preview = false) {
 		}
 			
 		document.getElementById('relationship').value = relationship;
+		
+		var catchCallPlus = document.getElementById("catchCallPlus").value;
+		if (catchCallPlus == "catchCallPlus2") {
+		    dataForm.append("catchCallPlusName", "캐치콜 플러스");
+			dataForm.append("catchCallPlusAmt", "880");
+		}
 	} else if (templateName == "조이텔") {
 		
 		var depositorName = document.querySelector("input[name='depositorName']").value;

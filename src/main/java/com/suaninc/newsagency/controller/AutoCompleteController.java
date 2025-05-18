@@ -90,8 +90,18 @@ public class AutoCompleteController {
 	        // 체크 이미지 캐싱 (필요시 캐싱하여 재사용)
         	InputStream checkImagePath = classLoader.getResourceAsStream("static/images/checkmark.png");
             BufferedImage checkImage = ImageIO.read(checkImagePath);
-	        
+
 	        for (CarrierTemplate template : carrierTemplate) {
+	        	
+	            if(form.getTemplateCode().equals("joytel")) {
+	            	if (form.getWalkInCustomerType().equals("walkInCustomerType1") && template.getTemplateImageOrder() != 1) {
+	            		continue;
+	            	} else if (form.getWalkInCustomerType().equals("walkInCustomerType2") &&
+            	            !(template.getTemplateImageOrder() == 1 || template.getTemplateImageOrder() == 2 || template.getTemplateImageOrder() == 6)) {
+	            		continue;
+	            	}
+	        	}
+	            
 	        	Path imagePath = Paths.get(fileStorageProperties.getUploadDir(), template.getTemplateCode(), template.getTemplateImageName());
 	        	
 	        	try (InputStream is = Files.newInputStream(imagePath)) {

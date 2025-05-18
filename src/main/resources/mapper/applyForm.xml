@@ -15,13 +15,14 @@
 			cp.mobile_data AS mobileData,
 			cp.mobile_qos AS mobileQos,
 			cp.mobile_message AS mobileMessage,
+			cp.carrier_plan_order AS carrierPlanOrder,
 			DATE_FORMAT(cp.last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
 			DATE_FORMAT(cp.registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
 		FROM
 			carrier_plan cp
 		WHERE
             cp.template_code = #{templateCode}
-		ORDER BY cp.mobile_carrier
+		ORDER BY cp.carrier_plan_order
     </select>
     
     <select id="selectCarrierTemplate"  parameterType="com.suaninc.newsagency.domain.TemplateCoordinate" resultType="com.suaninc.newsagency.domain.CarrierTemplate">

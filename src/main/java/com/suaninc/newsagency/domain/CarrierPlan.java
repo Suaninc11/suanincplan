@@ -1,7 +1,5 @@
 package com.suaninc.newsagency.domain;
 
-import java.util.Date;
-
 public class CarrierPlan {
 
     private Integer carrierPlanId;
@@ -15,6 +13,7 @@ public class CarrierPlan {
     private String mobileData;
     private String mobileQos;
     private String mobileMessage;
+    private Integer carrierPlanOrder;
     private String lastUpdatedDatetime;
     private String registeredDatetime;
     
@@ -86,6 +85,12 @@ public class CarrierPlan {
 	}
 	public void setMobileMessage(String mobileMessage) {
 		this.mobileMessage = mobileMessage;
+	}
+	public Integer getCarrierPlanOrder() {
+		return carrierPlanOrder;
+	}
+	public void setCarrierPlanOrder(Integer carrierPlanOrder) {
+		this.carrierPlanOrder = carrierPlanOrder;
 	}
 	public String getLastUpdatedDatetime() {
 		return lastUpdatedDatetime;
