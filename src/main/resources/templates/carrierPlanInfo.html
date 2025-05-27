@@ -65,7 +65,7 @@
 		        const basic = parseFloat(basicAmt.value.replace(/,/g, '')) || 0;
 		        const discount = parseFloat(discountAmt.value.replace(/,/g, '')) || 0;
 		        const result = basic - discount;
-		        monthlyBillingAmt.value = result.toLocaleString();
+		        monthlyBillingAmt.value = result.toString();
 		    }
 
 		    basicAmt.addEventListener('input', calculateMonthlyBilling);
