@@ -16,7 +16,7 @@
 		) AS subquery;
 	</select>
 
-    <select id="selectTemplateList" resultType="com.suaninc.newsagency.domain.CarrierTemplate">
+    <select id="selectTemplateList" resultType="CarrierTemplate">
 		SELECT
 			ct.template_code AS templateCode,
 			ct.template_name AS templateName,
@@ -28,7 +28,7 @@
 	    LIMIT #{pageSize} OFFSET #{offset}
     </select>
     
-    <select id="selectTemplateInfo" resultType="com.suaninc.newsagency.domain.TemplateCoordinate">
+    <select id="selectTemplateInfo" resultType="TemplateCoordinate">
 		SELECT
 			tc.template_coordinate_id AS templateCoordinateId,
 			tc.template_code AS templateCode,
@@ -54,7 +54,7 @@
 			tc.template_code = #{templateCode}
     </select>
     
-	<update id="updateCoordinate" parameterType="com.suaninc.newsagency.domain.TemplateCoordinate">
+	<update id="updateCoordinate" parameterType="TemplateCoordinate">
 	    UPDATE template_coordinate
 	    SET 
 	        coordinate_x_axis = #{coordinateXAxis},
@@ -62,7 +62,7 @@
 	    WHERE template_coordinate_id = #{templateCoordinateId}
 	</update>
 	
-    <select id="selectTemplateImageList" resultType="com.suaninc.newsagency.domain.CarrierTemplate">
+    <select id="selectTemplateImageList" resultType="CarrierTemplate">
 		SELECT
 		    ROW_NUMBER() OVER (ORDER BY ct.registered_datetime) AS rowNum,
 		    ct.carrier_template_id AS carrierTemplateId,
@@ -79,7 +79,7 @@
 		ORDER BY ct.registered_datetime DESC
     </select>
     
-	<update id="updateTemplateImageName" parameterType="com.suaninc.newsagency.domain.CarrierTemplate">
+	<update id="updateTemplateImageName" parameterType="CarrierTemplate">
 	    UPDATE carrier_template
 	    SET template_image_name = #{templateImageName}
 	    WHERE carrier_template_id = #{carrierTemplateId}

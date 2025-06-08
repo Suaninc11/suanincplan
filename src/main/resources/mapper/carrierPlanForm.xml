@@ -3,7 +3,7 @@
 <mapper namespace="carrierPlanForm">
 
     
-    <select id="selectCarrierPlanListCount" parameterType="com.suaninc.newsagency.domain.CarrierPlan" resultType="int">
+    <select id="selectCarrierPlanListCount" parameterType="CarrierPlan" resultType="int">
 	    SELECT COUNT(*)
 	    FROM carrier_plan cp
 	    <where>
@@ -13,7 +13,7 @@
 	    </where>
 	</select>
 
-    <select id="selectCarrierPlanList" parameterType="java.util.Map" resultType="com.suaninc.newsagency.domain.CarrierPlan">
+    <select id="selectCarrierPlanList" parameterType="java.util.Map" resultType="CarrierPlan">
 		SELECT
 			carrier_plan_id AS carrierPlanId,
 			template_code AS templateCode,
@@ -27,6 +27,7 @@
 			mobile_qos AS mobileQos,
 			mobile_message AS mobileMessage,
 			carrier_plan_order AS carrierPlanOrder,
+			active_yn AS activeYn,
 			DATE_FORMAT(last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
 			DATE_FORMAT(registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
 		FROM
@@ -40,7 +41,7 @@
 	    LIMIT #{pageSize} OFFSET #{offset}
     </select>
     
-    <select id="selectCarrierPlanInfo" resultType="com.suaninc.newsagency.domain.CarrierPlan">
+    <select id="selectCarrierPlanInfo" resultType="CarrierPlan">
 		SELECT
 			carrier_plan_id AS carrierPlanId,
 			template_code AS templateCode,
@@ -54,6 +55,7 @@
 			mobile_qos AS mobileQos,
 			mobile_message AS mobileMessage,
 			carrier_plan_order AS carrierPlanOrder,
+			active_yn AS activeYn,
 			DATE_FORMAT(last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
 			DATE_FORMAT(registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
 		FROM
@@ -62,7 +64,7 @@
             carrier_plan_id = #{carrierPlanId}
     </select>
     
-	<update id="updateCarrierPlan" parameterType="com.suaninc.newsagency.domain.CarrierPlan">
+	<update id="updateCarrierPlan" parameterType="CarrierPlan">
 	    UPDATE carrier_plan
 	    SET 
 	        mobile_carrier = #{mobileCarrier},
@@ -73,16 +75,17 @@
 	        mobile_data = #{mobileData},
 	        mobile_qos = #{mobileQos},
 	        mobile_message = #{mobileMessage},
-	        carrier_plan_order = #{carrierPlanOrder}
+	        carrier_plan_order = #{carrierPlanOrder},
+	        active_yn = #{activeYn}
 	    WHERE carrier_plan_id = #{carrierPlanId}
 	</update>
 
-	<delete id="deleteCarrierPlan" parameterType="com.suaninc.newsagency.domain.CarrierPlan">
+	<delete id="deleteCarrierPlan" parameterType="CarrierPlan">
 	    DELETE FROM carrier_plan
 	    WHERE carrier_plan_id = #{carrierPlanId}
 	</delete>
 
-	<insert id="createCarrierPlan" parameterType="com.suaninc.newsagency.domain.CarrierPlan">
+	<insert id="createCarrierPlan" parameterType="CarrierPlan">
 	    INSERT INTO carrier_plan 
 		    (template_code,
 		    carrier_plan_name,
@@ -95,6 +98,7 @@
 		    mobile_qos,
 		    mobile_message,
 		    carrier_plan_order,
+		    active_yn,
 		    registered_datetime
 		) VALUES (
 			#{templateCode},
@@ -108,6 +112,7 @@
 		    #{mobileQos},
 		    #{mobileMessage},
 		    #{carrierPlanOrder},
+		    #{activeYn},
 		    now())
 	</insert>
 
