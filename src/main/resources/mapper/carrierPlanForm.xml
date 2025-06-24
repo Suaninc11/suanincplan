@@ -5,7 +5,7 @@
     
     <select id="selectCarrierPlanListCount" parameterType="CarrierPlan" resultType="int">
 	    SELECT COUNT(*)
-	    FROM carrier_plan cp
+	    FROM carrier_plan
 	    <where>
 	        <if test="templateCode != null and templateCode != ''">
 	            template_code = #{templateCode}
@@ -15,23 +15,23 @@
 
     <select id="selectCarrierPlanList" parameterType="java.util.Map" resultType="CarrierPlan">
 		SELECT
-			carrier_plan_id AS carrierPlanId,
-			template_code AS templateCode,
-			carrier_plan_name AS carrierPlanName,
-			mobile_carrier AS mobileCarrier,
-			monthly_billing_amt AS monthlyBillingAmt,
-			basic_amt AS basicAmt,
-			discount_amt AS discountAmt,
-			voice_call AS voiceCall,
-			mobile_data AS mobileData,
-			mobile_qos AS mobileQos,
-			mobile_message AS mobileMessage,
-			carrier_plan_order AS carrierPlanOrder,
-			active_yn AS activeYn,
-			DATE_FORMAT(last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
-			DATE_FORMAT(registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
+		    carrier_plan_id,
+		    template_code,
+		    carrier_plan_name,
+		    mobile_carrier,
+		    monthly_billing_amt,
+		    basic_amt,
+		    discount_amt,
+		    voice_call,
+		    mobile_data,
+		    mobile_qos,
+		    mobile_message,
+		    carrier_plan_order,
+		    active_yn,
+		    DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime,
+		    DATE_FORMAT(registered_datetime, '%Y-%m-%d %H:%i') AS registered_datetime
 		FROM
-			carrier_plan cp
+		    carrier_plan
 	    <where>
 	        <if test="templateCode != null and templateCode != ''">
 	            template_code = #{templateCode}
@@ -43,25 +43,25 @@
     
     <select id="selectCarrierPlanInfo" resultType="CarrierPlan">
 		SELECT
-			carrier_plan_id AS carrierPlanId,
-			template_code AS templateCode,
-			carrier_plan_name AS carrierPlanName,
-			mobile_carrier AS mobileCarrier,
-			monthly_billing_amt AS monthlyBillingAmt,
-			basic_amt AS basicAmt,
-			discount_amt AS discountAmt,
-			voice_call AS voiceCall,
-			mobile_data AS mobileData,
-			mobile_qos AS mobileQos,
-			mobile_message AS mobileMessage,
-			carrier_plan_order AS carrierPlanOrder,
-			active_yn AS activeYn,
-			DATE_FORMAT(last_updated_datetime ,'%Y-%m-%d %H:%i') AS lastUpdatedDatetime,
-			DATE_FORMAT(registered_datetime ,'%Y-%m-%d %H:%i') AS registeredDatetime
+		    carrier_plan_id,
+		    template_code,
+		    carrier_plan_name,
+		    mobile_carrier,
+		    monthly_billing_amt,
+		    basic_amt,
+		    discount_amt,
+		    voice_call,
+		    mobile_data,
+		    mobile_qos,
+		    mobile_message,
+		    carrier_plan_order,
+		    active_yn,
+		    DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime,
+		    DATE_FORMAT(registered_datetime, '%Y-%m-%d %H:%i') AS registered_datetime
 		FROM
-			carrier_plan cp
-		WHERE	
-            carrier_plan_id = #{carrierPlanId}
+		    carrier_plan
+		WHERE
+		    carrier_plan_id = #{carrierPlanId}
     </select>
     
 	<update id="updateCarrierPlan" parameterType="CarrierPlan">
