@@ -1,19 +1,12 @@
 package com.suaninc.newsagency.dao;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import com.suaninc.newsagency.domain.CarrierTemplate;
 import com.suaninc.newsagency.domain.SalesPolicy;
-import com.suaninc.newsagency.domain.TemplateCoordinate;
 
 @Repository
 public class SalesPolicyDaoImpl implements SalesPolicyDao {
@@ -42,7 +35,27 @@ public class SalesPolicyDaoImpl implements SalesPolicyDao {
     public List<String> selectDistinctPlanNames() {
         return sqlSession.selectList(NAMESPACE + "selectDistinctPlanNames");
     }
+
+    @Override
+    public List<String> selectActivationTypesByContractPeriod(String contractPeriod) {
+        return sqlSession.selectList(NAMESPACE + "selectActivationTypesByContractPeriod", contractPeriod);
+    }
+
+    @Override
+    public List<String> selectProductNamesByConditions(SalesPolicy form) {
+        return sqlSession.selectList(NAMESPACE + "selectProductNamesByConditions", form);
+    }
+
+    @Override
+    public List<String> selectPlanNamesByConditions(SalesPolicy form) {
+        return sqlSession.selectList(NAMESPACE + "selectPlanNamesByConditions", form);
+    }
     
+    @Override
+    public SalesPolicy selectPlanDetail(SalesPolicy form) {
+        return sqlSession.selectOne(NAMESPACE + "selectPlanDetail", form);
+    }
+
     @Override
     public SalesPolicy selectUrlPathByConditions(SalesPolicy form) {
         return sqlSession.selectOne(NAMESPACE + "selectUrlPathByConditions", form);

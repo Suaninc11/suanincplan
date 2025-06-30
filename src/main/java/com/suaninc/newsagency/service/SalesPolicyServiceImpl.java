@@ -3,15 +3,10 @@ package com.suaninc.newsagency.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.suaninc.newsagency.dao.SalesPolicyDao;
-import com.suaninc.newsagency.dao.TemplateDao;
-import com.suaninc.newsagency.domain.CarrierTemplate;
 import com.suaninc.newsagency.domain.SalesPolicy;
-import com.suaninc.newsagency.domain.TemplateCoordinate;
 
 @Service
 public class SalesPolicyServiceImpl implements SalesPolicyService {
@@ -38,7 +33,27 @@ public class SalesPolicyServiceImpl implements SalesPolicyService {
     public List<String> getDistinctPlanNames() {
         return salesPolicyDao.selectDistinctPlanNames();
     }
+
+    @Override
+    public List<String> getActivationTypesByContractPeriod(String contractPeriod) {
+        return salesPolicyDao.selectActivationTypesByContractPeriod(contractPeriod);
+    }
+
+    @Override
+    public List<String> getProductNamesByConditions(SalesPolicy form) {
+        return salesPolicyDao.selectProductNamesByConditions(form);
+    }
+
+    @Override
+    public List<String> getPlanNamesByConditions(SalesPolicy form) {
+        return salesPolicyDao.selectPlanNamesByConditions(form);
+    }
     
+    @Override
+    public SalesPolicy getPlanDetail(SalesPolicy form) {
+        return salesPolicyDao.selectPlanDetail(form);
+    }
+
     @Override
     public SalesPolicy getUrlPathByConditions(SalesPolicy form) {
         return salesPolicyDao.selectUrlPathByConditions(form);

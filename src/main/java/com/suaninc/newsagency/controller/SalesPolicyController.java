@@ -24,37 +24,49 @@ public class SalesPolicyController {
 	@Autowired
 	private SalesPolicyService salesPolicyService;
 	
-    @GetMapping("/ktmMobileDevice")
-    public String mainPage(SalesPolicy form, Model model) {
+	@GetMapping("/ktmMobileDevice")
+	public String ktmMobileDevice(SalesPolicy form, Model model) {
+		
+	    model.addAttribute("form", form);
+	    model.addAttribute("contractPeriods", salesPolicyService.getDistinctContractPeriods());
+	    
+	    return "templates/ktmMobileDevice";
+	}
+	
+	@ResponseBody
+	@PostMapping("/getActivationTypes")
+	public List<String> getActivationTypes(@RequestBody Map<String, String> request) {
+	    return salesPolicyService.getActivationTypesByContractPeriod(request.get("contractPeriod"));
+	}
+	
+	@ResponseBody
+	@PostMapping("/getProductNames")
+	public List<String> getProductNames(@RequestBody SalesPolicy form) {
+	    return salesPolicyService.getProductNamesByConditions(form);
+	}
 
-        List<String> contractPeriods = salesPolicyService.getDistinctContractPeriods();
-        List<String> activationTypes = salesPolicyService.getDistinctActivationTypes();
-        List<String> productNames = salesPolicyService.getDistinctProductNames();
-        List<String> planNames = salesPolicyService.getDistinctPlanNames();
+	@ResponseBody
+	@PostMapping("/getPlanNames")
+	public List<String> getPlanNames(@RequestBody SalesPolicy form) {
+	    return salesPolicyService.getPlanNamesByConditions(form);
+	}
+	
+	@PostMapping("/getPlanDetail")
+	@ResponseBody
+	public SalesPolicy getPlanDetail(@RequestBody SalesPolicy form) {
+	    return salesPolicyService.getPlanDetail(form);
+	}
 
-        model.addAttribute("form", form);
-        model.addAttribute("contractPeriods", contractPeriods);
-        model.addAttribute("activationTypes", activationTypes);
-        model.addAttribute("productNames", productNames);
-        model.addAttribute("planNames", planNames);
-
-        return "templates/ktmMobileDevice";
-    }
-    
-    @PostMapping("/getOnlineUrl")
-    @ResponseBody
-    public Map<String, String> getOnlineUrl(@RequestBody SalesPolicy form) {
-        SalesPolicy urlInfo = salesPolicyService.getUrlPathByConditions(form);
-        Map<String, String> map = new HashMap<>();
-
-        if (urlInfo != null) {
-            map.put("pcUrl", urlInfo.getUrlPath());
-            map.put("mobileUrl", urlInfo.getMobileUrlPath());
-        } else {
-            map.put("pcUrl", "");
-            map.put("mobileUrl", "");
-        }
-        return map;
-    }
+	@ResponseBody
+	@PostMapping("/getOnlineUrl")
+	public Map<String, String> getOnlineUrl(@RequestBody SalesPolicy form) {
+	    SalesPolicy policy = salesPolicyService.getUrlPathByConditions(form);
+	    Map<String, String> result = new HashMap<>();
+	    if (policy != null) {
+	        result.put("pcUrl", policy.getUrlPath());
+	        result.put("mobileUrl", policy.getMobileUrlPath());
+	    }
+	    return result;
+	}
     
 }

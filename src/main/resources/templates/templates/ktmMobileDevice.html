@@ -14,52 +14,179 @@
 	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
 	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
 	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-			document.getElementById("onlineApplyBtn").addEventListener("click", function(e) {
-			    e.preventDefault(); // 기본 링크 동작 막기
-	
-			    // 각 옵션값 가져오기 (예시)
-			    const contractPeriod = document.getElementById("contractPeriod").value;
-			    const activationType = document.getElementById("activationType").value;
-			    const productName = document.getElementById("productName").value;
-			    const planName = document.getElementById("planName").value;
-			    const installmentType = document.querySelector('select[name="installmentType"]').value;
-	
-			    if (!contractPeriod || !activationType || !productName || !planName || !installmentType) {
-			        alert("모든 옵션을 선택해주세요.");
-			        return;
-			    }
-	
-			    const requestData = {
-			        contractPeriod,
-			        activationType,
-			        productName,
-			        planName,
-			        installmentType
-			    };
-	
-			    fetch('/homepage/salesPolicy/getOnlineUrl', {
-			        method: 'POST',
-			        headers: { 'Content-Type': 'application/json' },
-			        body: JSON.stringify(requestData)
-			    })
-			    .then(response => response.json())
-			    .then(result => {
-			        const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
-			        const url = isMobile ? result.mobileUrl : result.pcUrl;
-	
-			        if (url) {
-			            // 새 창으로 URL 열기
-			            window.open(url, '_blank');
-			        } else {
-			            alert("해당 조건에 맞는 URL이 없습니다.");
-			        }
-			    })
-			    .catch(() => {
-			        alert("URL 조회 중 오류가 발생했습니다.");
-			    });
-			});
+	document.addEventListener("DOMContentLoaded", function () {
+	    const formData = {
+	        contractPeriod: '',
+	        activationType: '',
+	        productName: '',
+	        planName: '',
+	        installmentType: ''
+	    };
+
+	    function fetchOptions(url, data, callback, targetSelectId, defaultText = '선택') {
+	        fetch(url, {
+	            method: 'POST',
+	            headers: { 'Content-Type': 'application/json' },
+	            body: JSON.stringify(data)
+	        })
+	        .then(res => res.json())
+	        .then(list => {
+	            const select = document.getElementById(targetSelectId);
+	            select.innerHTML = `<option value="">${defaultText}</option>`;
+	            list.forEach(item => {
+	                const opt = document.createElement('option');
+	                opt.value = item;
+	                opt.textContent = item;
+	                select.appendChild(opt);
+	            });
+	            if (callback) callback();
+	        });
+	    }
+
+	    function updateButtonState() {
+	        const btn = document.getElementById("onlineApplyBtn");
+	        const isValid = formData.contractPeriod && formData.activationType && formData.productName && formData.planName && formData.installmentType;
+	        btn.classList.toggle("disabled", !isValid);
+	    }
+
+	    // 약정 기간 선택
+	    document.getElementById("contractPeriod").addEventListener("change", function () {
+	        formData.contractPeriod = this.value;
+	        formData.activationType = '';
+	        formData.productName = '';
+	        formData.planName = '';
+	        formData.installmentType = '';
+	        updateButtonState();
+
+	        document.getElementById("activationType").innerHTML = '<option value="">-- 개통유형 선택 --</option>';
+	        document.getElementById("productName").innerHTML = '<option value="">-- 제품명 선택 --</option>';
+	        document.getElementById("planName").innerHTML = '<option value="">-- 요금제명 선택 --</option>';
+			// 할부유형 옵션 초기화 (옵션도 제거)
+			const installmentSelect = document.querySelector('select[name="installmentType"]');
+			installmentSelect.innerHTML = '<option value="">-- 할부유형 선택 --</option>';
+			installmentSelect.value = '';
+			
+	        document.getElementById("planDetailBox").style.display = "none";
+
+	        fetchOptions("/homepage/salesPolicy/getActivationTypes", { contractPeriod: formData.contractPeriod }, null, "activationType", "-- 개통유형 선택 --");
+	    });
+
+		// 개통유형 선택
+		document.getElementById("activationType").addEventListener("change", function () {
+		    formData.activationType = this.value;
+			formData.installmentType = '';
+		    formData.productName = '';
+		    formData.planName = '';
+			
+			const installmentSelect = document.getElementById("installmentType");
+		    installmentSelect.innerHTML = '<option value="">-- 할부유형 선택 --</option>';
+
+		    if (formData.activationType) {
+		        // 개통 유형이 선택되었을 때만 할부 유형 옵션 추가
+		        const option1 = document.createElement("option");
+		        option1.value = "할부";
+		        option1.textContent = "전액할부";
+
+		        const option2 = document.createElement("option");
+		        option2.value = "현금";
+		        option2.textContent = "현금 부분납부";
+
+		        installmentSelect.appendChild(option1);
+		        installmentSelect.appendChild(option2);
+		    }
+				
+		    updateButtonState();
+
+		    document.getElementById("productName").innerHTML = '<option value="">-- 제품명 선택 --</option>';
+		    document.getElementById("planName").innerHTML = '<option value="">-- 요금제명 선택 --</option>';
+			document.querySelector('select[name="installmentType"]').value = '';
+
+		    if (formData.activationType && formData.installmentType) {
+		        fetchOptions("/homepage/salesPolicy/getProductNames", formData, null, "productName", "-- 제품명 선택 --");
+		    }
 		});
+
+		// 할부유형 선택
+		document.querySelector('select[name="installmentType"]').addEventListener("change", function () {
+		    formData.installmentType = this.value;
+		    formData.productName = '';
+		    formData.planName = '';
+		    updateButtonState();
+
+		    document.getElementById("productName").innerHTML = '<option value="">-- 제품명 선택 --</option>';
+		    document.getElementById("planName").innerHTML = '<option value="">-- 요금제명 선택 --</option>';
+
+		    if (formData.activationType && formData.installmentType) {
+		        fetchOptions("/homepage/salesPolicy/getProductNames", formData, null, "productName", "-- 제품명 선택 --");
+		    }
+		});
+
+	    // 단말 제품명 선택
+	    document.getElementById("productName").addEventListener("change", function () {
+	        formData.productName = this.value;
+	        formData.planName = '';
+	        document.getElementById("planName").innerHTML = '<option value="">-- 요금제명 선택 --</option>';
+	        document.getElementById("planDetailBox").style.display = "none";
+	        updateButtonState();
+
+	        if (!formData.installmentType) return;
+
+	        fetchOptions("/homepage/salesPolicy/getPlanNames", formData, null, "planName", "-- 요금제명 선택 --");
+	    });
+
+	    // 요금제명 선택 시 → 상세정보 표시
+		document.getElementById("planName").addEventListener("change", function () {
+		    formData.planName = this.value;
+		    updateButtonState();
+
+		    if (!formData.planName) {
+		        document.getElementById("planDetailBox").style.display = "none";
+		        return;
+		    }
+
+		    fetch("/homepage/salesPolicy/getPlanDetail", {
+		        method: "POST",
+		        headers: { 'Content-Type': 'application/json' },
+		        body: JSON.stringify(formData)
+		    })
+		    .then(res => res.json())
+		    .then(data => {
+		        document.getElementById("baseAmt").value = data.baseAmt?.toLocaleString() ?? "-";
+		        document.getElementById("deviceAmt").value = data.deviceAmt?.toLocaleString() ?? "-";
+		        document.getElementById("installmentPrincipal").value = data.installmentPrincipal?.toLocaleString() ?? "-";
+		        document.getElementById("installmentFee").value = data.installmentFee?.toLocaleString() ?? "-";
+		        document.getElementById("officialSubsidy").value = data.officialSubsidy?.toLocaleString() ?? "-";
+		        document.getElementById("planDetailBox").style.display = "block";
+		    });
+		});
+
+
+	    // 온라인 접수 버튼 클릭
+	    document.getElementById("onlineApplyBtn").addEventListener("click", function (e) {
+	        e.preventDefault();
+
+	        if (!formData.contractPeriod || !formData.activationType || !formData.productName || !formData.planName || !formData.installmentType) {
+	            alert("모든 항목을 선택해주세요.");
+	            return;
+	        }
+
+	        fetch("/homepage/salesPolicy/getOnlineUrl", {
+	            method: "POST",
+	            headers: { 'Content-Type': 'application/json' },
+	            body: JSON.stringify(formData)
+	        })
+	        .then(res => res.json())
+	        .then(data => {
+	            const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+	            const finalUrl = isMobile ? data.mobileUrl : data.pcUrl;
+	            if (finalUrl) {
+	                window.open(finalUrl, "_blank");
+	            } else {
+	                alert("URL 정보가 없습니다.");
+	            }
+	        });
+	    });
+	});
 	</script>
 </head>
 
@@ -85,72 +212,122 @@
 									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 									    <h6 class="m-0 font-weight-bold text-primary">단말 구분</h6>
 									</div>
+									
 									<div class="card-body">
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="contractPeriod">약정 기간</label>
-									        </div>
-									        <div class="col-sm-4">
-												<select id="contractPeriod" name="contractPeriod" class="custom-select form-control form-control-sm">
-												  <option th:each="period : ${contractPeriods}" th:value="${period}" th:text="${period}"></option>
-												</select>
-									        </div>
-									    </div>
-									</div>
+									    <div class="row">
+									        <!-- 좌측: 셀렉트 필드들 -->
+									        <div class="col-sm-6">
+									            <!-- 약정 기간 -->
+									            <div class="form-group row align-items-center d-flex text-center">
+									                <div class="col-sm-4 border-right">
+									                    <label for="contractPeriod">약정 기간</label>
+									                </div>
+									                <div class="col-sm-8">
+									                    <select id="contractPeriod" name="contractPeriod" class="custom-select form-control form-control-sm">
+									                        <option value="">-- 약정기간 선택 --</option>
+									                        <option th:each="period : ${contractPeriods}" th:value="${period}" th:text="${period}"></option>
+									                    </select>
+									                </div>
+									            </div>
 
-									<!-- 개통 유형 -->
-									<div class="card-body">
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="activationType">개통 유형</label>
-									        </div>
-									        <div class="col-sm-4">
-												<select id="activationType" name="activationType" class="custom-select form-control form-control-sm">
-												  <option th:each="type : ${activationTypes}" th:value="${type}" th:text="${type}"></option>
-												</select>
-									        </div>
-									    </div>
-									</div>
+									            <!-- 개통 유형 -->
+									            <div class="form-group row align-items-center d-flex text-center">
+									                <div class="col-sm-4 border-right">
+									                    <label for="activationType">개통 유형</label>
+									                </div>
+									                <div class="col-sm-8">
+									                    <select id="activationType" name="activationType" class="custom-select form-control form-control-sm">
+									                        <option value="">-- 개통유형 선택 --</option>
+									                    </select>
+									                </div>
+									            </div>
 
-									<!-- 할부 유형 -->
-									<div class="card-body">
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="installmentType">할부 유형</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <select name="installmentType" class="custom-select form-control form-control-sm">
-									                <option value="할부">전액할부</option>
-									                <option value="현금">현금 부분납부</option>
-									            </select>
-									        </div>
-									    </div>
-									</div>
+									            <!-- 할부 유형 -->
+									            <div class="form-group row align-items-center d-flex text-center">
+									                <div class="col-sm-4 border-right">
+									                    <label for="installmentType">할부 유형</label>
+									                </div>
+									                <div class="col-sm-8">
+														<select name="installmentType" class="custom-select form-control form-control-sm" id="installmentType">
+														    <option value="">-- 할부유형 선택 --</option>
+														</select>
+									                </div>
+									            </div>
 
-									<!-- 단말 제품명 -->
-									<div class="card-body">
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="productName">단말 제품명</label>
-									        </div>
-									        <div class="col-sm-4">
-												<select id="productName" name="productName" class="custom-select form-control form-control-sm">
-												  <option th:each="product : ${productNames}" th:value="${product}" th:text="${product}"></option>
-												</select>
-									        </div>
-									    </div>
-									</div>
+									            <!-- 단말 제품명 -->
+									            <div class="form-group row align-items-center d-flex text-center">
+									                <div class="col-sm-4 border-right">
+									                    <label for="productName">단말 제품명</label>
+									                </div>
+									                <div class="col-sm-8">
+									                    <select id="productName" name="productName" class="custom-select form-control form-control-sm">
+									                        <option value="">-- 제품명 선택 --</option>
+									                    </select>
+									                </div>
+									            </div>
 
-									<!-- 요금제명 -->
-									<div class="card-body">
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="planName">요금제명</label>
+									            <!-- 요금제명 -->
+									            <div class="form-group row align-items-center d-flex text-center">
+									                <div class="col-sm-4 border-right">
+									                    <label for="planName">요금제명</label>
+									                </div>
+									                <div class="col-sm-8">
+									                    <select id="planName" name="planName" class="custom-select form-control form-control-sm">
+									                        <option value="">-- 요금제명 선택 --</option>
+									                    </select>
+									                </div>
+									            </div>
 									        </div>
-									        <div class="col-sm-4">
-												<select id="planName" name="planName" class="custom-select form-control form-control-sm">
-												  <option th:each="plan : ${planNames}" th:value="${plan}" th:text="${plan}"></option>
-												</select>
+
+									        <!-- 우측: 요금제 상세 정보 -->
+									        <div class="col-sm-6">
+									            <div id="planDetailBox" class="ml-4" style="display:none; min-width:300px;">
+
+									                <div class="form-group row align-items-center d-flex text-center">
+									                    <div class="col-sm-4 border-right">
+									                        <label for="baseAmt">기본료</label>
+									                    </div>
+									                    <div class="col-sm-8">
+									                        <input type="text" id="baseAmt" class="form-control form-control-user" readonly>
+									                    </div>
+									                </div>
+
+									                <div class="form-group row align-items-center d-flex text-center">
+									                    <div class="col-sm-4 border-right">
+									                        <label for="deviceAmt">출고가</label>
+									                    </div>
+									                    <div class="col-sm-8">
+									                        <input type="text" id="deviceAmt" class="form-control form-control-user" readonly>
+									                    </div>
+									                </div>
+
+									                <div class="form-group row align-items-center d-flex text-center">
+									                    <div class="col-sm-4 border-right">
+									                        <label for="installmentPrincipal">할부원금</label>
+									                    </div>
+									                    <div class="col-sm-8">
+									                        <input type="text" id="installmentPrincipal" class="form-control form-control-user" readonly>
+									                    </div>
+									                </div>
+
+									                <div class="form-group row align-items-center d-flex text-center">
+									                    <div class="col-sm-4 border-right">
+									                        <label for="installmentFee">할부이자</label>
+									                    </div>
+									                    <div class="col-sm-8">
+									                        <input type="text" id="installmentFee" class="form-control form-control-user" readonly>
+									                    </div>
+									                </div>
+
+									                <div class="form-group row align-items-center d-flex text-center">
+									                    <div class="col-sm-4 border-right">
+									                        <label for="officialSubsidy">공시지원금</label>
+									                    </div>
+									                    <div class="col-sm-8">
+									                        <input type="text" id="officialSubsidy" class="form-control form-control-user" readonly>
+									                    </div>
+									                </div>
+									            </div>
 									        </div>
 									    </div>
 									</div>
@@ -161,9 +338,9 @@
 					</form>
 					<div class="d-sm-flex align-items-center mb-4 justify-content-end">
 						<div class="text-right mt-4">
-						    <a id="onlineApplyBtn" class="btn btn-danger btn-lg" href="#" target="_blank">
-						        <i class="fas fa-arrow-right"></i> 온라인 개통 접수하러 가기
-						    </a>
+							<a id="onlineApplyBtn" class="btn btn-danger px-4 py-2 disabled" href="#" target="_blank">
+							    <i class="fas fa-arrow-right"></i> 온라인 개통 접수하러 가기
+							</a>
 						</div>
 					</div>
                 </div>

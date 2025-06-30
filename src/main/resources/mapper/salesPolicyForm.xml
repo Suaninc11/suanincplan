@@ -3,45 +3,78 @@
 <mapper namespace="salesPolicy">
 
     <select id="selectDistinctContractPeriods" resultType="String">
-	    SELECT DISTINCT contract_period
-	    FROM sales_policy
-	    WHERE contract_period IS NOT NULL
-	    ORDER BY contract_period
-	</select>
-	
-	<select id="selectDistinctActivationTypes" resultType="String">
-	    SELECT DISTINCT activation_type
-	    FROM sales_policy
-	    WHERE activation_type IS NOT NULL
-	    ORDER BY activation_type
-	</select>
-	
-	<select id="selectDistinctProductNames" resultType="String">
-	    SELECT DISTINCT product_name
-	    FROM sales_policy
-	    WHERE product_name IS NOT NULL
-	    ORDER BY product_name
-	</select>
-	
-	<select id="selectDistinctPlanNames" resultType="String">
-	    SELECT DISTINCT plan_name
-	    FROM sales_policy
-	    WHERE plan_name IS NOT NULL
-	    ORDER BY plan_name
-	</select>
+        SELECT DISTINCT contract_period
+        FROM sales_policy
+        WHERE contract_period IS NOT NULL
+        ORDER BY contract_period
+    </select>
 
-	<select id="selectUrlPathByConditions" parameterType="SalesPolicy" resultType="SalesPolicy">
-	    SELECT
-	        url_path AS urlPath,
-	        mobile_url_path AS mobileUrlPath
+    <select id="selectDistinctActivationTypes" resultType="String">
+        SELECT DISTINCT activation_type
+        FROM sales_policy
+        WHERE activation_type IS NOT NULL
+        ORDER BY activation_type
+    </select>
+
+    <select id="selectDistinctProductNames" resultType="String">
+        SELECT DISTINCT product_name
+        FROM sales_policy
+        WHERE product_name IS NOT NULL
+        ORDER BY product_name
+    </select>
+
+    <select id="selectDistinctPlanNames" resultType="String">
+        SELECT DISTINCT plan_name
+        FROM sales_policy
+        WHERE plan_name IS NOT NULL
+        ORDER BY plan_name
+    </select>
+
+    <select id="selectActivationTypesByContractPeriod" resultType="String">
+        SELECT DISTINCT activation_type
+        FROM sales_policy
+        WHERE contract_period = #{contractPeriod}
+        ORDER BY activation_type
+    </select>
+
+    <select id="selectProductNamesByConditions" resultType="String">
+        SELECT DISTINCT product_name
+        FROM sales_policy
+        WHERE contract_period = #{contractPeriod}
+		  AND sales_policy_name LIKE CONCAT('%', #{installmentType}, '%')
+          AND activation_type = #{activationType}
+        ORDER BY product_name
+    </select>
+
+    <select id="selectPlanNamesByConditions" resultType="String">
+        SELECT DISTINCT plan_name
+        FROM sales_policy
+        WHERE contract_period = #{contractPeriod}
+          AND activation_type = #{activationType}
+          AND product_name = #{productName}
+        ORDER BY plan_name
+    </select>
+    
+    <select id="selectPlanDetail" resultType="SalesPolicy">
+	    SELECT base_amt, device_amt, installment_principal, installment_fee, official_subsidy, plan_name
 	    FROM sales_policy
-	    WHERE
-	        contract_period = #{contractPeriod}
-	        AND activation_type = #{activationType}
-	        AND product_name = #{productName}
-	        AND plan_name = #{planName}
-	        AND sales_policy_name LIKE CONCAT('%', #{installmentType}, '%')
+	    WHERE contract_period = #{contractPeriod}
+	      AND activation_type = #{activationType}
+	      AND product_name = #{productName}
+	      AND plan_name = #{planName}
+	      AND sales_policy_name LIKE CONCAT('%', #{installmentType}, '%')
 	    LIMIT 1
 	</select>
+
+    <select id="selectUrlPathByConditions" resultType="com.suaninc.newsagency.domain.SalesPolicy">
+        SELECT url_path, mobile_url_path
+        FROM sales_policy
+        WHERE contract_period = #{contractPeriod}
+          AND activation_type = #{activationType}
+          AND product_name = #{productName}
+          AND plan_name = #{planName}
+          AND sales_policy_name LIKE CONCAT('%', #{installmentType}, '%')
+        LIMIT 1
+    </select>
 	
 </mapper>
