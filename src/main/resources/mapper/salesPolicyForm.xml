@@ -56,8 +56,24 @@
     </select>
     
     <select id="selectPlanDetail" resultType="SalesPolicy">
-	    SELECT base_amt, device_amt, installment_principal, installment_fee, official_subsidy, plan_name
-	    FROM sales_policy
+		SELECT
+		    plan_name,
+		    base_amt,	-- 기본료
+		    device_amt,	-- 출고가
+		    ROUND((device_amt - official_subsidy) / 24, 0) AS installment_amount, -- 할부금
+		    discount_amt, -- 할인
+		    official_subsidy,	-- 공시지원금
+		    ROUND(((device_amt - official_subsidy) / 24) * 0.059, 0) AS installment_interest, -- 할부이자
+		    ROUND(
+		        base_amt 
+		        - IFNULL(discount_amt, 0) 
+		        - IFNULL(additional_discount_amt, 0)
+		        + ROUND((device_amt - official_subsidy) / 24, 0)
+		        + ROUND(((device_amt - official_subsidy) / 24) * 0.059, 0),
+		        0
+		    ) AS monthly_bill, -- 월청구요금
+		    additional_discount_amt -- 평생할인프로모션
+		FROM sales_policy
 	    WHERE contract_period = #{contractPeriod}
 	      AND activation_type = #{activationType}
 	      AND product_name = #{productName}

@@ -37,5 +37,9 @@ public class SalesPolicy {
     private String registeredDatetime;
     
     private String installmentType; // 할부 유형 (LIKE 검색용)
+    
+    private Integer installmentAmount;       // 할부금 (계산값)
+    private Integer installmentInterest;     // 할부이자 (계산값)
+    private Integer monthlyBill;             // 월 청구요금 (계산값)
 	
 }
