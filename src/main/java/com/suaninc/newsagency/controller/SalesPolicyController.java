@@ -6,14 +6,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.suaninc.newsagency.domain.CarrierTemplate;
 import com.suaninc.newsagency.domain.SalesPolicy;
 import com.suaninc.newsagency.service.SalesPolicyService;
 
@@ -67,6 +72,18 @@ public class SalesPolicyController {
 	        result.put("mobileUrl", policy.getMobileUrlPath());
 	    }
 	    return result;
+	}
+	
+	@GetMapping("/salesPolicyList")
+	public String templateList(Model model, SalesPolicy form, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) throws Exception {
+		
+	    Pageable pageable = PageRequest.of(page, size);
+	    
+//	    Page<CarrierTemplate> salesPolicyList = templateService.getTemplateList(form, pageable);
+	    
+//	    model.addAttribute("salesPolicyList", salesPolicyList);
+		
+		return "salesPolicyList";
 	}
     
 }
