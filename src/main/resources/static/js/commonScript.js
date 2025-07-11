@@ -93,7 +93,7 @@ function applyFormDownload(preview = false) {
 	    if (targetPlans.includes(carrierPlan)) {
 			dataForm.append("penalty3Months", "29,700");
 			dataForm.append("penalty9Months", "59,400");
-			dataForm.append("discount12Months", "118,000");
+			dataForm.append("discount12Months", "118,800");
 			dataForm.append("discount12MonthsCheck", "discount12MonthsCheck");
 			dataForm.append("label12Months", "12");
 	    }
