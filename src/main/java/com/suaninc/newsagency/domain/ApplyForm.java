@@ -96,4 +96,10 @@ public class ApplyForm {
 	private String commonMonth;    		// 약관월
 	private String commonDay;    		// 약관일
 	
+	private String penalty3Months;    		// 약관년도
+	private String penalty9Months;    	// 약관년도 뒷자리
+	private String discount12Months;// 약관년도 뒷한자리
+	private String discount12MonthsCheck;    		// 약관월
+	private String label12Months;    		// 약관일
+	
 }

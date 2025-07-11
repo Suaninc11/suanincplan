@@ -80,6 +80,25 @@ function applyFormDownload(preview = false) {
 		    dataForm.append("depositorCheck", "depositorCheck");
 		}
 	}
+	// 유모바일(청소년) 또는 유모바일(미디어로그) 조건 처리
+	if (templateName === "유모바일(청소년)" || templateName === "유모바일(미디어로그)") {
+	    var carrierPlan = document.getElementById("mobileCarrier").value;
+
+	    const targetPlans = [
+	        "LTE 스페셜 [약정형]",
+	        "LTE (7GB+/통화기본) [약정형]",
+	        "LTE (1GB+/통화기본) [약정형]"
+	    ];
+
+	    if (targetPlans.includes(carrierPlan)) {
+			dataForm.append("penalty3Months", "29,700");
+			dataForm.append("penalty9Months", "59,400");
+			dataForm.append("discount12Months", "118,000");
+			dataForm.append("discount12MonthsCheck", "discount12MonthsCheck");
+			dataForm.append("label12Months", "12");
+	    }
+	}
+
 
 	var formattedDate = getFormattedDate();
 	var templateName = document.getElementById('templateName').value;
