@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>suaninc</title>
+	<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<link href="/css/sb-admin-2.css" rel="stylesheet">
+	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+	<script>
+		function submitForm(actionType) {
+		    var form = document.getElementById("dataForm");
+		    var formData = new FormData(form);
+		    
+		    var actionUrl = "";
+		    if (actionType === 'modify') {
+		        var userConfirmed = confirm("수정하시겠습니까?");
+		        if (!userConfirmed) {
+		            return;
+		        }
+		        actionUrl = "/homepage/carrierPlan/carrierPlanModify";
+		    } else if (actionType === 'delete') {
+		        var userConfirmed = confirm("삭제하시겠습니까?");
+		        if (!userConfirmed) {
+		            return;
+		        }
+		        actionUrl = "/homepage/carrierPlan/deleteCarrierPlan";
+		    }
+
+		    fetch(actionUrl, {
+		        method: 'POST',
+		        body: formData
+		    })
+		    .then(response => response.json())
+		    .then(data => {
+		        if (data.success) {
+		            alert(data.message);  // 성공 메시지 출력
+		            window.location.href = data.redirectUrl;  // 서버에서 받은 리다이렉트 URL로 이동
+		        } else {
+		            alert("오류가 발생했습니다: " + data.message);  // 오류 메시지 출력
+		        }
+		    })
+		    .catch(error => {
+		        alert("요청 처리 중 오류가 발생했습니다.");
+		        console.error('Error:', error);
+		    });
+		}
+		
+		document.addEventListener("DOMContentLoaded", function () {
+		    const basicAmt = document.getElementById('basicAmt');
+		    const discountAmt = document.getElementById('discountAmt');
+		    const monthlyBillingAmt = document.getElementById('monthlyBillingAmt');
+
+		    function calculateMonthlyBilling() {
+		        const basic = parseFloat(basicAmt.value.replace(/,/g, '')) || 0;
+		        const discount = parseFloat(discountAmt.value.replace(/,/g, '')) || 0;
+		        const result = basic - discount;
+		        monthlyBillingAmt.value = result.toString();
+		    }
+
+		    basicAmt.addEventListener('input', calculateMonthlyBilling);
+		    discountAmt.addEventListener('input', calculateMonthlyBilling);
+		});
+	</script>
+</head>
+
+<body id="page-top">
+
+	<div id="wrapper">
+		<div th:replace="sidebar :: sidebar"></div>
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<nav class="navbar navbar-expand navbar-light topbar mb-4 static-top shadow" style="background-color: #20265C; padding-left: 0;">
+				    <div style="border-left: 1px solid rgba(255, 255, 255, 0.15); padding-left: 10px; height: 80%; display: flex; align-items: center; margin-left: 0;"></div>
+				    <div class="ml-3">
+				        <h1 class="h5 mb-0 text-white">모바일(단말) 상세정보</h1>
+				    </div>					
+				</nav>
+				<div class="container-fluid">
+					
+					<!-- 신청서 -->
+					<div class="card shadow mb-4">
+						<form id="dataForm" method="post">
+							<!-- 요금제 -->
+						    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+						        <h6 class="m-0 font-weight-bold text-primary">모바일(단말)</h6>
+						    </div>
+							<div class="card-body">
+							    <div class="form-group row align-items-center d-flex text-center">
+							        <div class="col-sm-2 border-right">
+							            <label for="salesPolicyName">판매정책명</label>
+							        </div>
+							        <div class="col-sm-4 mb-3 mb-sm-0">
+							            <input type="text" name="salesPolicyName" class="form-control form-control-user" th:value="${salesPolicyInfo.salesPolicyName}" readonly>
+							        </div>
+							    </div>
+
+							    <div class="form-group row align-items-center d-flex text-center">
+							        <div class="col-sm-2 border-right">
+							            <label for="contractPeriod">계약기간</label>
+							        </div>
+							        <div class="col-sm-4 mb-3 mb-sm-0">
+							            <input type="text" name="contractPeriod" class="form-control form-control-user" th:value="${salesPolicyInfo.contractPeriod}" readonly>
+							        </div>
+							    </div>
+
+							    <div class="form-group row align-items-center d-flex text-center">
+							        <div class="col-sm-2 border-right">
+							            <label for="activationType">개통유형</label>
+							        </div>
+							        <div class="col-sm-4 mb-3 mb-sm-0">
+							            <input type="text" name="activationType" class="form-control form-control-user" th:value="${salesPolicyInfo.activationType}" readonly>
+							        </div>
+							    </div>
+
+							    <div class="form-group row align-items-center d-flex text-center">
+							        <div class="col-sm-2 border-right">
+							            <label for="productName">제품명</label>
+							        </div>
+							        <div class="col-sm-4 mb-3 mb-sm-0">
+							            <input type="text" name="productName" class="form-control form-control-user" th:value="${salesPolicyInfo.productName}" readonly>
+							        </div>
+							    </div>
+
+							    <div class="form-group row align-items-center d-flex text-center">
+							        <div class="col-sm-2 border-right">
+							            <label for="planName">요금제명</label>
+							        </div>
+							        <div class="col-sm-4 mb-3 mb-sm-0">
+							            <input type="text" name="planName" class="form-control form-control-user" th:value="${salesPolicyInfo.planName}" readonly>
+							        </div>
+							    </div>
+
+							    <div class="form-group row align-items-center d-flex text-center">
+							        <div class="col-sm-2 border-right">
+							            <label for="startDatetime">시작일시</label>
+							        </div>
+							        <div class="col-sm-4 mb-3 mb-sm-0">
+							            <input type="text" name="startDatetime" class="form-control form-control-user" th:value="${salesPolicyInfo.startDatetime}" readonly>
+							        </div>
+							    </div>
+
+							    <div class="form-group row align-items-center d-flex text-center">
+							        <div class="col-sm-2 border-right">
+							            <label for="endDatetime">종료일시</label>
+							        </div>
+							        <div class="col-sm-4 mb-3 mb-sm-0">
+							            <input type="text" name="endDatetime" class="form-control form-control-user" th:value="${salesPolicyInfo.endDatetime}" readonly>
+							        </div>
+							    </div>
+							</div>
+						</form>
+					</div>
+					
+					<div class="d-sm-flex align-items-center mb-4 justify-content-end">
+					    <div>
+							<a href="javascript:history.back()" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;">
+							    목록
+							</a>
+			<!--				<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;"  onclick="submitForm('modify');">
+							    수정
+							</a>
+							<a href="javascript:void(0);" class="d-none d-sm-inline-block btn btn-danger shadow-sm" onclick="submitForm('delete');">
+							    삭제
+							</a>-->
+					    </div>
+					</div>
+				</div>
+			</div>
+			<footer class="sticky-footer bg-white">
+			    <div class="container my-auto">
+			        <div class="copyright text-center my-auto">
+			            <span>Copyright &copy; suaninc 2024</span>
+			        </div>
+			    </div>
+			</footer>
+		</div>
+	</div>
+
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
+	</a>
+
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+	<script src="/js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>

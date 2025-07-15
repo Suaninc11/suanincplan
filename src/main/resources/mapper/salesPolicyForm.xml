@@ -92,5 +92,125 @@
           AND sales_policy_name LIKE CONCAT('%', #{installmentType}, '%')
         LIMIT 1
     </select>
+    
+    <select id="selectSalesPolicyListCount" resultType="int">
+		SELECT COUNT(*) AS total_rows
+		FROM (
+	    	SELECT
+				sales_policy_name,
+				start_datetime,
+				end_datetime,
+				product_name,
+				plan_name,
+				DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime
+			FROM
+				sales_policy sp
+		) AS subquery
+	</select>
+
+    <select id="selectSalesPolicyList" resultType="SalesPolicy">
+    	SELECT
+    		id,
+			sales_policy_name,
+			start_datetime,
+			end_datetime,
+			product_name,
+			plan_name,
+			DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime
+		FROM
+			sales_policy sp
+		ORDER BY registered_datetime DESC
+		LIMIT
+		    #{pageSize} OFFSET #{offset}
+    </select>
+    
+	<insert id="insertSalesPolicy" parameterType="SalesPolicy">
+	    INSERT INTO sales_policy (
+	        sales_policy_name,
+	        agency_name,
+	        start_datetime,
+	        end_datetime,
+	        product_code,
+	        product_name,
+	        is_used_product,
+	        plan_name,
+	        contract_period,
+	        activation_type,
+	        subsidy_type,
+	        base_amt,
+	        discount_amt,
+	        additional_discount_amt,
+	        device_amt,
+	        official_subsidy,
+	        agency_subsidy,
+	        installment_principal,
+	        installment_fee,
+	        new_join_commission,
+	        moving_commission,
+	        change_commission,
+	        classification,
+	        url_path,
+	        mobile_url_path
+	    )
+	    VALUES (
+	        #{salesPolicyName},
+	        #{agencyName},
+	        #{startDatetime},
+	        #{endDatetime},
+	        #{productCode},
+	        #{productName},
+	        #{isUsedProduct},
+	        #{planName},
+	        #{contractPeriod},
+	        #{activationType},
+	        #{subsidyType},
+	        #{baseAmt},
+	        #{discountAmt},
+	        #{additionalDiscountAmt},
+	        #{deviceAmt},
+	        #{officialSubsidy},
+	        #{agencySubsidy},
+	        #{installmentPrincipal},
+	        #{installmentFee},
+	        #{newJoinCommission},
+	        #{movingCommission},
+	        #{changeCommission},
+	        #{classification},
+	        #{urlPath},
+	        #{mobileUrlPath}
+	    )
+	</insert>
+	
+	<select id="selectSalePolicyInfo" parameterType="String" resultType="SalesPolicy">
+	    SELECT
+	        id,
+	        sales_policy_name,
+	        agency_name,
+	        start_datetime,
+	        end_datetime,
+	        product_code,
+	        product_name,
+	        is_used_product,
+	        plan_name,
+	        contract_period,
+	        activation_type,
+	        subsidy_type,
+	        base_amt,
+	        discount_amt,
+	        additional_discount_amt,
+	        device_amt,
+	        official_subsidy,
+	        agency_subsidy,
+	        installment_principal,
+	        installment_fee,
+	        new_join_commission,
+	        moving_commission,
+	        change_commission,
+	        classification,
+	        url_path,
+	        mobile_url_path
+	    FROM sales_policy
+	    WHERE id = #{id}
+	</select>
 	
 </mapper>

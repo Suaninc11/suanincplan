@@ -10,13 +10,13 @@ import com.suaninc.newsagency.domain.TemplateCoordinate;
 
 public interface TemplateDao {
 
-	public Page<CarrierTemplate> selectTemplateList(CarrierTemplate form, Pageable pageable);
+	Page<CarrierTemplate> selectTemplateList(CarrierTemplate form, Pageable pageable);
 	
-	public List<TemplateCoordinate> selectTemplateInfo(String templateCode);
+	List<TemplateCoordinate> selectTemplateInfo(String templateCode);
 	
-	public int updateCoordinate(TemplateCoordinate form);
+	int updateCoordinate(TemplateCoordinate form);
 	
-	public List<CarrierTemplate> selectTemplateImageList(String templateCode);
+	List<CarrierTemplate> selectTemplateImageList(String templateCode);
 
-	public int updateTemplateImageName(CarrierTemplate form);
+	int updateTemplateImageName(CarrierTemplate form);
 }
