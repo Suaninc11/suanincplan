@@ -7,11 +7,16 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -21,6 +26,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +41,7 @@ import com.suaninc.newsagency.domain.CarrierPlan;
 import com.suaninc.newsagency.domain.CarrierTemplate;
 import com.suaninc.newsagency.domain.TemplateCoordinate;
 import com.suaninc.newsagency.service.ApplyFormService;
+import com.suaninc.newsagency.service.TemplateService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -44,6 +51,9 @@ public class AutoCompleteController {
 	
 	@Autowired
 	private ApplyFormService applyFormService;
+	
+	@Autowired
+	private TemplateService templateService;
 	
     @Autowired
     private FileStorageProperties fileStorageProperties;
@@ -67,14 +77,25 @@ public class AutoCompleteController {
 	public String mainPage(@PathVariable String templateCode, ApplyForm form, Model model) throws Exception {
 		
 		form.setTemplateCode(templateCode);
-		if (templateCode.startsWith("uplusuMobile")) {
-			templateCode = "uplusuMobile";
-		}
+		 // final 변수로 복사
+	    final String finalTemplateCode = templateCode.startsWith("uplusuMobile") ? "uplusuMobile" : templateCode;
+
 		
-		List<CarrierPlan> carrierPlanList = applyFormService.getCarrierPlan(templateCode);
+		List<CarrierPlan> carrierPlanList = applyFormService.getCarrierPlan(finalTemplateCode);
 		
+		 // 1. 템플릿 정보 가져오기
+	    List<CarrierTemplate> templateImageList = templateService.getTemplateImageList(templateCode);
+
+	    // 2. 이미지 URL 설정
+	    String uploadDir = fileStorageProperties.getUploadDir();
+	    templateImageList.forEach(image -> {
+	        Path imagePath = Paths.get(uploadDir, templateCode, image.getTemplateImageName());
+	        image.setTemplateImageUrl(imagePath.toString());
+	    });
+
 		model.addAttribute("form", form);
 		model.addAttribute("carrierPlanList", carrierPlanList);
+		model.addAttribute("templateImageList", templateImageList);
 		
 		return "templates/" + form.getTemplateCode();
 	}

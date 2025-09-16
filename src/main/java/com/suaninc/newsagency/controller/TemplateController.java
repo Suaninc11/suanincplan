@@ -54,7 +54,7 @@ public class TemplateController {
 	}
 	
 	@GetMapping("/homepage/template/templateInfo")
-	public String templateInfo(@RequestParam("templateCode") String templateCode, TemplateCoordinate form, Model model,
+	public String templateInfo(@RequestParam String templateCode, TemplateCoordinate form, Model model,
 	                           @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) throws Exception {
 	    
 	    // 1. 템플릿 정보 가져오기

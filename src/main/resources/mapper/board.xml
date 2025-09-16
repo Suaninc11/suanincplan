@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+
+    
+    <select id="selectBoardListCount" resultType="int">
+		SELECT 
+		    COUNT(*)
+		FROM resources_board 
+		WHERE carrier = 'SKT'
+	</select>
+
+    <select id="selectBoardList" resultType="ResourcesBoard">
+		SELECT 
+		    board_id,
+		    category,
+		    carrier,
+		    title,
+		    content,
+		    view_count,
+		    download_count,
+		    file_yn,
+		    notice_yn,
+		    last_updated_datetime,
+		    registered_datetime
+		FROM resources_board 
+		WHERE carrier = 'SKT'
+		ORDER BY registered_datetime DESC
+		LIMIT
+		    #{pageSize} OFFSET #{offset}
+    </select>
+
+</mapper>

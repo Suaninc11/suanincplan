@@ -79,7 +79,7 @@
 		WHERE
 		    template_code = #{templateCode}
 		ORDER BY
-		    registered_datetime DESC
+		    template_image_order ASC
     </select>
     
 	<update id="updateTemplateImageName" parameterType="CarrierTemplate">

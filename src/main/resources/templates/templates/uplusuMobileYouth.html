@@ -31,6 +31,16 @@
 		    opacity: 0;
 		    transition: opacity 0.5s ease;
 		}
+		
+		.template-image {
+		    width: 100%;
+		    height: auto;
+		    margin-bottom: 20px;
+		    border: 1px solid #e3e6f0;
+		    border-radius: 8px;
+		    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+		    object-fit: contain;
+		}
 	</style>
 </head>
 
@@ -49,397 +59,419 @@
 				        <h1 class="h5 mb-0 text-white">유모바일(청소년) 가입신청서</h1>
 				    </div>					
 				</nav>
-                <div class="container-fluid">
-					<form id="dataForm">
-						<input type="hidden" id="templateCode" name="templateCode" th:value="${form.templateCode}">
-						<input type="hidden" id="carrierPlanId" name="carrierPlanId">
-						<input type="hidden" id="carrierPlanName" name="carrierPlanName">
-						<input type="hidden" id="mobileCarrier" name="mobileCarrier">
-						<input type="hidden" id="voiceCall" name="voiceCall">
-						<input type="hidden" id="mobileData" name="mobileData">
-						<input type="hidden" id="mobileQos" name="mobileQos">
-						<input type="hidden" id="mobileMessage" name="mobileMessage">
-
-						<input type="hidden" name="commonCheck" value="commonCheck">
-						<input type="hidden" id="commonYear" name="commonYear">
-						<input type="hidden" id="commonShortYear" name="commonShortYear">
-						<input type="hidden" id="commonShortShortYear" name="commonShortShortYear">
-						<input type="hidden" id="commonMonth" name="commonMonth">
-						<input type="hidden" id="commonDay" name="commonDay">	
-						<input type="hidden" id="templateName" name="templateName" value="유모바일(청소년)">
+				
+				<div class="container-fluid">
+				    <div class="row">
+						<!-- 왼쪽 이미지 섹션 -->
+				        <div id="imageSection" class="col-xl-6 col-lg-6">
+				            <div class="card shadow mb-4">
+				                <div class="card-body">
+				                    <div th:if="${templateImageList != null and !templateImageList.isEmpty()}">
+				                        <div th:each="templateImage : ${templateImageList}" class="mb-3">
+				                            <img th:src="@{/external-images/{templateCode}/{imageName}(templateCode=${templateImage.templateCode}, imageName=${templateImage.templateImageName})}" 
+				                                 class="template-image" 
+				                                 th:alt="'Template Page ' + ${templateImage.templateImageOrder}">
+				                        </div>
+				                    </div>
+				                    <div th:if="${templateImageList == null or templateImageList.isEmpty()}" class="text-center py-4">
+				                        <i class="fas fa-image fa-3x text-gray-300 mb-3"></i>
+				                        <p class="text-muted">템플릿 이미지를 불러오는 중...</p>
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
 						
-	                    <div class="row">
-							<div id="template" class="col-xl-12 col-lg-12">
-								<div class="card shadow mb-4">
-									
-									<!-- 요금제 -->
-								    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-								        <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
-								    </div>
-								    <div class="card-body">
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-										        <label for="carrierPlan">요금제</label>
-										    </div>
-											<div class="col-sm-4">
-												<select id="carrierPlanSelect" name="carrierPlan" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="updateHiddenFields()">
-											        <th:block th:each="carrierPlan : ${carrierPlanList}">
-											            <option th:value="${carrierPlan.carrierPlanId}"
-											                    th:text="${carrierPlan.mobileCarrier}"
-											                    th:data-plan-name="${carrierPlan.carrierPlanName}"
-																th:data-mobile-carrier="${carrierPlan.mobileCarrier}"
-											                    th:data-monthly-billing="${carrierPlan.monthlyBillingAmt}"
-											                    th:data-basic-amt="${carrierPlan.basicAmt}"
-											                    th:data-discount-amt="${carrierPlan.discountAmt}"
-											                    th:data-voice-call="${carrierPlan.voiceCall}"
-											                    th:data-mobile-data="${carrierPlan.mobileData}"
-											                    th:data-mobile-qos="${carrierPlan.mobileQos}"
-											                    th:data-mobile-message="${carrierPlan.mobileMessage}">
-											            </option>
-											        </th:block>
-											    </select>
-											</div>
-										</div>
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="basicAmt">기본료</label>
-											</div>
-											<div class="col-sm-2">
-											    <input type="text" name="basicAmtDisplay" id="basicAmtDisplay" class="form-control form-control-user" readonly>
-											    <input type="hidden" name="basicAmt" id="basicAmt">
-											</div>
-											<div class="col-sm-1 border-right">
-											    <label for="discountAmt">할인</label>
-											</div>
-											<div class="col-sm-2">
-											    <input type="text" name="discountAmtDisplay" id="discountAmtDisplay" class="form-control form-control-user" readonly>
-											    <input type="hidden" name="discountAmt" id="discountAmt">
-											</div>
-											<div class="col-sm-2 border-right">
-											    <label for="monthlyBillingAmt">월 청구요금</label>
-											</div>
-											<div class="col-sm-3">
-											    <input type="text" name="monthlyBillingAmtDisplay" id="monthlyBillingAmtDisplay" class="form-control form-control-user" readonly>
-											    <input type="hidden" name="monthlyBillingAmt" id="monthlyBillingAmt">
-											</div>
-										</div>
-								    </div>
-									
-									<!-- 가입비 및 유심정보 -->
-									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									    <h6 class="m-0 font-weight-bold text-primary">가입비 및 유심정보</h6>
-									</div>
-									<div class="card-body">
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="simName">모델명</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="simName" class="form-control form-control-user">
-											</div>
-											<div class="col-sm-2 border-right">
-											    <label for="simSerialNumber">일련번호</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="simSerialNumber" class="form-control form-control-user">
-											</div>
-										</div>
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="simCost">유심 비용</label>
-											</div>
-											<div class="col-sm-4">
-											    <select name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="simCost1">즉납</option>
-													<option value="simCost2">후납</option>
-												</select>
-											</div>
-											<div class="col-sm-2 border-right">
-											    <label for="subscriptionCost">가입비</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="subscriptionCost" class="form-control form-control-user">
-											</div>
-										</div>
-									</div>
-									
-									<!-- 고객정보 -->
-									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
-									    <h6 class="m-0 font-weight-bold text-primary" style="margin-right: 15px !important;">고객정보</h6>
-									    <div class="input-group" style="max-width: 200px;">
-											<div class="form-check" style="margin-right: 15px;">
-											    <input type="radio" id="newOption" name="openingCategory" value="new" class="form-check-input" onclick="toggleCustomerFields()" checked>
-											    <label for="newOption" class="form-check-label">신규</label>
-											</div>
-											<div class="form-check">
-											    <input type="radio" id="moveOption" name="openingCategory" value="move" class="form-check-input" onclick="toggleCustomerFields()">
-											    <label for="moveOption" class="form-check-label">번호이동</label>
-											</div>
+		                <div id="formSection" class="col-xl-6 col-lg-6">
+							<form id="dataForm">
+								<input type="hidden" id="templateCode" name="templateCode" th:value="${form.templateCode}">
+								<input type="hidden" id="carrierPlanId" name="carrierPlanId">
+								<input type="hidden" id="carrierPlanName" name="carrierPlanName">
+								<input type="hidden" id="mobileCarrier" name="mobileCarrier">
+								<input type="hidden" id="voiceCall" name="voiceCall">
+								<input type="hidden" id="mobileData" name="mobileData">
+								<input type="hidden" id="mobileQos" name="mobileQos">
+								<input type="hidden" id="mobileMessage" name="mobileMessage">
+		
+								<input type="hidden" name="commonCheck" value="commonCheck">
+								<input type="hidden" id="commonYear" name="commonYear">
+								<input type="hidden" id="commonShortYear" name="commonShortYear">
+								<input type="hidden" id="commonShortShortYear" name="commonShortShortYear">
+								<input type="hidden" id="commonMonth" name="commonMonth">
+								<input type="hidden" id="commonDay" name="commonDay">	
+								<input type="hidden" id="templateName" name="templateName" value="유모바일(청소년)">
+								
+			                    <div id="template">
+									<div class="card shadow mb-4">
+										
+										<!-- 요금제 -->
+									    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									        <h6 class="m-0 font-weight-bold text-primary">요금제</h6>
 									    </div>
-									</div>
-									
-									<!-- 통합 고객정보 폼 -->
-									<div id="customerForm" class="card-body">
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="name">가입자명</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="name" class="form-control form-control-user">
-									        </div>
-									        <div class="col-sm-2 border-right">
-									            <label for="birthdate">생년월일</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="birthdate" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-									        </div>
-									    </div>
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="address">주소</label>
-									        </div>
-									        <div class="col-sm-10">
-									            <input type="text" name="address" class="form-control form-control-user">
-									        </div>
-									    </div>
-
-										<!-- 개통 번호 필드: 신규 vs 번호이동에 따라 변경 -->
-										<div class="form-group row align-items-center d-flex text-center">
-										    <div class="col-sm-2 border-right">
-										        <label for="mobileNumber">가입자 번호</label>
-										    </div>
-										    <div class="col-sm-4">
-										        <input type="text" name="mobileNumber" class="form-control form-control-user">
-										    </div>
-										</div>
-
-										<!-- 개통 번호 필드: 신규 vs 번호이동에 따라 변경 -->
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="activationNumber">희망번호 (뒷 4자리)</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="activationNumber" id="activationNumber" class="form-control form-control-user">
-											</div>
-										    <div class="col-sm-2 border-right">
-										        <label for="portabilityNumber">번호이동 번호</label>
-										    </div>
-										    <div class="col-sm-4">
-										        <input type="text" name="portabilityNumber" id="portabilityNumber" class="form-control form-control-user">
-										    </div>
-										</div>
-
-									    <!-- 이전 통신사 필드: 번호이동인 경우만 표시 -->
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="previousCarrier" id="previousCarrierLabel" style="display: none;">이전 통신사</label>
-									        </div>
-									        <div class="col-sm-2">
-									            <select id="previousCarrierSelect" name="previousCarrier" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleMVNOField()" style="display: none;">
-									                <option value="previousCarrier1">SKT</option>
-									                <option value="previousCarrier2">KT</option>
-									                <option value="previousCarrier3">U+</option>
-									                <option value="previousCarrier4">MVNO</option>
-									            </select>
-									        </div>
-									        <div class="col-sm-2">
-									            <input type="text" name="mvno" id="mvno" class="form-control form-control-user" style="display: none;" disabled>
-									        </div>
-											<input type="text" name="commonMoveCheck" id="commonMoveCheck" style="display: none;" disabled>
-									    </div>
-									</div>
-									
-									<!-- 자동이체 -->
-									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
-									    <h6 class="m-0 font-weight-bold text-primary" style="margin-right: 15px !important;">자동이체</h6>
-										<div class="input-group" style="max-width: 200px;">
-											<div class="form-check" style="margin-right: 15px;">
-											    <input type="radio" id="cardOption" name="automaticTransfer" value="card" class="form-check-input" onclick="toggleTransferForm()" checked>
-											    <label for="cardOption" class="form-check-label">카드</label>
-											</div>
-											<div class="form-check">
-											    <input type="radio" id="accountOption" name="automaticTransfer" value="account" class="form-check-input" onclick="toggleTransferForm()">
-											    <label for="accountOption" class="form-check-label">계좌</label>
-											</div>
-										</div>
-									</div>
-
-									<!-- 카드 전용 폼 -->
-									<div id="cardForm" class="card-body">
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="cardName">예금주명</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="cardName" class="form-control form-control-user">
-									        </div>
-									        <div class="col-sm-2 border-right">
-									            <label for="cardBirthdate">생년월일</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="cardBirthdate" class="form-control form-control-user">
-									        </div>
-									    </div>
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="cardCompany">카드사명</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="cardCompany" class="form-control form-control-user">
-									        </div>
-									    </div>
-										<div class="form-group row align-items-center d-flex text-center">
-										    <div class="col-sm-2 border-right">
-										        <label for="cardNumber">카드번호</label>
-										    </div>
-										    <div class="col-sm-4">
-										        <input type="text" name="cardNumber" class="form-control form-control-user">
-										    </div>
-										    <div class="col-sm-2 border-right">
-										        <label for="cardDate">유효기간</label>
-										    </div>
-										    <div class="col-sm-2">
-												<div class="input-group">
-												    <input type="text" name="cardYear" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="2">
-												    <div class="input-group-append">
-												        <span class="input-group-text">년</span>
-												    </div>
+									    <div class="card-body">
+											<div class="form-group row align-items-center d-flex text-center">
+												<div class="col-sm-2 border-right">
+											        <label for="carrierPlan">요금제</label>
+											    </div>
+												<div class="col-sm-4">
+													<select id="carrierPlanSelect" name="carrierPlan" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="updateHiddenFields()">
+												        <th:block th:each="carrierPlan : ${carrierPlanList}">
+												            <option th:value="${carrierPlan.carrierPlanId}"
+												                    th:text="${carrierPlan.mobileCarrier}"
+												                    th:data-plan-name="${carrierPlan.carrierPlanName}"
+																	th:data-mobile-carrier="${carrierPlan.mobileCarrier}"
+												                    th:data-monthly-billing="${carrierPlan.monthlyBillingAmt}"
+												                    th:data-basic-amt="${carrierPlan.basicAmt}"
+												                    th:data-discount-amt="${carrierPlan.discountAmt}"
+												                    th:data-voice-call="${carrierPlan.voiceCall}"
+												                    th:data-mobile-data="${carrierPlan.mobileData}"
+												                    th:data-mobile-qos="${carrierPlan.mobileQos}"
+												                    th:data-mobile-message="${carrierPlan.mobileMessage}">
+												            </option>
+												        </th:block>
+												    </select>
 												</div>
-										    </div>
-											<div class="col-sm-2">
-												<div class="input-group">
-												    <input type="text" name="cardMonth" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="2">
-												    <div class="input-group-append">
-												        <span class="input-group-text">월</span>
-												    </div>
+											</div>
+											<div class="form-group row align-items-center d-flex text-center">
+												<div class="col-sm-2 border-right">
+												    <label for="basicAmt">기본료</label>
+												</div>
+												<div class="col-sm-2">
+												    <input type="text" name="basicAmtDisplay" id="basicAmtDisplay" class="form-control form-control-user" readonly>
+												    <input type="hidden" name="basicAmt" id="basicAmt">
+												</div>
+												<div class="col-sm-1 border-right">
+												    <label for="discountAmt">할인</label>
+												</div>
+												<div class="col-sm-2">
+												    <input type="text" name="discountAmtDisplay" id="discountAmtDisplay" class="form-control form-control-user" readonly>
+												    <input type="hidden" name="discountAmt" id="discountAmt">
+												</div>
+												<div class="col-sm-2 border-right">
+												    <label for="monthlyBillingAmt">월 청구요금</label>
+												</div>
+												<div class="col-sm-3">
+												    <input type="text" name="monthlyBillingAmtDisplay" id="monthlyBillingAmtDisplay" class="form-control form-control-user" readonly>
+												    <input type="hidden" name="monthlyBillingAmt" id="monthlyBillingAmt">
+												</div>
+											</div>
+									    </div>
+										
+										<!-- 가입비 및 유심정보 -->
+										<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+										    <h6 class="m-0 font-weight-bold text-primary">가입비 및 유심정보</h6>
+										</div>
+										<div class="card-body">
+											<div class="form-group row align-items-center d-flex text-center">
+												<div class="col-sm-2 border-right">
+												    <label for="simName">모델명</label>
+												</div>
+												<div class="col-sm-4">
+												    <input type="text" name="simName" class="form-control form-control-user">
+												</div>
+												<div class="col-sm-2 border-right">
+												    <label for="simSerialNumber">일련번호</label>
+												</div>
+												<div class="col-sm-4">
+												    <input type="text" name="simSerialNumber" class="form-control form-control-user">
+												</div>
+											</div>
+											<div class="form-group row align-items-center d-flex text-center">
+												<div class="col-sm-2 border-right">
+												    <label for="simCost">유심 비용</label>
+												</div>
+												<div class="col-sm-4">
+												    <select name="simCost" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+														<option value="simCost1">즉납</option>
+														<option value="simCost2">후납</option>
+													</select>
+												</div>
+												<div class="col-sm-2 border-right">
+												    <label for="subscriptionCost">가입비</label>
+												</div>
+												<div class="col-sm-4">
+												    <input type="text" name="subscriptionCost" class="form-control form-control-user">
 												</div>
 											</div>
 										</div>
-									</div>
-
-									<!-- 계좌 전용 폼 -->
-									<div id="accountForm" class="card-body" style="display: none;">
-									    <div class="form-group row align-items-center d-flex text-center">
-									        <div class="col-sm-2 border-right">
-									            <label for="accountName">예금주명</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="accountName" class="form-control form-control-user">
-									        </div>
-											<div class="col-sm-2 border-right">
-											    <label for="accountBirthdate">생년월일</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="accountBirthdate" class="form-control form-control-user">
-											</div>
-									    </div>
-									    <div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="accountBank">은행명</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="accountBank" class="form-control form-control-user">
-											</div>
-									        <div class="col-sm-2">
-									            <label for="accountNumber">계좌번호</label>
-									        </div>
-									        <div class="col-sm-4">
-									            <input type="text" name="accountNumber" class="form-control form-control-user">
-									        </div>
-									    </div>
-									</div>
-									
-									<!-- 법정대리인 -->
-									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									    <h6 class="m-0 font-weight-bold text-primary">법정대리인</h6>
-									</div>
-									<div class="card-body">
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="depositorName">법정대리인명</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="depositorName" class="form-control form-control-user">
-											</div>
-											<div class="col-sm-2 border-right">
-										        <label for="depositorBirthdate">생년월일</label>
-										    </div>
-										    <div class="col-sm-4">
-										        <input type="text" name="depositorBirthdate" class="form-control form-control-user">
+										
+										<!-- 고객정보 -->
+										<div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
+										    <h6 class="m-0 font-weight-bold text-primary" style="margin-right: 15px !important;">고객정보</h6>
+										    <div class="input-group" style="max-width: 200px;">
+												<div class="form-check" style="margin-right: 15px;">
+												    <input type="radio" id="newOption" name="openingCategory" value="new" class="form-check-input" onclick="toggleCustomerFields()" checked>
+												    <label for="newOption" class="form-check-label">신규</label>
+												</div>
+												<div class="form-check">
+												    <input type="radio" id="moveOption" name="openingCategory" value="move" class="form-check-input" onclick="toggleCustomerFields()">
+												    <label for="moveOption" class="form-check-label">번호이동</label>
+												</div>
 										    </div>
 										</div>
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="depositorNumber">법대연락처</label>
+										
+										<!-- 통합 고객정보 폼 -->
+										<div id="customerForm" class="card-body">
+										    <div class="form-group row align-items-center d-flex text-center">
+										        <div class="col-sm-2 border-right">
+										            <label for="name">가입자명</label>
+										        </div>
+										        <div class="col-sm-4">
+										            <input type="text" name="name" class="form-control form-control-user">
+										        </div>
+										        <div class="col-sm-2 border-right">
+										            <label for="birthdate">생년월일</label>
+										        </div>
+										        <div class="col-sm-4">
+										            <input type="text" name="birthdate" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+										        </div>
+										    </div>
+										    <div class="form-group row align-items-center d-flex text-center">
+										        <div class="col-sm-2 border-right">
+										            <label for="address">주소</label>
+										        </div>
+										        <div class="col-sm-10">
+										            <input type="text" name="address" class="form-control form-control-user">
+										        </div>
+										    </div>
+		
+											<!-- 개통 번호 필드: 신규 vs 번호이동에 따라 변경 -->
+											<div class="form-group row align-items-center d-flex text-center">
+											    <div class="col-sm-2 border-right">
+											        <label for="mobileNumber">가입자 번호</label>
+											    </div>
+											    <div class="col-sm-4">
+											        <input type="text" name="mobileNumber" class="form-control form-control-user">
+											    </div>
 											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="depositorNumber" class="form-control form-control-user">
+		
+											<!-- 개통 번호 필드: 신규 vs 번호이동에 따라 변경 -->
+											<div class="form-group row align-items-center d-flex text-center">
+												<div class="col-sm-2 border-right">
+												    <label for="activationNumber">희망번호 (뒷 4자리)</label>
+												</div>
+												<div class="col-sm-4">
+												    <input type="text" name="activationNumber" id="activationNumber" class="form-control form-control-user">
+												</div>
+											    <div class="col-sm-2 border-right">
+											        <label for="portabilityNumber">번호이동 번호</label>
+											    </div>
+											    <div class="col-sm-4">
+											        <input type="text" name="portabilityNumber" id="portabilityNumber" class="form-control form-control-user">
+											    </div>
 											</div>
-											<div class="col-sm-2 border-right">
-											    <label for="relationship">관계</label>
-											</div>
-											<div class="col-sm-4">
-											    <input type="text" name="relationship" class="form-control form-control-user">
+		
+										    <!-- 이전 통신사 필드: 번호이동인 경우만 표시 -->
+										    <div class="form-group row align-items-center d-flex text-center">
+										        <div class="col-sm-2 border-right">
+										            <label for="previousCarrier" id="previousCarrierLabel" style="display: none;">이전 통신사</label>
+										        </div>
+										        <div class="col-sm-2">
+										            <select id="previousCarrierSelect" name="previousCarrier" aria-controls="dataTable" class="custom-select form-control form-control-sm" onchange="toggleMVNOField()" style="display: none;">
+										                <option value="previousCarrier1">SKT</option>
+										                <option value="previousCarrier2">KT</option>
+										                <option value="previousCarrier3">U+</option>
+										                <option value="previousCarrier4">MVNO</option>
+										            </select>
+										        </div>
+										        <div class="col-sm-2">
+										            <input type="text" name="mvno" id="mvno" class="form-control form-control-user" style="display: none;" disabled>
+										        </div>
+												<input type="text" name="commonMoveCheck" id="commonMoveCheck" style="display: none;" disabled>
+										    </div>
+										</div>
+										
+										<!-- 자동이체 -->
+										<div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
+										    <h6 class="m-0 font-weight-bold text-primary" style="margin-right: 15px !important;">자동이체</h6>
+											<div class="input-group" style="max-width: 200px;">
+												<div class="form-check" style="margin-right: 15px;">
+												    <input type="radio" id="cardOption" name="automaticTransfer" value="card" class="form-check-input" onclick="toggleTransferForm()" checked>
+												    <label for="cardOption" class="form-check-label">카드</label>
+												</div>
+												<div class="form-check">
+												    <input type="radio" id="accountOption" name="automaticTransfer" value="account" class="form-check-input" onclick="toggleTransferForm()">
+												    <label for="accountOption" class="form-check-label">계좌</label>
+												</div>
 											</div>
 										</div>
-									</div>
-									
-									<!-- 부가기능 -->
-									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									    <h6 class="m-0 font-weight-bold text-primary">부가기능</h6>
-									</div>
-									<div class="card-body">
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="mobilePayment">통신과금서비스</label>
-											</div>
-											<div class="col-sm-4">
-												<select name="mobilePayment" aria-controls="dataTable" class="custom-select form-control form-control-sm">
-													<option value="mobilePayment1">휴대폰결제 차단</option>
-													<option value="mobilePayment2">휴대폰결제 이용</option>
-												</select>
+		
+										<!-- 카드 전용 폼 -->
+										<div id="cardForm" class="card-body">
+										    <div class="form-group row align-items-center d-flex text-center">
+										        <div class="col-sm-2 border-right">
+										            <label for="cardName">예금주명</label>
+										        </div>
+										        <div class="col-sm-4">
+										            <input type="text" name="cardName" class="form-control form-control-user">
+										        </div>
+										        <div class="col-sm-2 border-right">
+										            <label for="cardBirthdate">생년월일</label>
+										        </div>
+										        <div class="col-sm-4">
+										            <input type="text" name="cardBirthdate" class="form-control form-control-user">
+										        </div>
+										    </div>
+										    <div class="form-group row align-items-center d-flex text-center">
+										        <div class="col-sm-2 border-right">
+										            <label for="cardCompany">카드사명</label>
+										        </div>
+										        <div class="col-sm-4">
+										            <input type="text" name="cardCompany" class="form-control form-control-user">
+										        </div>
+										    </div>
+											<div class="form-group row align-items-center d-flex text-center">
+											    <div class="col-sm-2 border-right">
+											        <label for="cardNumber">카드번호</label>
+											    </div>
+											    <div class="col-sm-4">
+											        <input type="text" name="cardNumber" class="form-control form-control-user">
+											    </div>
+											    <div class="col-sm-2 border-right">
+											        <label for="cardDate">유효기간</label>
+											    </div>
+											    <div class="col-sm-2">
+													<div class="input-group">
+													    <input type="text" name="cardYear" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="2">
+													    <div class="input-group-append">
+													        <span class="input-group-text">년</span>
+													    </div>
+													</div>
+											    </div>
+												<div class="col-sm-2">
+													<div class="input-group">
+													    <input type="text" name="cardMonth" class="form-control form-control-user" oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="2">
+													    <div class="input-group-append">
+													        <span class="input-group-text">월</span>
+													    </div>
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
-									
-									<!-- 판매자정보 -->
-									<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									    <h6 class="m-0 font-weight-bold text-primary">판매자정보</h6>
-									</div>
-									<div class="card-body">
-										<div class="form-group row align-items-center d-flex text-center">
-											<div class="col-sm-2 border-right">
-											    <label for="retailerName">판매점 상호</label>
+		
+										<!-- 계좌 전용 폼 -->
+										<div id="accountForm" class="card-body" style="display: none;">
+										    <div class="form-group row align-items-center d-flex text-center">
+										        <div class="col-sm-2 border-right">
+										            <label for="accountName">예금주명</label>
+										        </div>
+										        <div class="col-sm-4">
+										            <input type="text" name="accountName" class="form-control form-control-user">
+										        </div>
+												<div class="col-sm-2 border-right">
+												    <label for="accountBirthdate">생년월일</label>
+												</div>
+												<div class="col-sm-4">
+												    <input type="text" name="accountBirthdate" class="form-control form-control-user">
+												</div>
+										    </div>
+										    <div class="form-group row align-items-center d-flex text-center">
+												<div class="col-sm-2 border-right">
+												    <label for="accountBank">은행명</label>
+												</div>
+												<div class="col-sm-4">
+												    <input type="text" name="accountBank" class="form-control form-control-user">
+												</div>
+										        <div class="col-sm-2">
+										            <label for="accountNumber">계좌번호</label>
+										        </div>
+										        <div class="col-sm-4">
+										            <input type="text" name="accountNumber" class="form-control form-control-user">
+										        </div>
+										    </div>
+										</div>
+										
+										<!-- 법정대리인 -->
+										<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+										    <h6 class="m-0 font-weight-bold text-primary">법정대리인</h6>
+										</div>
+										<div class="card-body">
+											<div class="form-group row align-items-center d-flex text-center">
+												<div class="col-sm-2 border-right">
+												    <label for="depositorName">법정대리인명</label>
+												</div>
+												<div class="col-sm-4">
+												    <input type="text" name="depositorName" class="form-control form-control-user">
+												</div>
+												<div class="col-sm-2 border-right">
+											        <label for="depositorBirthdate">생년월일</label>
+											    </div>
+											    <div class="col-sm-4">
+											        <input type="text" name="depositorBirthdate" class="form-control form-control-user">
+											    </div>
 											</div>
-											<div class="col-sm-2">
-											    <input type="text" name="retailerName" class="form-control form-control-user">
-											</div>
-											<div class="col-sm-2 border-right">
-											    <label for="sellerName">판매자명</label>
-											</div>
-											<div class="col-sm-2">
-											    <input type="text" name="sellerName" class="form-control form-control-user">
-											</div>
-											<div class="col-sm-1 border-right">
-											    <label for="sellerNumber">연락처</label>
-											</div>
-											<div class="col-sm-3">
-											    <input type="text" name="sellerNumber" class="form-control form-control-user">
+											<div class="form-group row align-items-center d-flex text-center">
+												<div class="col-sm-2 border-right">
+												    <label for="depositorNumber">법대연락처</label>
+												</div>
+												<div class="col-sm-4">
+												    <input type="text" name="depositorNumber" class="form-control form-control-user">
+												</div>
+												<div class="col-sm-2 border-right">
+												    <label for="relationship">관계</label>
+												</div>
+												<div class="col-sm-4">
+												    <input type="text" name="relationship" class="form-control form-control-user">
+												</div>
 											</div>
 										</div>
+										
+										<!-- 부가기능 -->
+										<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+										    <h6 class="m-0 font-weight-bold text-primary">부가기능</h6>
+										</div>
+										<div class="card-body">
+											<div class="form-group row align-items-center d-flex text-center">
+												<div class="col-sm-2 border-right">
+												    <label for="mobilePayment">통신과금서비스</label>
+												</div>
+												<div class="col-sm-4">
+													<select name="mobilePayment" aria-controls="dataTable" class="custom-select form-control form-control-sm">
+														<option value="mobilePayment1">휴대폰결제 차단</option>
+														<option value="mobilePayment2">휴대폰결제 이용</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										
+										<!-- 판매자정보 -->
+										<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+										    <h6 class="m-0 font-weight-bold text-primary">판매자정보</h6>
+										</div>
+										<div class="card-body">
+											<div class="form-group row align-items-center d-flex text-center">
+												<div class="col-sm-2 border-right">
+												    <label for="retailerName">판매점 상호</label>
+												</div>
+												<div class="col-sm-2">
+												    <input type="text" name="retailerName" class="form-control form-control-user">
+												</div>
+												<div class="col-sm-2 border-right">
+												    <label for="sellerName">판매자명</label>
+												</div>
+												<div class="col-sm-2">
+												    <input type="text" name="sellerName" class="form-control form-control-user">
+												</div>
+												<div class="col-sm-1 border-right">
+												    <label for="sellerNumber">연락처</label>
+												</div>
+												<div class="col-sm-3">
+												    <input type="text" name="sellerNumber" class="form-control form-control-user">
+												</div>
+											</div>
+										</div>
+											
 									</div>
-									
-								</div>
+			                    </div>
+							</form>
+							<div class="d-sm-flex align-items-center mb-4 justify-content-end">
+							    <div>
+							        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;" onclick="applyFormDownload(true)">
+							            <i class="fas fa-download fa-sm text-white-50"></i> 출력</a>
+							        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" onclick="applyFormDownload(false)">
+							            <i class="fas fa-download fa-sm text-white-50"></i> 다운로드</a>
+							    </div>
 							</div>
-	                    </div>
-					</form>
-					<div class="d-sm-flex align-items-center mb-4 justify-content-end">
-					    <div>
-					        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" style="margin-right: 10px;" onclick="applyFormDownload(true)">
-					            <i class="fas fa-download fa-sm text-white-50"></i> 출력</a>
-					        <a href="#" class="d-none d-sm-inline-block btn btn-primary shadow-sm" onclick="applyFormDownload(false)">
-					            <i class="fas fa-download fa-sm text-white-50"></i> 다운로드</a>
-					    </div>
+						</div>
 					</div>
                 </div>
             </div>

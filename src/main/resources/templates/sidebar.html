@@ -1,67 +1,170 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <ul th:fragment="sidebar" class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-		<a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-		    <img src="/img/visionMobile.png" alt="suaninc Logo" style="height: 50px; width: auto;">
-		</a>
-		
-		<hr class="sidebar-divider">
+<aside th:fragment="sidebar" id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+	<div class="app-brand demo d-flex justify-content-center align-items-center" style="height: 60px;"> 
+	    <a href="/" class="app-brand-link d-flex justify-content-center align-items-center">
+	        <span class="app-brand-logo demo">
+				<img src="/img/visionMobile.png" 
+				     alt="suaninc Logo" 
+				     style="height: auto; max-height: 60px; width: auto;">
+	        </span>
+	    </a>
 
-		<li class="nav-item">
-		    <div class="nav-link">
-			    <span>SKT 알뜰</span>
-			</div>
-		    <div class="collapse show">
-		        <div class="bg-white py-2 collapse-inner rounded">
-					<a class="collapse-item" href="/homepage/templates/joytel">조이텔</a>
-					<a class="collapse-item" href="#" onclick="openExternalSite(event)" sec:authorize="hasAuthority('AD')">SK 7모바일(텔링크)</a>
-		        </div>
-		    </div>
-		</li>
-		
-		<li class="nav-item auth-only" sec:authorize="hasAuthority('AD')">
-		    <div class="nav-link">
-		        <span>KT 알뜰</span>
-		    </div>
-		    <div class="collapse show">
-		        <div class="bg-white py-2 collapse-inner rounded">
-					<a class="collapse-item" href="/homepage/templates/ktmMobile">KTM 모바일</a>
-					<a class="collapse-item" href="/homepage/templates/skyLife">KT 스카이라이프</a>
-				</div>
-		    </div>
+	    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+	        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+	    </a>
+	</div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+		<!-- 신청서 -->
+		<li class="menu-header small text-uppercase" sec:authorize="hasAuthority('AD')">
+		    <span class="menu-header-text">신청서</span>
 		</li>
 		
-		<li class="nav-item" sec:authorize="hasAuthority('AD')">
-		    <div class="nav-link">
-		        <span>LG 알뜰</span>
-		    </div>
-		    <div class="collapse show">
-		        <div class="bg-white py-2 collapse-inner rounded">
-					<a class="collapse-item" href="/homepage/templates/uplusuMobile">유모바일(미디어로그)</a>
-					<a class="collapse-item" href="/homepage/templates/uplusuMobileYouth">유모바일(청소년)</a>
-					<a class="collapse-item" href="/homepage/templates/helloMobile">헬로모바일</a>
-				</div>
-		    </div>
-		</li>
+        <!-- SKT 알뜰 -->
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-mobile-alt"></i>
+                <div data-i18n="SKT알뜰">SKT 알뜰</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="/homepage/templates/joytel" class="menu-link">
+                        <div data-i18n="조이텔">조이텔</div>
+                    </a>
+                </li>
+                <li class="menu-item" sec:authorize="hasAuthority('AD')">
+                    <a href="#" onclick="openExternalSite(event)" class="menu-link">
+                        <div data-i18n="SK7모바일">SK 7모바일(텔링크)</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
-        <hr class="sidebar-divider" sec:authorize="hasAuthority('AD')">
+        <!-- KT 알뜰 -->
+        <li class="menu-item" sec:authorize="hasAuthority('AD')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-mobile-alt"></i>
+                <div data-i18n="KT알뜰">KT 알뜰</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="/homepage/templates/ktmMobile" class="menu-link">
+                        <div data-i18n="KTM모바일">KTM 모바일</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/homepage/templates/skyLife" class="menu-link">
+                        <div data-i18n="KT스카이라이프">KT 스카이라이프</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
-		<li class="nav-item" sec:authorize="hasAuthority('AD')">
-		    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseTwo"
-		       aria-expanded="true" aria-controls="collapseTwo">
-		        <i class="fas fa-fw fa-cog"></i>
-		        <span>설정</span>
-		    </a>
-		    <div id="collapseTwo" class="collapse" aria-labelledby="headingCarriarPlan" data-parent="#accordionSidebar">
-		        <div class="bg-white py-2 collapse-inner rounded">
-		            <a class="collapse-item" href="/homepage/carrierPlan/carrierPlanList" onclick="return checkPassword();">요금제 설정</a>
-				    <a class="collapse-item" href="/homepage/template/templateList" onclick="return checkPassword();">템플릿 설정</a>
-					<a class="collapse-item" href="/homepage/salesPolicy/ktmMobileDevice" onclick="return checkPassword();">KTM 모바일(단말)</a>
-					<a class="collapse-item" href="/homepage/salesPolicy/salesPolicyList" onclick="return checkPassword();">모바일(단말) 설정</a>
-				</div>
-		    </div>
-		</li>
+        <!-- LG 알뜰 -->
+        <li class="menu-item" sec:authorize="hasAuthority('AD')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-mobile-alt"></i>
+                <div data-i18n="LG알뜰">LG 알뜰</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="/homepage/templates/uplusuMobile" class="menu-link">
+                        <div data-i18n="유모바일">유모바일(미디어로그)</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/homepage/templates/uplusuMobileYouth" class="menu-link">
+                        <div data-i18n="유모바일청소년">유모바일(청소년)</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/homepage/templates/helloMobile" class="menu-link">
+                        <div data-i18n="헬로모바일">헬로모바일</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- 자료실 -->
+        <li class="menu-header small text-uppercase" sec:authorize="hasAuthority('AD')">
+            <span class="menu-header-text">자료관리</span>
+        </li>
+        <li class="menu-item" sec:authorize="hasAuthority('AD')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-folder"></i>
+                <div data-i18n="자료실">자료실</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="/homepage/board/list?carrier=LGU+" class="menu-link">
+                        <div data-i18n="LG망">LG망</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/homepage/board/list?carrier=KT" class="menu-link">
+                        <div data-i18n="KT망">KT망</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/homepage/board/list?carrier=SKT" class="menu-link">
+                        <div data-i18n="SK망">SK망</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <!-- 설정 -->
+        <li class="menu-header small text-uppercase" sec:authorize="hasAuthority('AD')">
+            <span class="menu-header-text">시스템</span>
+        </li>
+        <li class="menu-item" sec:authorize="hasAuthority('AD')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-cog"></i>
+                <div data-i18n="설정">설정</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="/homepage/carrierPlan/carrierPlanList" onclick="return checkPassword();" class="menu-link">
+                        <div data-i18n="요금제설정">요금제 설정</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/homepage/template/templateList" onclick="return checkPassword();" class="menu-link">
+                        <div data-i18n="템플릿설정">템플릿 설정</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/homepage/salesPolicy/ktmMobileDevice" onclick="return checkPassword();" class="menu-link">
+                        <div data-i18n="KTM모바일단말">KTM 모바일(단말)</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="/homepage/salesPolicy/salesPolicyList" onclick="return checkPassword();" class="menu-link">
+                        <div data-i18n="모바일단말설정">모바일(단말) 설정</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+		
     </ul>
+</aside>
+
+<script>
+function openExternalSite(event) {
+    // 외부 사이트 열기 로직
+    event.preventDefault();
+    console.log('외부 사이트 열기');
+}
+
+function checkPassword() {
+    // 패스워드 체크 로직
+    return confirm('관리자 권한이 필요합니다. 계속하시겠습니까?');
+}
+</script>
+
 </body>
 </html>
