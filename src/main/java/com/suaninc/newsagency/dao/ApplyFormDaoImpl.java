@@ -31,5 +31,10 @@ public class ApplyFormDaoImpl implements ApplyFormDao {
 	public List<TemplateCoordinate> selectTemplateCoordinateList(CarrierTemplate templateImageOrder) {
 		return sqlSession.selectList("applyForm.selectTemplateCoordinateList", templateImageOrder);
 	}
+	
+	@Override
+	public List<TemplateCoordinate> selectTemplateCoordinates(String templateCode) {
+		return sqlSession.selectList("applyForm.selectTemplateCoordinates", templateCode);
+	}
 
 }

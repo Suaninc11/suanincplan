@@ -1,18 +1,12 @@
 package com.suaninc.newsagency.controller;
 
 
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,9 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.suaninc.newsagency.domain.CarrierTemplate;
 import com.suaninc.newsagency.domain.SalesPolicy;
-import com.suaninc.newsagency.domain.TemplateCoordinate;
 import com.suaninc.newsagency.service.SalesPolicyService;
 
 @Controller
@@ -45,7 +37,7 @@ public class SalesPolicyController {
 	    model.addAttribute("form", form);
 	    model.addAttribute("contractPeriods", salesPolicyService.getDistinctContractPeriods());
 	    
-	    return "templates/ktmMobileDevice";
+	    return "pages/ktm-mobile-device";
 	}
 	
 	@ResponseBody
@@ -90,10 +82,21 @@ public class SalesPolicyController {
 	    Pageable pageable = PageRequest.of(page, size);
 	    
 	    Page<SalesPolicy> salesPolicyList = salesPolicyService.getSalesPolicyList(form, pageable);
+	    LocalDateTime now = LocalDateTime.now();
+	    
+	    salesPolicyList.forEach(policy -> {
+	        if (policy.getEndDatetime() != null && policy.getEndDatetime().isBefore(now)) {
+	            policy.setStatus("종료");
+	        } else if (policy.getStartDatetime() != null && policy.getStartDatetime().isAfter(now)) {
+	            policy.setStatus("대기");
+	        } else {
+	            policy.setStatus("진행중");
+	        }
+	    });
 	    
 	    model.addAttribute("salesPolicyList", salesPolicyList);
 		
-		return "salesPolicyList";
+		return "pages/sales-policy-list";
 	}
 	
 	@PostMapping("/uploadExcel")
@@ -104,7 +107,7 @@ public class SalesPolicyController {
 	    } catch (Exception e) {
 	        redirectAttributes.addFlashAttribute("message", "업로드 실패: " + e.getMessage());
 	    }
-	    return "redirect:/homepage/salesPolicy/salesPolicyList";
+	    return "redirect:/homepage/salesPolicy/sales-policy-list";
 	}
 	
 	@GetMapping("/salesPolicyInfo")
@@ -117,7 +120,7 @@ public class SalesPolicyController {
 	    // 5. Model에 데이터 추가
 	    model.addAttribute("salesPolicyInfo", salesPolicyInfo);
 
-	    return "salesPolicyInfo";
+	    return "pages/sales-policy-info";
 	}
     
 }

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>suaninc</title>
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+
+	<script src="/js/pages-script.js"></script>
+	<link rel="stylesheet" href="/css/common.css" />
+	<!-- Icons. Uncomment required icon fonts -->
+	<link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+	<!-- Core CSS -->
+	<link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+	<link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+	<link rel="stylesheet" href="/assets/css/demo.css" />
+	<!-- Vendors CSS -->
+	<link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+	<link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+	<!-- Helpers -->
+	<script src="/assets/vendor/js/helpers.js"></script>
+	<script src="/assets/js/config.js"></script>
+	<!-- AdressAPI -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            
+            <!-- Menu -->
+            <div th:replace="~{/fragments/sidebar :: sidebar}"></div>
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+					
+					<!-- Header -->
+					<div class="row">
+					    <div class="col-12">
+					        <nav class="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+					            <div class="navbar-nav align-items-center">
+					                <i class="bx bx-file me-2 text-primary fs-4"></i>
+					                <span class="fw-semibold">KTM 모바일(단말)</span>
+					            </div>
+					            <div class="ms-auto">
+					                <ol class="breadcrumb breadcrumb-style1 mb-0">
+					                    <li class="breadcrumb-item">
+					                        <a href="javascript:void(0);">설정</a>
+					                    </li>
+					                    <li class="breadcrumb-item">
+					                        <a href="/homepage/template/templateList">템플릿 설정</a>
+					                    </li>
+					                    <li class="breadcrumb-item active">템플릿 목록</li>
+					                </ol>
+					            </div>
+					        </nav>
+					    </div>
+					</div>
+                    
+                    <!-- Content -->
+                    <div class="container-fluid flex-grow-1 container-p-y">
+                        
+                        <!-- Device Plan Selection -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title mb-0">
+                                            <i class="bx bx-mobile-alt me-2 text-primary"></i>단말 구분
+                                        </h5>
+                                    </div>
+
+                                    <form id="dataForm">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <!-- 좌측: 선택 필드들 -->
+                                                <div class="col-lg-6">
+                                                    <div class="mb-4">
+                                                        <h6 class="text-muted mb-3">
+                                                            <i class="bx bx-cog me-2"></i>단말 설정
+                                                        </h6>
+                                                        
+                                                        <!-- 약정 기간 -->
+                                                        <div class="mb-3">
+                                                            <label for="contractPeriod" class="form-label">약정 기간 <span class="text-danger">*</span></label>
+                                                            <select id="contractPeriod" name="contractPeriod" class="form-select">
+                                                                <option value="">-- 약정기간 선택 --</option>
+                                                                <option th:each="period : ${contractPeriods}" th:value="${period}" th:text="${period}"></option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- 개통 유형 -->
+                                                        <div class="mb-3">
+                                                            <label for="activationType" class="form-label">개통 유형 <span class="text-danger">*</span></label>
+                                                            <select id="activationType" name="activationType" class="form-select">
+                                                                <option value="">-- 개통유형 선택 --</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- 할부 유형 -->
+                                                        <div class="mb-3">
+                                                            <label for="installmentType" class="form-label">할부 유형 <span class="text-danger">*</span></label>
+                                                            <select name="installmentType" class="form-select" id="installmentType">
+                                                                <option value="">-- 할부유형 선택 --</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- 단말 제품명 -->
+                                                        <div class="mb-3">
+                                                            <label for="productName" class="form-label">단말 제품명 <span class="text-danger">*</span></label>
+                                                            <select id="productName" name="productName" class="form-select">
+                                                                <option value="">-- 제품명 선택 --</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <!-- 요금제명 -->
+                                                        <div class="mb-3">
+                                                            <label for="planName" class="form-label">요금제명 <span class="text-danger">*</span></label>
+                                                            <select id="planName" name="planName" class="form-select">
+                                                                <option value="">-- 요금제명 선택 --</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 우측: 요금제 상세 정보 -->
+                                                <div class="col-lg-6">
+                                                    <div id="planDetailBox" class="mb-4" style="display:none;">
+                                                        <h6 class="text-muted mb-3">
+                                                            <i class="bx bx-detail me-2"></i>요금제 상세 정보
+                                                        </h6>
+                                                        
+                                                        <div class="alert alert-info border-info">
+                                                            <div class="alert-body">
+                                                                <div class="row g-3">
+                                                                    <!-- 기본료 -->
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label text-muted small">기본료</label>
+                                                                        <div class="input-group input-group-sm">
+                                                                            <span class="input-group-text bg-light"><i class="bx bx-won"></i></span>
+                                                                            <input type="text" id="baseAmt" class="form-control bg-light" readonly>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 출고가 -->
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label text-muted small">출고가</label>
+                                                                        <div class="input-group input-group-sm">
+                                                                            <span class="input-group-text bg-light"><i class="bx bx-purchase-tag"></i></span>
+                                                                            <input type="text" id="deviceAmt" class="form-control bg-light" readonly>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 할부금 -->
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label text-muted small">할부금</label>
+                                                                        <div class="input-group input-group-sm">
+                                                                            <span class="input-group-text bg-light"><i class="bx bx-credit-card"></i></span>
+                                                                            <input type="text" id="installmentAmount" class="form-control bg-light" readonly>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 할인 -->
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label text-muted small">할인</label>
+                                                                        <div class="input-group input-group-sm">
+                                                                            <span class="input-group-text bg-light"><i class="bx bx-minus-circle text-success"></i></span>
+                                                                            <input type="text" id="discountAmt" class="form-control bg-light" readonly>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 공시지원금 -->
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label text-muted small">공시지원금</label>
+                                                                        <div class="input-group input-group-sm">
+                                                                            <span class="input-group-text bg-light"><i class="bx bx-gift"></i></span>
+                                                                            <input type="text" id="officialSubsidy" class="form-control bg-light" readonly>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 할부이자 -->
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label text-muted small">할부이자</label>
+                                                                        <div class="input-group input-group-sm">
+                                                                            <span class="input-group-text bg-light"><i class="bx bx-bar-chart-alt text-warning"></i></span>
+                                                                            <input type="text" id="installmentInterest" class="form-control bg-light" readonly>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 월 청구요금 -->
+                                                                    <div class="col-12">
+                                                                        <label class="form-label text-muted small">월 청구요금</label>
+                                                                        <div class="input-group">
+                                                                            <span class="input-group-text bg-primary text-white"><i class="bx bx-calculator"></i></span>
+                                                                            <input type="text" id="monthlyBill" class="form-control fw-bold text-primary" readonly>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <!-- 평생할인프로모션 -->
+                                                                    <div class="col-12">
+                                                                        <label class="form-label text-muted small">평생할인프로모션</label>
+                                                                        <div class="input-group input-group-sm">
+                                                                            <span class="input-group-text bg-light"><i class="bx bx-star text-warning"></i></span>
+                                                                            <input type="text" id="additionalDiscountAmt" class="form-control bg-light" readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <div class="d-flex justify-content-end">
+                                                <button id="onlineApplyBtn" type="button" class="btn btn-danger btn-lg disabled">
+                                                    <i class="bx bx-right-arrow-alt me-2"></i>온라인 개통 접수하러 가기
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Content -->
+
+                    <!-- Footer -->
+                    <div th:replace="~{/fragments/footer :: footer}"></div>
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <!-- Core JS -->
+    <script src="/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="/assets/vendor/libs/popper/popper.js"></script>
+    <script src="/assets/vendor/js/bootstrap.js"></script>
+    <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="/assets/vendor/js/menu.js"></script>
+
+    <!-- Main JS -->
+    <script src="/assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const formData = {
+                contractPeriod: '',
+                activationType: '',
+                productName: '',
+                planName: '',
+                installmentType: ''
+            };
+
+            function fetchOptions(url, data, callback, targetSelectId, defaultText = '선택') {
+                // 로딩 상태 표시
+                const select = document.getElementById(targetSelectId);
+                select.innerHTML = `<option value="">로딩중...</option>`;
+                select.disabled = true;
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(res => res.json())
+                .then(list => {
+                    select.innerHTML = `<option value="">${defaultText}</option>`;
+                    list.forEach(item => {
+                        const opt = document.createElement('option');
+                        opt.value = item;
+                        opt.textContent = item;
+                        select.appendChild(opt);
+                    });
+                    select.disabled = false;
+                    if (callback) callback();
+                })
+                .catch(error => {
+                    console.error('Error fetching options:', error);
+                    select.innerHTML = `<option value="">오류가 발생했습니다</option>`;
+                    select.disabled = false;
+                });
+            }
+
+            function updateButtonState() {
+                const btn = document.getElementById("onlineApplyBtn");
+                const isValid = formData.contractPeriod && formData.activationType && formData.productName && formData.planName && formData.installmentType;
+                
+                btn.classList.toggle("disabled", !isValid);
+                if (isValid) {
+                    btn.innerHTML = '<i class="bx bx-right-arrow-alt me-2"></i>온라인 개통 접수하러 가기';
+                } else {
+                    btn.innerHTML = '<i class="bx bx-right-arrow-alt me-2"></i>모든 항목을 선택해주세요';
+                }
+            }
+
+            function resetSelectors(startFrom) {
+                const selectors = ['activationType', 'productName', 'planName', 'installmentType'];
+                const startIndex = selectors.indexOf(startFrom);
+                
+                for (let i = startIndex; i < selectors.length; i++) {
+                    const select = document.getElementById(selectors[i]);
+                    if (select) {
+                        select.innerHTML = `<option value="">-- ${select.previousElementSibling.textContent.replace(' *', '')} 선택 --</option>`;
+                        select.disabled = false;
+                    }
+                }
+                
+                if (startFrom !== 'installmentType') {
+                    const installmentSelect = document.getElementById("installmentType");
+                    installmentSelect.innerHTML = '<option value="">-- 할부유형 선택 --</option>';
+                }
+                
+                document.getElementById("planDetailBox").style.display = "none";
+            }
+
+            // 약정 기간 선택
+            document.getElementById("contractPeriod").addEventListener("change", function () {
+                formData.contractPeriod = this.value;
+                formData.activationType = '';
+                formData.productName = '';
+                formData.planName = '';
+                formData.installmentType = '';
+                updateButtonState();
+
+                resetSelectors('activationType');
+
+                if (formData.contractPeriod) {
+                    fetchOptions("/homepage/salesPolicy/getActivationTypes", { contractPeriod: formData.contractPeriod }, null, "activationType", "-- 개통유형 선택 --");
+                }
+            });
+
+            // 개통유형 선택
+            document.getElementById("activationType").addEventListener("change", function () {
+                formData.activationType = this.value;
+                formData.installmentType = '';
+                formData.productName = '';
+                formData.planName = '';
+                
+                const installmentSelect = document.getElementById("installmentType");
+                installmentSelect.innerHTML = '<option value="">-- 할부유형 선택 --</option>';
+
+                if (formData.activationType) {
+                    const option1 = document.createElement("option");
+                    option1.value = "할부";
+                    option1.textContent = "전액할부";
+
+                    const option2 = document.createElement("option");
+                    option2.value = "현금";
+                    option2.textContent = "현금 부분납부";
+
+                    installmentSelect.appendChild(option1);
+                    installmentSelect.appendChild(option2);
+                }
+                    
+                updateButtonState();
+                resetSelectors('productName');
+            });
+
+            // 할부유형 선택
+            document.getElementById("installmentType").addEventListener("change", function () {
+                formData.installmentType = this.value;
+                formData.productName = '';
+                formData.planName = '';
+                updateButtonState();
+
+                resetSelectors('productName');
+
+                if (formData.activationType && formData.installmentType) {
+                    fetchOptions("/homepage/salesPolicy/getProductNames", formData, null, "productName", "-- 제품명 선택 --");
+                }
+            });
+
+            // 단말 제품명 선택
+            document.getElementById("productName").addEventListener("change", function () {
+                formData.productName = this.value;
+                formData.planName = '';
+                document.getElementById("planName").innerHTML = '<option value="">-- 요금제명 선택 --</option>';
+                document.getElementById("planDetailBox").style.display = "none";
+                updateButtonState();
+
+                if (!formData.installmentType) return;
+
+                if (formData.productName) {
+                    fetchOptions("/homepage/salesPolicy/getPlanNames", formData, null, "planName", "-- 요금제명 선택 --");
+                }
+            });
+
+            // 요금제명 선택 시 → 상세정보 표시
+            document.getElementById("planName").addEventListener("change", function () {
+                formData.planName = this.value;
+                updateButtonState();
+
+                if (!formData.planName) {
+                    document.getElementById("planDetailBox").style.display = "none";
+                    return;
+                }
+
+                // 로딩 상태 표시
+                const detailBox = document.getElementById("planDetailBox");
+                detailBox.style.display = "block";
+                detailBox.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">로딩중...</span></div></div>';
+
+                fetch("/homepage/salesPolicy/getPlanDetail", {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    // 원래 HTML 구조 복원
+                    detailBox.innerHTML = `
+                        <h6 class="text-muted mb-3">
+                            <i class="bx bx-detail me-2"></i>요금제 상세 정보
+                        </h6>
+                        
+                        <div class="alert alert-info border-info">
+                            <div class="alert-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small">기본료</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-light"><i class="bx bx-won"></i></span>
+                                            <input type="text" id="baseAmt" class="form-control bg-light" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small">출고가</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-light"><i class="bx bx-purchase-tag"></i></span>
+                                            <input type="text" id="deviceAmt" class="form-control bg-light" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small">할부금</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-light"><i class="bx bx-credit-card"></i></span>
+                                            <input type="text" id="installmentAmount" class="form-control bg-light" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small">할인</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-light"><i class="bx bx-minus-circle text-success"></i></span>
+                                            <input type="text" id="discountAmt" class="form-control bg-light" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small">공시지원금</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-light"><i class="bx bx-gift"></i></span>
+                                            <input type="text" id="officialSubsidy" class="form-control bg-light" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small">할부이자</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-light"><i class="bx bx-bar-chart-alt text-warning"></i></span>
+                                            <input type="text" id="installmentInterest" class="form-control bg-light" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label text-muted small">월 청구요금</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-primary text-white"><i class="bx bx-calculator"></i></span>
+                                            <input type="text" id="monthlyBill" class="form-control fw-bold text-primary" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label text-muted small">평생할인프로모션</label>
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text bg-light"><i class="bx bx-star text-warning"></i></span>
+                                            <input type="text" id="additionalDiscountAmt" class="form-control bg-light" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // 데이터 입력
+                    document.getElementById("baseAmt").value = data.baseAmt != null ? data.baseAmt.toLocaleString() + "원" : "-";
+                    document.getElementById("deviceAmt").value = data.deviceAmt != null ? data.deviceAmt.toLocaleString() + "원" : "-";
+                    document.getElementById("installmentAmount").value = data.installmentAmount != null ? data.installmentAmount.toLocaleString() + "원" : "-";
+                    document.getElementById("discountAmt").value = data.discountAmt != null ? data.discountAmt.toLocaleString() + "원" : "-";
+                    document.getElementById("additionalDiscountAmt").value = data.additionalDiscountAmt != null ? data.additionalDiscountAmt.toLocaleString() + "원" : "-";
+                    document.getElementById("officialSubsidy").value = data.officialSubsidy != null ? data.officialSubsidy.toLocaleString() + "원" : "-";
+                    document.getElementById("installmentInterest").value = data.installmentInterest != null ? data.installmentInterest.toLocaleString() + "원" : "-";
+                    document.getElementById("monthlyBill").value = data.monthlyBill != null ? data.monthlyBill.toLocaleString() + "원" : "-";
+                })
+                .catch(error => {
+                    console.error('Error fetching plan details:', error);
+                    detailBox.innerHTML = '<div class="alert alert-danger">상세 정보를 불러오는 중 오류가 발생했습니다.</div>';
+                });
+            });
+
+            // 온라인 접수 버튼 클릭
+            document.getElementById("onlineApplyBtn").addEventListener("click", function (e) {
+                e.preventDefault();
+
+                if (this.classList.contains('disabled')) {
+                    return;
+                }
+
+                if (!formData.contractPeriod || !formData.activationType || !formData.productName || !formData.planName || !formData.installmentType) {
+                    alert("모든 항목을 선택해주세요.");
+                    return;
+                }
+
+                // 버튼 로딩 상태
+                const originalText = this.innerHTML;
+                this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>접수 페이지로 이동중...';
+                this.disabled = true;
+
+                fetch("/homepage/salesPolicy/getOnlineUrl", {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+                    const finalUrl = isMobile ? data.mobileUrl : data.pcUrl;
+                    if (finalUrl) {
+                        window.open(finalUrl, "_blank");
+                    } else {
+                        alert("URL 정보가 없습니다.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching URL:', error);
+                    alert("접수 페이지 URL을 가져오는 중 오류가 발생했습니다.");
+                })
+                .finally(() => {
+                    // 버튼 원상복구
+                    this.innerHTML = originalText;
+                    this.disabled = false;
+                });
+            });
+
+            // 초기 버튼 상태 설정
+            updateButtonState();
+        });
+    </script>
+	
+	<div th:replace="~{fragments/password-check-modal :: passwordCheckModal}"></div>
+	
+</body>
+</html>

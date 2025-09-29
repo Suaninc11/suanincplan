@@ -1,5 +1,7 @@
 package com.suaninc.newsagency.domain;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,10 +20,9 @@ public class CarrierPlan {
     private String mobileData;
     private String mobileQos;
     private String mobileMessage;
-    private Integer carrierPlanOrder;
     private String activeYn;
-    private String lastUpdatedDatetime;
-    private String registeredDatetime;
+    private LocalDateTime lastUpdatedDatetime;
+    private LocalDateTime registeredDatetime;
     
     private Long offset;
     private Integer pageSize;

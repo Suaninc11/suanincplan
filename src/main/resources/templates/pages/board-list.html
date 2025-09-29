@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>suaninc</title>
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+
+	<script src="/js/pages-script.js"></script>
+	<link rel="stylesheet" href="/css/common.css" />
+	<!-- Icons. Uncomment required icon fonts -->
+	<link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+	<!-- Core CSS -->
+	<link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+	<link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+	<link rel="stylesheet" href="/assets/css/demo.css" />
+	<!-- Vendors CSS -->
+	<link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+	<link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+	<!-- Helpers -->
+	<script src="/assets/vendor/js/helpers.js"></script>
+	<script src="/assets/js/config.js"></script>
+	<!-- AdressAPI -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            
+            <!-- Menu -->
+            <div th:replace="~{/fragments/sidebar :: sidebar}"></div>
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    
+					<!-- Header -->
+					<div class="row">
+					    <div class="col-12">
+					        <nav class="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+					            <div class="navbar-nav align-items-center">
+					                <i class="bx bx-folder me-2 text-primary fs-4"></i>
+					                <span class="fw-semibold">* 목록</span>
+					            </div>
+					            <div class="ms-auto">
+					                <ol class="breadcrumb breadcrumb-style1 mb-0">
+					                    <li class="breadcrumb-item">
+					                        <a href="javascript:void(0);">자료실</a>
+					                    </li>
+					                    <li class="breadcrumb-item">
+					                        <a href="/homepage/carrierPlan/carrierPlanList">*망</a>
+					                    </li>
+					                    <li class="breadcrumb-item active">* 목록</li>
+					                </ol>
+					            </div>
+					        </nav>
+					    </div>
+					</div>
+					
+                    <!-- Content -->
+                    <div class="container-fluid flex-grow-1 container-p-y">
+                        
+                        <!-- Template List Card -->
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                                <h5 class="card-title mb-0">
+                                    <i class="bx bx-file me-2"></i>템플릿 관리
+                                </h5>
+                                <div class="d-flex align-items-center gap-2">
+                                    <button id="btnExcelDownload" class="btn btn-outline-primary btn-sm">
+                                        <i class="bx bx-download me-1"></i>템플릿 목록
+                                    </button>
+                                    <button id="btnAddTemplate" class="btn btn-primary btn-sm">
+                                        <i class="bx bx-plus me-1"></i>템플릿 추가
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Search Form -->
+                            <div class="card-body border-bottom">
+                                <form name="searchForm" id="searchForm" class="row g-3">
+                                    <input type="hidden" name="currPage" id="currPage" value="0">
+                                    
+                                    <div class="col-md-3">
+                                        <label class="form-label">검색 조건</label>
+                                        <select class="form-select" name="searchType" id="searchType">
+                                            <option value="title">제목</option>
+                                            <option value="category">카테고리</option>
+                                            <option value="boardId">번호</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">검색어</label>
+                                        <input type="text" name="searchValue" id="searchValue" class="form-control" autocomplete="off" placeholder="검색어를 입력하세요"/>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-end">
+                                        <button type="button" id="btnSearch" class="btn btn-primary">
+                                            <i class="bx bx-search-alt me-1"></i>검색
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Table -->
+                            <div class="table-responsive text-nowrap">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="text-center" style="width: 80px;">번호</th>
+                                            <th class="text-center" style="width: 120px;">카테고리</th>
+                                            <th>제목</th>
+                                            <th class="text-center" style="width: 80px;">파일</th>
+                                            <th class="text-center" style="width: 100px;">조회수</th>
+                                            <th class="text-center" style="width: 120px;">등록일</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <th:block th:each="board : ${boardList}">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <span class="fw-medium" th:text="${board.boardId}"></span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-label-primary" th:text="${board.category}"></span>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div>
+                                                            <a role="statusButton" 
+                                                               class="fw-medium text-primary text-decoration-none hover-underline" 
+                                                               th:text="${board.title}"
+                                                               th:href="@{/resources/board/view(boardId=${board.boardId})}"
+                                                               style="cursor: pointer;">
+                                                            </a>
+                                                            <span th:if="${board.noticeYn == 'Y'}" class="badge bg-danger ms-2">공지</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <i th:if="${board.fileYn == 'Y'}" class="bx bx-download text-primary fs-5"></i>
+                                                    <span th:if="${board.fileYn == 'N'}" class="text-muted">-</span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-label-info" th:text="${board.viewCount}"></span>
+                                                </td>
+                                                <td class="text-center text-muted">
+                                                    <small th:text="${#temporals.format(board.registeredDatetime, 'yyyy-MM-dd')}"></small>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+										<tr th:if="${boardList.content.isEmpty()}">
+										    <td class="text-center text-muted py-3" colspan="6">검색한 결과가 없습니다.</td>
+										</tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+							<!-- Pagination -->
+							<div class="card-footer">
+							    <div class="row align-items-center">
+							        <div class="col-md-6">
+							            <div class="text-muted">
+							                <small>총 <span class="fw-medium" th:text="${boardList.totalElements}"></span>개 항목</small>
+							            </div>
+							        </div>
+							        <div class="col-md-6">
+							            <nav aria-label="Page navigation">
+							                <ul class="pagination pagination-sm justify-content-end mb-0">
+							                    <!-- 데이터가 없을 때 -->
+							                    <th:block th:if="${boardList.totalElements == 0}">
+							                        <li class="page-item disabled">
+							                            <span class="page-link"><i class="bx bx-chevrons-left" style="font-size: 0.6rem;"></i></span>
+							                        </li>
+							                        <li class="page-item disabled">
+							                            <span class="page-link"><i class="bx bx-chevron-left" style="font-size: 0.6rem;"></i></span>
+							                        </li>
+							                        <li class="page-item active">
+							                            <span class="page-link">1</span>
+							                        </li>
+							                        <li class="page-item disabled">
+							                            <span class="page-link"><i class="bx bx-chevron-right" style="font-size: 0.6rem;"></i></span>
+							                        </li>
+							                        <li class="page-item disabled">
+							                            <span class="page-link"><i class="bx bx-chevrons-right" style="font-size: 0.6rem;"></i></span>
+							                        </li>
+							                    </th:block>
+							                    
+							                    <!-- 데이터가 있을 때 -->
+							                    <th:block th:if="${boardList.totalElements > 0}">
+							                        <!-- 첫 페이지 -->
+							                        <li class="page-item" th:classappend="${boardList.number == 0} ? 'disabled'">
+							                            <a th:href="@{/homepage/template/templateList(page=0)}" class="page-link">
+							                                <i class="bx bx-chevrons-left" style="font-size: 0.6rem;"></i>
+							                            </a>
+							                        </li>
+							                        
+							                        <!-- 이전 페이지 -->
+							                        <li class="page-item" th:classappend="${boardList.number == 0} ? 'disabled'">
+							                            <a th:href="@{/homepage/template/templateList(page=${boardList.number - 1})}" class="page-link">
+							                                <i class="bx bx-chevron-left" style="font-size: 0.6rem;"></i>
+							                            </a>
+							                        </li>
+
+							                        <!-- 페이지 번호들 -->
+							                        <th:block th:with="
+							                            startPage=${boardList.number < 2 ? 0 : boardList.number - 2},
+							                            endPage=${boardList.number + 2 >= boardList.totalPages ? boardList.totalPages - 1 : boardList.number + 2},
+							                            finalStartPage=${endPage - startPage < 4 and boardList.totalPages > 5 ? (endPage >= 4 ? endPage - 4 : 0) : startPage},
+							                            finalEndPage=${finalStartPage + 4 >= boardList.totalPages ? boardList.totalPages - 1 : finalStartPage + 4}
+							                        ">
+							                            <li th:each="i : ${#numbers.sequence(finalStartPage, finalEndPage)}"
+							                                class="page-item" th:classappend="${boardList.number == i} ? 'active'">
+							                                <a th:href="@{/homepage/template/templateList(page=${i})}" 
+							                                   class="page-link" th:text="${i + 1}"></a>
+							                            </li>
+							                        </th:block>
+
+							                        <!-- 다음 페이지 -->
+							                        <li class="page-item" th:classappend="${boardList.number == boardList.totalPages - 1} ? 'disabled'">
+							                            <a th:href="@{/homepage/template/templateList(page=${boardList.number + 1})}" class="page-link">
+							                                <i class="bx bx-chevron-right" style="font-size: 0.6rem;"></i>
+							                            </a>
+							                        </li>
+
+							                        <!-- 마지막 페이지 -->
+							                        <li class="page-item" th:classappend="${boardList.number == boardList.totalPages - 1} ? 'disabled'">
+							                            <a th:href="@{/homepage/template/templateList(page=${boardList.totalPages - 1})}" class="page-link">
+							                                <i class="bx bx-chevrons-right" style="font-size: 0.6rem;"></i>
+							                            </a>
+							                        </li>
+							                    </th:block>
+							                </ul>
+							            </nav>
+							        </div>
+							    </div>
+							</div>
+							
+                        </div>
+                    </div>
+                    <!-- / Content -->
+
+                    <!-- Footer -->
+                    <div th:replace="~{/fragments/footer :: footer}"></div>
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <!-- Hidden Form -->
+    <form name="emptyForm" id="emptyForm" method="post">
+        <input type="hidden" name="boardId" id="boardId" />
+        <input type="hidden" name="returnUrl" id="returnUrl" />
+    </form>
+
+	<!-- Core JS -->
+	<script src="/assets/vendor/js/menu.js"></script>
+	<script src="/assets/vendor/libs/jquery/jquery.js"></script>
+	<script src="/assets/vendor/libs/popper/popper.js"></script>
+	<script src="/assets/vendor/js/bootstrap.js"></script>
+	<script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+	<script src="/assets/vendor/js/menu.js"></script>
+	<script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+	<script src="/assets/js/main.js"></script>
+	<script src="/assets/js/dashboards-analytics.js"></script>
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Page JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 검색 버튼 이벤트
+            document.getElementById('btnSearch').addEventListener('click', function() {
+                // 검색 로직 구현
+                console.log('검색 실행');
+            });
+
+            // 템플릿 추가 버튼 이벤트
+            document.getElementById('btnAddTemplate').addEventListener('click', function() {
+                // 템플릿 추가 페이지로 이동
+                window.location.href = '/homepage/template/add';
+            });
+
+            // 엑셀 다운로드 버튼 이벤트
+            document.getElementById('btnExcelDownload').addEventListener('click', function() {
+                // 엑셀 다운로드 로직 구현
+                console.log('엑셀 다운로드');
+            });
+
+            // 호버 효과를 위한 CSS 추가
+            const style = document.createElement('style');
+            style.textContent = `
+                .hover-underline:hover {
+                    text-decoration: underline !important;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+	
+	<div th:replace="~{fragments/password-check-modal :: passwordCheckModal}"></div>
+	
+</body>
+</html>

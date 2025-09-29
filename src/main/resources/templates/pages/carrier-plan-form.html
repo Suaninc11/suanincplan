@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>suaninc</title>
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+
+	<script src="/js/pages-script.js"></script>
+	<link rel="stylesheet" href="/css/common.css" />
+	<!-- Icons. Uncomment required icon fonts -->
+	<link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+	<!-- Core CSS -->
+	<link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+	<link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+	<link rel="stylesheet" href="/assets/css/demo.css" />
+	<!-- Vendors CSS -->
+	<link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+	<link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+	<!-- Helpers -->
+	<script src="/assets/vendor/js/helpers.js"></script>
+	<script src="/assets/js/config.js"></script>
+	<!-- AdressAPI -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            
+            <!-- Menu -->
+            <div th:replace="~{/fragments/sidebar :: sidebar}"></div>
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+					
+					<!-- Header -->
+					<div class="row">
+					    <div class="col-12">
+					        <nav class="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+					            <div class="navbar-nav align-items-center">
+					                <i class="bx bx-cog me-2 text-primary fs-4"></i>
+					                <span class="fw-semibold">요금제 설정</span>
+					            </div>
+					            <div class="ms-auto">
+					                <ol class="breadcrumb breadcrumb-style1 mb-0">
+					                    <li class="breadcrumb-item">
+					                        <a href="javascript:void(0);">설정</a>
+					                    </li>
+					                    <li class="breadcrumb-item">
+					                        <a href="/homepage/carrierPlan/carrierPlanList">요금제 설정</a>
+					                    </li>
+					                    <li class="breadcrumb-item active">요금제 등록</li>
+					                </ol>
+					            </div>
+					        </nav>
+					    </div>
+					</div>
+                    
+                    <!-- Content -->
+                    <div class="container-fluid flex-grow-1 container-p-y">
+                        
+                        <!-- Carrier Plan Registration Form -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+										<h5 class="card-title mb-0 d-flex align-items-center">
+										  <i class="bx bx-wallet me-2"></i>요금제 등록
+										</h5>
+                                    </div>
+
+                                    <form id="dataForm" method="POST">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <!-- 통신사명 -->
+                                                    <div class="mb-3">
+                                                        <label for="templateCodeSelect" class="form-label">통신사명 <span class="text-danger">*</span></label>
+                                                        <select id="templateCodeSelect" name="templateCode" class="form-select" required>
+                                                            <option value="">통신사를 선택하세요</option>
+															<option value="joytel">조이텔</option>
+															<option value="ktmMobile">KTM모바일</option>
+															<option value="skyLife">스카이라이프</option>
+															<option value="uplusuMobile">유모바일</option>
+                                                            <option value="helloMobile">헬로모바일</option>
+                                                        </select>
+                                                        <input type="hidden" id="carrierPlanName" name="carrierPlanName">
+                                                    </div>
+
+                                                    <!-- 요금제명 -->
+                                                    <div class="mb-3">
+                                                        <label for="mobileCarrier" class="form-label">요금제명 <span class="text-danger">*</span></label>
+                                                        <input type="text" id="mobileCarrier" name="mobileCarrier" class="form-control" placeholder="요금제명을 입력하세요" required>
+                                                    </div>
+
+													<!-- 월청구요금 -->
+													<div class="mb-3">
+													    <label for="monthlyBillingAmt" class="form-label">월청구요금
+															<small class="text-muted">기본료에서 할인을 뺀 금액이 자동으로 계산됩니다</small>
+														</label>
+													    <div class="input-group">
+													        <span class="input-group-text"><i class="bx bx-calculator"></i></span>
+													        <input type="text" id="monthlyBillingAmt" name="monthlyBillingAmt" class="form-control bg-light" placeholder="0" readonly>
+													        <span class="input-group-text">원</span>
+													    </div>
+													</div>
+
+                                                    <!-- 기본료 -->
+                                                    <div class="mb-3">
+                                                        <label for="basicAmt" class="form-label">기본료 (원)</label>
+                                                        <div class="input-group">
+                                                            <input type="text" id="basicAmt" name="basicAmt" class="form-control" placeholder="기본료를 입력하세요">
+                                                            <span class="input-group-text">원</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- 할인 -->
+                                                    <div class="mb-3">
+                                                        <label for="discountAmt" class="form-label">할인 (원)</label>
+                                                        <div class="input-group">
+                                                            <input type="text" id="discountAmt" name="discountAmt" class="form-control" placeholder="할인금액을 입력하세요">
+                                                            <span class="input-group-text">원</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <!-- 음성(부가통화) -->
+                                                    <div class="mb-3">
+                                                        <label for="voiceCall" class="form-label">음성(부가통화)</label>
+                                                        <input type="text" id="voiceCall" name="voiceCall" class="form-control" placeholder="예: 기본제공, 300분 등">
+                                                    </div>
+
+                                                    <!-- 데이터 -->
+                                                    <div class="mb-3">
+                                                        <label for="mobileData" class="form-label">데이터</label>
+                                                        <input type="text" id="mobileData" name="mobileData" class="form-control" placeholder="예: 10GB, 무제한 등">
+                                                    </div>
+
+                                                    <!-- QOS(무제한) -->
+                                                    <div class="mb-3">
+                                                        <label for="mobileQos" class="form-label">QOS(무제한)</label>
+                                                        <input type="text" id="mobileQos" name="mobileQos" class="form-control" placeholder="예: 1Mbps, 3Mbps 등">
+                                                    </div>
+
+                                                    <!-- 문자 -->
+                                                    <div class="mb-3">
+                                                        <label for="mobileMessage" class="form-label">문자</label>
+                                                        <input type="text" id="mobileMessage" name="mobileMessage" class="form-control" placeholder="예: 기본제공, 100건 등">
+                                                    </div>
+
+                                                    <!-- 사용 여부 -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label">사용 여부 <span class="text-danger">*</span></label>
+                                                        <div class="mt-2">
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="activeYn" id="activeY" value="Y" checked>
+                                                                <label class="form-check-label" for="activeY">
+                                                                    <span class="badge bg-success">사용</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio" name="activeYn" id="activeN" value="N">
+                                                                <label class="form-check-label" for="activeN">
+                                                                    <span class="badge bg-secondary">미사용</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <div class="d-flex justify-content-end gap-2">
+                                                <a href="/homepage/carrierPlan/carrierPlanList" class="btn btn-outline-secondary">
+                                                    <i class="bx bx-arrow-back me-1"></i>목록
+                                                </a>
+                                                <button type="button" class="btn btn-primary" onclick="submitForm()">
+                                                    <i class="bx bx-save me-1"></i>등록
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Content -->
+
+                    <!-- Footer -->
+                    <div th:replace="~{/fragments/footer :: footer}"></div>
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+	<!-- Core JS -->
+	<script src="/assets/vendor/js/menu.js"></script>
+	<script src="/assets/vendor/libs/jquery/jquery.js"></script>
+	<script src="/assets/vendor/libs/popper/popper.js"></script>
+	<script src="/assets/vendor/js/bootstrap.js"></script>
+	<script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+	<script src="/assets/vendor/js/menu.js"></script>
+	<script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+	<script src="/assets/js/main.js"></script>
+	<script src="/assets/js/dashboards-analytics.js"></script>
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Page JS -->
+    <script>
+        function submitForm() {
+            var selectElement = document.getElementById('templateCodeSelect');
+            
+            // 유효성 검사
+            if (!selectElement.value) {
+                alert('통신사를 선택해주세요.');
+                selectElement.focus();
+                return;
+            }
+
+            var mobileCarrier = document.getElementById('mobileCarrier');
+            if (!mobileCarrier.value.trim()) {
+                alert('요금제명을 입력해주세요.');
+                mobileCarrier.focus();
+                return;
+            }
+
+            var selectedText = selectElement.options[selectElement.selectedIndex].text;
+            document.getElementById('carrierPlanName').value = selectedText;
+            
+            var form = document.getElementById("dataForm");
+            var formData = new FormData(form);
+            
+            var actionUrl = "/homepage/carrierPlan/createCarrierPlan";
+            var userConfirmed = confirm("요금제를 추가하시겠습니까?");
+            if (!userConfirmed) {
+                return;
+            }
+
+            // 버튼 비활성화 및 로딩 표시
+            const submitBtn = event.target;
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span>처리중...';
+
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert("오류가 발생했습니다: " + data.message);
+                }
+            })
+            .catch(error => {
+                alert("요청 처리 중 오류가 발생했습니다.");
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                // 버튼 원상복구
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            });
+        }
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const basicAmt = document.getElementById('basicAmt');
+            const discountAmt = document.getElementById('discountAmt');
+            const monthlyBillingAmt = document.getElementById('monthlyBillingAmt');
+
+            function calculateMonthlyBilling() {
+                const basic = parseFloat(basicAmt.value.replace(/,/g, '')) || 0;
+                const discount = parseFloat(discountAmt.value.replace(/,/g, '')) || 0;
+                const result = basic - discount;
+
+                // 3자리 콤마 붙여서 표시
+                monthlyBillingAmt.value = result.toLocaleString();
+
+                // 시각적 피드백
+                if (result !== basic && discount > 0) {
+                    monthlyBillingAmt.style.color = '#28a745';
+                    monthlyBillingAmt.parentElement.classList.add('border-success');
+                } else {
+                    monthlyBillingAmt.style.color = '';
+                    monthlyBillingAmt.parentElement.classList.remove('border-success');
+                }
+            }
+
+            // 숫자 포맷팅 함수
+            function formatNumber(input) {
+                let value = input.value.replace(/[^0-9]/g, '');
+                if (value) {
+                    value = parseInt(value).toLocaleString();
+                }
+                input.value = value;
+            }
+
+            // 기본료 입력 이벤트
+            basicAmt.addEventListener('input', function() {
+                formatNumber(this);
+                calculateMonthlyBilling();
+            });
+
+            // 할인 입력 이벤트
+            discountAmt.addEventListener('input', function() {
+                formatNumber(this);
+                calculateMonthlyBilling();
+            });
+
+            // 라디오 버튼 스타일링 이벤트
+            document.querySelectorAll('input[name="activeYn"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    document.querySelectorAll('input[name="activeYn"]').forEach(r => {
+                        const label = r.nextElementSibling;
+                        const badge = label.querySelector('.badge');
+                        if (r.checked) {
+                            badge.style.opacity = '1';
+                            badge.style.transform = 'scale(1.05)';
+                        } else {
+                            badge.style.opacity = '0.6';
+                            badge.style.transform = 'scale(1)';
+                        }
+                    });
+                });
+            });
+
+            // 초기 계산 실행
+            calculateMonthlyBilling();
+            
+            // 초기 라디오 버튼 스타일 적용
+            const checkedRadio = document.querySelector('input[name="activeYn"]:checked');
+            if (checkedRadio) {
+                checkedRadio.dispatchEvent(new Event('change'));
+            }
+
+            // 입력 필드 포커스 효과
+            document.querySelectorAll('input[type="text"], select').forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('border-primary');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('border-primary');
+                });
+            });
+        });
+    </script>
+	
+	<div th:replace="~{fragments/password-check-modal :: passwordCheckModal}"></div>
+	
+</body>
+</html>

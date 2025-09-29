@@ -1,5 +1,7 @@
 package com.suaninc.newsagency.domain;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +15,8 @@ public class CarrierTemplate {
     private Integer templateImageOrder;
     private String templateImageName;
     private String templateImageUrl;
-    private String lastUpdatedDatetime;
-    private String registeredDatetime;
+    private LocalDateTime lastUpdatedDatetime;
+    private LocalDateTime registeredDatetime;
     
     private String templateCount;
     private Integer rowNum;

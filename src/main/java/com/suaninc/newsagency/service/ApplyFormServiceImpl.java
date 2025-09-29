@@ -31,5 +31,10 @@ public class ApplyFormServiceImpl implements ApplyFormService {
 	public List<TemplateCoordinate> getTemplateCoordinateList(CarrierTemplate templateImageOrder) {
 		return applyFormDao.selectTemplateCoordinateList(templateImageOrder);
 	}
+	
+	@Override
+	public List<TemplateCoordinate> getTemplateCoordinates(String templateCode) {
+		return applyFormDao.selectTemplateCoordinates(templateCode);
+	}
 
 }

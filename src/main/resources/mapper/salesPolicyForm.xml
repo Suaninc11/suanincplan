@@ -102,7 +102,7 @@
 				end_datetime,
 				product_name,
 				plan_name,
-				DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime
+            	last_updated_datetime
 			FROM
 				sales_policy sp
 		) AS subquery
@@ -116,7 +116,7 @@
 			end_datetime,
 			product_name,
 			plan_name,
-			DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime
+			last_updated_datetime
 		FROM
 			sales_policy sp
 		ORDER BY registered_datetime DESC

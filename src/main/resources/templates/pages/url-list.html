@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>suaninc</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Public+Sans:300,400,500,600,700" rel="stylesheet">
+
+  <!-- Core CSS (Sneat) -->
+  <link rel="stylesheet" href="/vendor/css/core.css" />
+  <link rel="stylesheet" href="/vendor/css/theme-default.css" />
+  <link rel="stylesheet" href="/css/demo.css" />
+
+  <!-- Font Awesome -->
+  <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+</head>
+
+<body>
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Sidebar -->
+      <div th:replace="~{/fragments/sidebar :: sidebar}"></div>
+      <!-- /Sidebar -->
+
+      <!-- Layout page -->
+      <div class="layout-page">
+        <!-- Navbar -->
+        <nav class="layout-navbar navbar navbar-expand-xl navbar-detached bg-primary shadow-sm">
+          <div class="navbar-nav align-items-center">
+            <h5 class="text-white mb-0 ms-3">URL 설정</h5>
+          </div>
+        </nav>
+        <!-- /Navbar -->
+
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <div class="container-fluid flex-grow-1 container-p-y">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="mb-0">템플릿</h6>
+              </div>
+              <div class="card-datatable table-responsive">
+                <table id="dataTable" class="table table-hover">
+                  <thead class="table-light text-center">
+                    <tr>
+                      <th>템플릿명</th>
+                      <th style="width: 100px;">페이지수</th>
+                      <th style="width: 165px;">수정일자</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="template : ${templateList}">
+                      <td>
+                        <a th:href="@{/homepage/template/templateInfo(templateCode=${template.templateCode})}"
+                           th:text="${template.templateName}"></a>
+                      </td>
+                      <td th:text="${template.templateCount}" class="text-center"></td>
+                      <td th:text="${template.lastUpdatedDatetime}"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination -->
+              <div class="card-footer d-flex justify-content-end">
+                <ul class="pagination mb-0">
+                  <li class="page-item" th:classappend="${templateList.number == 0} ? 'disabled'">
+                    <a th:href="@{/homepage/template/templateList(page=${0})}" class="page-link">&laquo;</a>
+                  </li>
+
+                  <li th:each="i : ${#numbers.sequence(
+                          templateList.number < 3 ? 0 : (templateList.number >= templateList.totalPages - 3 ? templateList.totalPages - 5 : templateList.number - 2),
+                          templateList.number < 3 ? (templateList.totalPages >= 5 ? 4 : templateList.totalPages - 1) : (templateList.number >= templateList.totalPages - 3 ? templateList.totalPages - 1 : templateList.number + 2))}"
+                      class="page-item" th:classappend="${templateList.number == i} ? 'active'">
+                    <a th:href="@{/homepage/template/templateList(page=${i})}" class="page-link" th:text="${i + 1}"></a>
+                  </li>
+
+                  <li class="page-item" th:classappend="${templateList.number == templateList.totalPages - 1} ? 'disabled'">
+                    <a th:if="${templateList.number < templateList.totalPages - 1}"
+                       th:href="@{/homepage/template/templateList(page=${templateList.totalPages - 1})}"
+                       class="page-link">&raquo;</a>
+                    <span th:if="${templateList.number == templateList.totalPages - 1}" class="page-link">&raquo;</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+		  <!-- Footer -->
+		  <div th:replace="~{/fragments/footer :: footer}"></div>
+		  <!-- / Footer -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core JS -->
+  <script src="/vendor/jquery/jquery.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/js/menu.js"></script>
+
+  <!-- Main JS -->
+  <script src="/js/main.js"></script>
+
+  <!-- DataTables -->
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#dataTable').DataTable({
+        "paging": true,
+        "searching": true,
+        "info": true,
+        "pageLength": 10,
+        "lengthChange": true
+      });
+    });
+  </script>
+  
+  <div th:replace="~{fragments/password-check-modal :: passwordCheckModal}"></div>
+  
+</body>
+</html>

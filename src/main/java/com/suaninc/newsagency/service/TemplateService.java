@@ -16,6 +16,9 @@ public interface TemplateService {
 	// 템플릿 상세
 	public List<TemplateCoordinate> getTemplateInfo(String templateCode);
 	
+	// 템플릿 좌표 갯수
+	public TemplateCoordinate getTemplateCoordinateCount(String templateCode);
+	
 	// 템플릿 좌표 수정
 	public int modifyCoordinate(TemplateCoordinate form);
 	

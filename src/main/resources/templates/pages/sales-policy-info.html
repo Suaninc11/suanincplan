@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>suaninc</title>
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+
+	<script src="/js/pages-script.js"></script>
+	<link rel="stylesheet" href="/css/common.css" />
+	<!-- Icons. Uncomment required icon fonts -->
+	<link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+	<!-- Core CSS -->
+	<link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+	<link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+	<link rel="stylesheet" href="/assets/css/demo.css" />
+	<!-- Vendors CSS -->
+	<link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+	<link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+	<!-- Helpers -->
+	<script src="/assets/vendor/js/helpers.js"></script>
+	<script src="/assets/js/config.js"></script>
+	<!-- AdressAPI -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            
+            <!-- Menu -->
+            <div th:replace="~{/fragments/sidebar :: sidebar}"></div>
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+					
+					<!-- Header -->
+					<div class="row">
+					    <div class="col-12">
+					        <nav class="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+					            <div class="navbar-nav align-items-center">
+					                <i class="bx bx-file me-2 text-primary fs-4"></i>
+					                <span class="fw-semibold">모바일(단말) 설정</span>
+					            </div>
+					            <div class="ms-auto">
+					                <ol class="breadcrumb breadcrumb-style1 mb-0">
+					                    <li class="breadcrumb-item">
+					                        <a href="javascript:void(0);">설정</a>
+					                    </li>
+					                    <li class="breadcrumb-item">
+					                        <a href="/homepage/template/templateList">템플릿 설정</a>
+					                    </li>
+					                    <li class="breadcrumb-item active">템플릿 목록</li>
+					                </ol>
+					            </div>
+					        </nav>
+					    </div>
+					</div>
+                    
+                    <!-- Content -->
+                    <div class="container-fluid flex-grow-1 container-p-y">
+                        
+                        <!-- Sales Policy Detail -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="card-title mb-0">
+                                            <i class="bx bx-mobile-alt me-2"></i>판매정책 정보
+                                        </h5>
+                                        <div class="d-flex gap-1">
+<!--											<span class="badge bg-label-info">
+											    <i class="bx bx-calendar me-1"></i>
+											    <span th:text="${#temporals.format(salesPolicyInfo.startDatetime, 'MM/dd') + ' ~ ' + #temporals.format(salesPolicyInfo.endDatetime, 'MM/dd')}"></span>
+											</span>-->
+                                        </div>
+                                    </div>
+
+                                    <form id="dataForm" method="post">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <!-- 좌측 정보 -->
+                                                <div class="col-lg-6">
+                                                    <div class="mb-4">
+                                                        <h6 class="text-muted mb-3">
+                                                            <i class="bx bx-info-circle me-2"></i>기본 정보
+                                                        </h6>
+                                                        
+                                                        <!-- 판매정책명 -->
+                                                        <div class="mb-3">
+                                                            <label class="form-label text-muted small">판매정책명</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-light"><i class="bx bx-bookmark"></i></span>
+                                                                <input type="text" name="salesPolicyName" class="form-control bg-light fw-medium" th:value="${salesPolicyInfo.salesPolicyName}" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- 계약기간 -->
+                                                        <div class="mb-3">
+                                                            <label class="form-label text-muted small">계약기간</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-light"><i class="bx bx-time"></i></span>
+                                                                <input type="text" name="contractPeriod" class="form-control bg-light" th:value="${salesPolicyInfo.contractPeriod}" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- 개통유형 -->
+                                                        <div class="mb-3">
+                                                            <label class="form-label text-muted small">개통유형</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-light"><i class="bx bx-phone-call"></i></span>
+                                                                <input type="text" name="activationType" class="form-control bg-light" th:value="${salesPolicyInfo.activationType}" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- 제품명 -->
+                                                        <div class="mb-3">
+                                                            <label class="form-label text-muted small">제품명</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-light"><i class="bx bx-devices"></i></span>
+                                                                <input type="text" name="productName" class="form-control bg-light" th:value="${salesPolicyInfo.productName}" readonly>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- 우측 정보 -->
+                                                <div class="col-lg-6">
+                                                    <div class="mb-4">
+                                                        <h6 class="text-muted mb-3">
+                                                            <i class="bx bx-detail me-2"></i>상세 정보
+                                                        </h6>
+                                                        
+                                                        <!-- 요금제명 -->
+                                                        <div class="mb-3">
+                                                            <label class="form-label text-muted small">요금제명</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-light"><i class="bx bx-receipt"></i></span>
+                                                                <input type="text" name="planName" class="form-control bg-light" th:value="${salesPolicyInfo.planName}" readonly>
+                                                            </div>
+                                                        </div>
+
+           <!--                                              시작일시 
+                                                        <div class="mb-3">
+                                                            <label class="form-label text-muted small">시작일시</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-success text-white"><i class="bx bx-play-circle"></i></span>
+                                                                <input type="text" name="startDatetime" class="form-control bg-light" th:value="${#temporals.format(salesPolicyInfo.startDatetime, 'yyyy-MM-dd HH:mm')}" readonly>
+                                                            </div>
+                                                        </div>
+
+                                                         종료일시 
+                                                        <div class="mb-3">
+                                                            <label class="form-label text-muted small">종료일시</label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-danger text-white"><i class="bx bx-stop-circle"></i></span>
+                                                                <input type="text" name="endDatetime" class="form-control bg-light" th:value="${#temporals.format(salesPolicyInfo.endDatetime, 'yyyy-MM-dd HH:mm')}" readonly>
+                                                            </div>
+                                                        </div>-->
+
+                                                        <!-- 상태 표시 -->
+                                    <!--                    <div class="mb-3">
+                                                            <label class="form-label text-muted small">상태</label>
+                                                            <div class="d-flex align-items-center">
+                                                                <span th:if="${#temporals.isAfter(#temporals.createNow(), salesPolicyInfo.endDatetime)}" 
+                                                                      class="badge bg-secondary fs-6 px-3 py-2">
+                                                                    <i class="bx bx-x-circle me-1"></i>종료됨
+                                                                </span>
+                                                                <span th:if="${#temporals.isBefore(#temporals.createNow(), salesPolicyInfo.startDatetime)}" 
+                                                                      class="badge bg-warning fs-6 px-3 py-2">
+                                                                    <i class="bx bx-time me-1"></i>대기중
+                                                                </span>
+                                                                <span th:if="${#temporals.isBetween(#temporals.createNow(), salesPolicyInfo.startDatetime, salesPolicyInfo.endDatetime)}" 
+                                                                      class="badge bg-success fs-6 px-3 py-2">
+                                                                    <i class="bx bx-check-circle me-1"></i>진행중
+                                                                </span>
+                                                            </div>
+                                                        </div>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 요약 카드 -->
+                                            <div class="row mt-4">
+                                                <div class="col-12">
+                                                    <div class="alert alert-primary border-primary">
+                                                        <div class="alert-body">
+                                                            <h6 class="alert-heading mb-2">
+                                                                <i class="bx bx-info-circle me-2"></i>정책 요약
+                                                            </h6>
+                                                            <div class="row g-3">
+                                                                <div class="col-md-3">
+                                                                    <div class="text-center">
+                                                                        <i class="bx bx-mobile-alt display-6 text-primary mb-2"></i>
+                                                                        <div class="fw-medium" th:text="${salesPolicyInfo.productName}"></div>
+                                                                        <small class="text-muted">제품</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="text-center">
+                                                                        <i class="bx bx-receipt display-6 text-primary mb-2"></i>
+                                                                        <div class="fw-medium" th:text="${salesPolicyInfo.planName}"></div>
+                                                                        <small class="text-muted">요금제</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="text-center">
+                                                                        <i class="bx bx-time display-6 text-primary mb-2"></i>
+                                                                        <div class="fw-medium" th:text="${salesPolicyInfo.contractPeriod}"></div>
+                                                                        <small class="text-muted">계약기간</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="text-center">
+                                                                        <i class="bx bx-phone-call display-6 text-primary mb-2"></i>
+                                                                        <div class="fw-medium" th:text="${salesPolicyInfo.activationType}"></div>
+                                                                        <small class="text-muted">개통유형</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                        <!--        <div class="text-muted">
+                                                    <small>
+                                                        <i class="bx bx-time-five me-1"></i>
+                                                        등록일: <span th:text="${#temporals.format(salesPolicyInfo.startDatetime, 'yyyy-MM-dd')}"></span>
+                                                    </small>
+                                                </div>-->
+												
+                                                <div>
+                                                    <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                                                        <i class="bx bx-arrow-back me-1"></i>목록
+                                                    </a>
+                                                    <!-- 수정/삭제 버튼은 주석처리되어 있음 -->
+                                                    <!--
+                                                    <button type="button" class="btn btn-primary ms-2" onclick="submitForm('modify')">
+                                                        <i class="bx bx-edit me-1"></i>수정
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger ms-2" onclick="submitForm('delete')">
+                                                        <i class="bx bx-trash me-1"></i>삭제
+                                                    </button>
+                                                    -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Content -->
+
+                    <!-- Footer -->
+                    <div th:replace="~{/fragments/footer :: footer}"></div>
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <!-- Core JS -->
+    <script src="/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="/assets/vendor/libs/popper/popper.js"></script>
+    <script src="/assets/vendor/js/bootstrap.js"></script>
+    <script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="/assets/vendor/js/menu.js"></script>
+
+    <!-- Main JS -->
+    <script src="/assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <script>
+        // 수정/삭제 함수 (현재는 사용하지 않음)
+        function submitForm(actionType) {
+            var form = document.getElementById("dataForm");
+            var formData = new FormData(form);
+            
+            var actionUrl = "";
+            var confirmMessage = "";
+            
+            if (actionType === 'modify') {
+                confirmMessage = "판매정책을 수정하시겠습니까?";
+                actionUrl = "/homepage/carrierPlan/carrierPlanModify";
+            } else if (actionType === 'delete') {
+                confirmMessage = "이 판매정책을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.";
+                actionUrl = "/homepage/carrierPlan/deleteCarrierPlan";
+            }
+
+            var userConfirmed = confirm(confirmMessage);
+            if (!userConfirmed) {
+                return;
+            }
+
+            fetch(actionUrl, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert("오류가 발생했습니다: " + data.message);
+                }
+            })
+            .catch(error => {
+                alert("요청 처리 중 오류가 발생했습니다.");
+                console.error('Error:', error);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // 상태에 따른 추가 시각적 효과
+            const statusBadge = document.querySelector('.badge');
+            if (statusBadge) {
+                if (statusBadge.classList.contains('bg-success')) {
+                    // 진행중인 경우 약간의 애니메이션 효과
+                    statusBadge.style.animation = 'pulse 2s infinite';
+                }
+            }
+        });
+
+        // CSS 애니메이션 추가
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { opacity: 1; }
+                50% { opacity: 0.7; }
+                100% { opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+	
+	<div th:replace="~{fragments/password-check-modal :: passwordCheckModal}"></div>
+	
+</body>
+</html>

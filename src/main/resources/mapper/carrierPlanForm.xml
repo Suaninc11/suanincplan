@@ -26,10 +26,9 @@
 		    mobile_data,
 		    mobile_qos,
 		    mobile_message,
-		    carrier_plan_order,
 		    active_yn,
-		    DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime,
-		    DATE_FORMAT(registered_datetime, '%Y-%m-%d %H:%i') AS registered_datetime
+            last_updated_datetime,
+            registered_datetime
 		FROM
 		    carrier_plan
 	    <where>
@@ -54,10 +53,9 @@
 		    mobile_data,
 		    mobile_qos,
 		    mobile_message,
-		    carrier_plan_order,
 		    active_yn,
-		    DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime,
-		    DATE_FORMAT(registered_datetime, '%Y-%m-%d %H:%i') AS registered_datetime
+            last_updated_datetime,
+            registered_datetime
 		FROM
 		    carrier_plan
 		WHERE
@@ -75,7 +73,6 @@
 	        mobile_data = #{mobileData},
 	        mobile_qos = #{mobileQos},
 	        mobile_message = #{mobileMessage},
-	        carrier_plan_order = #{carrierPlanOrder},
 	        active_yn = #{activeYn}
 	    WHERE carrier_plan_id = #{carrierPlanId}
 	</update>
@@ -97,7 +94,6 @@
 		    mobile_data,
 		    mobile_qos,
 		    mobile_message,
-		    carrier_plan_order,
 		    active_yn,
 		    registered_datetime
 		) VALUES (
@@ -111,7 +107,6 @@
 		    #{mobileData},
 		    #{mobileQos},
 		    #{mobileMessage},
-		    #{carrierPlanOrder},
 		    #{activeYn},
 		    now())
 	</insert>

@@ -15,4 +15,6 @@ public interface ApplyFormService {
 	
 	public List<TemplateCoordinate> getTemplateCoordinateList(CarrierTemplate templateImageOrder);
 	
+	public List<TemplateCoordinate> getTemplateCoordinates(String templateCode);
+	
 }

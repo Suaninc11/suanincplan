@@ -44,6 +44,11 @@ public class TemplateDaoImpl implements TemplateDao {
 	}
 	
 	@Override
+	public TemplateCoordinate selectTemplateCoordinateCount(String templateCode) {
+		return sqlSession.selectOne("templateForm.selectTemplateCoordinateCount", templateCode);
+	}
+	
+	@Override
 	public int updateCoordinate(TemplateCoordinate form) {
 		return sqlSession.update("templateForm.updateCoordinate", form);
 	}

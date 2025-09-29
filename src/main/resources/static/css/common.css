@@ -1,0 +1,109 @@
+/* 페이지 크기 정렬 */
+html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.template-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border: 1px solid #e3e6f0;
+    border-radius: 8px;
+    box-shadow: 0 0.15rem 1.75rem rgba(58, 59, 69, 0.15);
+    object-fit: contain;
+}
+
+/* 오버레이 텍스트 스타일 추가 */
+.overlay-text {
+    position: absolute;
+    color: #000;
+    font-family: 'NanumGothic', sans-serif;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 10;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+#loadingMessage {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+}
+
+/* 모달 오버레이 - 화면 전체를 덮고 중앙 정렬 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* 기본적으로 숨김 */
+    z-index: 9999;
+    
+    /* Flexbox를 사용한 중앙 정렬 - 보일 때만 적용 */
+    justify-content: center;
+    align-items: center;
+}
+
+/* 모달이 보일 때 */
+.modal-overlay.show {
+    display: flex;
+}
+
+/* 모달 컨텐츠 */
+.password-modal {
+    position: relative;
+    max-width: 400px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    z-index: 10000;
+    
+    /* 그림자와 애니메이션 효과 */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: scale(0.7);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+/* 모달이 활성화될 때 애니메이션 */
+.modal-overlay.show .password-modal {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* 모바일 대응 */
+@media (max-width: 576px) {
+    .password-modal {
+        width: 95%;
+        margin: 20px;
+    }
+}
+
+/* 주소 입력 필드의 배경을 흰색으로 유지 */
+.address-input {
+    background-color: #ffffff !important;
+    cursor: pointer;
+}
+
+.address-input:focus {
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 0.2rem rgba(105, 108, 255, 0.25);
+}
+
+.address-input:read-only {
+    background-color: #ffffff !important;
+    opacity: 1;
+}

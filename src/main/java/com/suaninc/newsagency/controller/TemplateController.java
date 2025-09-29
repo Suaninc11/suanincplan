@@ -50,7 +50,7 @@ public class TemplateController {
 	    
 	    model.addAttribute("templateList", templateList);
 		
-		return "templateList";
+		return "pages/template-list";
 	}
 	
 	@GetMapping("/homepage/template/templateInfo")
@@ -59,6 +59,7 @@ public class TemplateController {
 	    
 	    // 1. 템플릿 정보 가져오기
 	    List<TemplateCoordinate> templateInfo = templateService.getTemplateInfo(templateCode);
+	    TemplateCoordinate templateCoordinateCount = templateService.getTemplateCoordinateCount(templateCode);
 	    List<CarrierTemplate> templateImageList = templateService.getTemplateImageList(templateCode);
 
 	    // 2. 이미지 URL 설정
@@ -85,10 +86,11 @@ public class TemplateController {
 	    // 5. Model에 데이터 추가
 	    model.addAttribute("templateCode", templateCode);
 	    model.addAttribute("templateInfo", templateInfo);
+	    model.addAttribute("templateCoordinateCount", templateCoordinateCount);	    
 	    model.addAttribute("templateImageList", templateImageList);
 	    model.addAttribute("coordinateNameMapping", coordinateNameMapping); // 매핑 데이터 추가
 
-	    return "templateInfo";
+	    return "pages/template-info";
 	}
 
 	

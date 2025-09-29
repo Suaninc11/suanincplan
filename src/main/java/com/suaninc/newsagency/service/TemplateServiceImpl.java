@@ -28,6 +28,11 @@ public class TemplateServiceImpl implements TemplateService {
 	}
 	
 	@Override
+	public TemplateCoordinate getTemplateCoordinateCount(String templateCode) {
+		return templateDao.selectTemplateCoordinateCount(templateCode);
+	}
+	
+	@Override
 	public int modifyCoordinate(TemplateCoordinate form) {
 		return templateDao.updateCoordinate(form);
 	}

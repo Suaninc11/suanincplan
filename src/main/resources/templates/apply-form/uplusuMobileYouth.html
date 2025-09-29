@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: base(~{::formSection}, 'bx-mobile-alt', '유모바일(청소년) 가입신청서')}">
+
+<div th:fragment="formSection" id="formSection" class="col-xl-6 col-lg-6">
+	<form id="dataForm">
+		<input type="hidden" id="templateCode" name="templateCode" th:value="${form.templateCode}">
+		<input type="hidden" id="carrierPlanId" name="carrierPlanId">
+		<input type="hidden" id="carrierPlanName" name="carrierPlanName">
+		<input type="hidden" id="mobileCarrier" name="mobileCarrier">
+		<input type="hidden" id="voiceCall" name="voiceCall">
+		<input type="hidden" id="mobileData" name="mobileData">
+		<input type="hidden" id="mobileQos" name="mobileQos">
+		<input type="hidden" id="mobileMessage" name="mobileMessage">
+
+		<input type="hidden" name="commonCheck" value="commonCheck">
+		<input type="hidden" id="commonYear" name="commonYear">
+		<input type="hidden" id="commonShortYear" name="commonShortYear">
+		<input type="hidden" id="commonShortShortYear" name="commonShortShortYear">
+		<input type="hidden" id="commonMonth" name="commonMonth">
+		<input type="hidden" id="commonDay" name="commonDay">	
+		<input type="hidden" id="templateName" name="templateName" value="유모바일(청소년)">
+		<input type="hidden" id="templateCoordinateData" th:value="${templateCoordinateListJson}" />
+		
+        <div id="template">
+			<div class="card shadow mb-4">
+				
+				<!-- 요금제 -->
+				<hr class="m-0" />
+				<div class="card-header d-flex align-items-center">
+					<h5 class="mb-0">
+						<i class="bx bx-wallet me-2"></i>
+						요금제
+					</h5>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="carrierPlanSelect">요금제</label>
+							<select id="carrierPlanSelect" name="carrierPlan" class="form-select" onchange="updateHiddenFields()">
+								<th:block th:each="carrierPlan : ${carrierPlanList}">
+									<option th:value="${carrierPlan.carrierPlanId}"
+											th:text="${carrierPlan.mobileCarrier}"
+											th:data-plan-name="${carrierPlan.carrierPlanName}"
+											th:data-mobile-carrier="${carrierPlan.mobileCarrier}"
+											th:data-monthly-billing="${carrierPlan.monthlyBillingAmt}"
+											th:data-basic-amt="${carrierPlan.basicAmt}"
+											th:data-discount-amt="${carrierPlan.discountAmt}"
+											th:data-voice-call="${carrierPlan.voiceCall}"
+											th:data-mobile-data="${carrierPlan.mobileData}"
+											th:data-mobile-qos="${carrierPlan.mobileQos}"
+											th:data-mobile-message="${carrierPlan.mobileMessage}">
+									</option>
+								</th:block>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4 mb-3">
+							<label class="form-label" for="basicAmtDisplay">기본료</label>
+							<input type="text" name="basicAmtDisplay" id="basicAmtDisplay" class="form-control" readonly>
+							<input type="hidden" name="basicAmt" id="basicAmt">
+						</div>
+						<div class="col-md-4 mb-3">
+							<label class="form-label" for="discountAmtDisplay">할인</label>
+							<input type="text" name="discountAmtDisplay" id="discountAmtDisplay" class="form-control" readonly>
+							<input type="hidden" name="discountAmt" id="discountAmt">
+						</div>
+						<div class="col-md-4 mb-3">
+							<label class="form-label" for="monthlyBillingAmtDisplay">월 청구요금</label>
+							<input type="text" name="monthlyBillingAmtDisplay" id="monthlyBillingAmtDisplay" class="form-control" readonly>
+							<input type="hidden" name="monthlyBillingAmt" id="monthlyBillingAmt">
+						</div>
+					</div>
+				</div>
+				
+				<!-- 가입비 및 유심정보 -->
+				<hr class="m-0" />
+				<div class="card-header d-flex align-items-center">
+					<h5 class="mb-0">
+						<i class="bx bx-chip me-2"></i>
+						가입비 및 유심정보
+					</h5>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="simName">모델명</label>
+							<input type="text" id="simName" name="simName" class="form-control" placeholder="모델명을 입력하세요">
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="simSerialNumber">일련번호</label>
+							<input type="text" id="simSerialNumber" name="simSerialNumber" class="form-control" placeholder="일련번호를 입력하세요">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 mb-3">
+						    <label class="form-label">유심 비용</label>
+						    <div class="form-control d-flex align-items-center justify-content-center" 
+						         style="background-color: #f8f9fa; border-style: dashed; border-color: #dee2e6;">
+						            <i class="bx bx-minus-circle me-1"></i>
+						            없음
+						    </div>
+						    <input type="hidden" name="simCost" value="none">
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="subscriptionCost">가입비</label>
+							<input type="text" name="subscriptionCost" class="form-control form-control-user">
+						</div>
+					</div>
+				</div>
+				
+				<!-- 고객정보 -->
+				<hr class="m-0" />
+				<div class="card-header d-flex align-items-center justify-content-between">
+					<div class="d-flex align-items-center">
+						<h5 class="mb-0 me-3">
+							<i class="bx bx-id-card me-2"></i>
+							고객정보
+						</h5>
+					</div>
+					<div class="d-flex">
+						<div class="form-check me-3">
+							<input type="radio" id="newOption" name="openingCategory" value="new" class="form-check-input" onclick="toggleCustomerFields()" checked>
+							<label for="newOption" class="form-check-label">신규</label>
+						</div>
+						<div class="form-check">
+							<input type="radio" id="moveOption" name="openingCategory" value="move" class="form-check-input" onclick="toggleCustomerFields()">
+							<label for="moveOption" class="form-check-label">번호이동</label>
+						</div>
+					</div>
+				</div>
+
+				<div id="customerForm" class="card-body">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="name">가입자명</label>
+							<input type="text" id="name" name="name" class="form-control" placeholder="가입자명을 입력하세요">
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="birthdate">생년월일</label>
+							<input type="text" id="birthdate" name="birthdate" class="form-control" placeholder="YYYYMMDD">
+						</div>
+					</div>
+					
+					<div class="row">
+					    <div class="col-md-6 mb-3">
+					        <label class="form-label" for="address">주소</label>
+					        <input type="text" 
+					               id="address" 
+					               name="address" 
+					               class="form-control address-input" 
+					               placeholder="주소를 입력하세요" 
+					               readonly 
+					               onclick="execDaumPostcode()">
+					    </div>
+					    <div class="col-md-6 mb-3">
+					        <label class="form-label" for="addressDetail">상세주소</label>
+					        <input type="text" 
+					               id="addressDetail" 
+					               name="addressDetail" 
+					               class="form-control" 
+					               placeholder="상세주소를 입력하세요">
+					    </div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="mobileNumber">가입자 번호</label>
+							<input type="text" id="mobileNumber" name="mobileNumber" class="form-control" placeholder="가입자 번호를 입력하세요">
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="activationNumber">희망번호 (뒷 4자리)</label>
+							<input type="text" id="activationNumber" name="activationNumber" class="form-control" placeholder="뒷 4자리 입력">
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="portabilityNumber">번호이동 번호</label>
+							<input type="text" id="portabilityNumber" name="portabilityNumber" class="form-control" placeholder="번호이동 번호를 입력하세요">
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="previousCarrierSelect" id="previousCarrierLabel" style="display: none;">이전 통신사</label>
+							<select id="previousCarrierSelect" name="previousCarrier" class="form-select" onchange="toggleMVNOField()" style="display: none;">
+								<option value="previousCarrier1">SKT</option>
+								<option value="previousCarrier2">KT</option>
+								<option value="previousCarrier3">LG U+</option>
+								<option value="previousCarrier4">MVNO</option>
+							</select>
+							<input type="text" name="mvno" id="mvno" class="form-control" placeholder="MVNO 이름" style="display: none;" disabled>
+							<input type="hidden" name="commonMoveCheck" id="commonMoveCheck" disabled>
+						</div>
+					</div>
+				</div>
+				
+				<!-- 자동이체 -->
+				<hr class="m-0" />
+				<div class="card-header d-flex align-items-center justify-content-between">
+					<div class="d-flex align-items-center">
+						<h5 class="mb-0 me-3">
+							<i class="bx bx-credit-card me-2"></i>
+							자동이체
+						</h5>
+					</div>
+					<div class="d-flex">
+						<div class="form-check me-3">
+							<input type="radio" id="cardOption" name="automaticTransfer" value="card" class="form-check-input" onclick="toggleTransferForm()" checked>
+							<label for="cardOption" class="form-check-label">카드</label>
+						</div>
+						<div class="form-check">
+							<input type="radio" id="accountOption" name="automaticTransfer" value="account" class="form-check-input" onclick="toggleTransferForm()">
+							<label for="accountOption" class="form-check-label">계좌</label>
+						</div>
+					</div>
+				</div>
+
+				<!-- 카드 전용 폼 -->
+				<div class="card-body">
+					<div id="cardForm">
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label class="form-label" for="cardName">예금주명</label>
+								<input type="text" 
+									   id="cardName" 
+									   name="cardName" 
+									   class="form-control"
+									   placeholder="예금주명을 입력하세요">
+							</div>
+							<div class="col-md-6 mb-3">
+								<label class="form-label" for="cardBirthdate">생년월일</label>
+								<input type="text" 
+									   id="cardBirthdate" 
+									   name="cardBirthdate" 
+									   class="form-control"
+									   placeholder="YYYYMMDD">
+							</div>
+						</div>
+						
+						<div class="row">
+						    <div class="col-md-6 mb-3">
+						        <label class="form-label" for="cardAddress">청구주소</label>
+						        <input type="text" 
+						               id="cardAddress" 
+						               name="cardAddress" 
+						               class="form-control address-input"
+						               placeholder="주소검색을 클릭하세요"
+						               readonly
+						               onclick="execDaumPostcodeForCard()">
+						    </div>
+						    <div class="col-md-6 mb-3">
+						        <label class="form-label" for="cardAddressDetail">상세주소</label>
+						        <input type="text" 
+						               id="cardAddressDetail" 
+						               name="cardAddressDetail" 
+						               class="form-control"
+						               placeholder="상세주소를 입력하세요">
+						    </div>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label class="form-label" for="cardCompany">카드사명</label>
+								<input type="text" 
+									   id="cardCompany" 
+									   name="cardCompany" 
+									   class="form-control"
+									   placeholder="카드사명을 입력하세요">
+							</div>
+							<div class="col-md-6 mb-3">
+								<label class="form-label" for="cardNumber">카드번호</label>
+								<input type="text" 
+									   id="cardNumber" 
+									   name="cardNumber" 
+									   class="form-control"
+									   placeholder="카드번호를 입력하세요">
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label class="form-label">유효기간</label>
+								<div class="row">
+									<div class="col-6">
+										<div class="input-group">
+											<input type="text" 
+												   name="cardYear" 
+												   class="form-control" 
+												   placeholder="YY"
+												   oninput="this.value = this.value.replace(/[^0-9]/g, '');" 
+												   maxlength="2">
+											<span class="input-group-text">년</span>
+										</div>
+									</div>
+									<div class="col-6">
+										<div class="input-group">
+											<input type="text" 
+												   name="cardMonth" 
+												   class="form-control" 
+												   placeholder="MM"
+												   oninput="this.value = this.value.replace(/[^0-9]/g, '');" 
+												   maxlength="2">
+											<span class="input-group-text">월</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- 계좌 전용 폼 -->
+					<div id="accountForm" style="display: none;">
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label class="form-label" for="accountName">예금주명</label>
+								<input type="text" 
+									   id="accountName" 
+									   name="accountName" 
+									   class="form-control"
+									   placeholder="예금주명을 입력하세요">
+							</div>
+							<div class="col-md-6 mb-3">
+								<label class="form-label" for="accountBirthdate">생년월일</label>
+								<input type="text" 
+									   id="accountBirthdate" 
+									   name="accountBirthdate" 
+									   class="form-control"
+									   placeholder="YYYYMMDD">
+							</div>
+						</div>
+						
+						<div class="row">
+						    <div class="col-md-6 mb-3">
+						        <label class="form-label" for="accountAddress">청구주소</label>
+						        <input type="text" 
+						               id="accountAddress" 
+						               name="accountAddress" 
+						               class="form-control address-input"
+						               placeholder="주소검색을 클릭하세요"
+						               readonly
+						               onclick="execDaumPostcodeForAccount()">
+						    </div>
+						    <div class="col-md-6 mb-3">
+						        <label class="form-label" for="accountAddressDetail">상세주소</label>
+						        <input type="text" 
+						               id="accountAddressDetail" 
+						               name="accountAddressDetail" 
+						               class="form-control"
+						               placeholder="상세주소를 입력하세요">
+						    </div>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label class="form-label" for="accountBank">은행명</label>
+								<input type="text" 
+									   id="accountBank" 
+									   name="accountBank" 
+									   class="form-control"
+									   placeholder="은행명을 입력하세요">
+							</div>
+							<div class="col-md-6 mb-3">
+								<label class="form-label" for="accountNumber">계좌번호</label>
+								<input type="text" 
+									   id="accountNumber" 
+									   name="accountNumber" 
+									   class="form-control"
+									   placeholder="계좌번호를 입력하세요">
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- 법정대리인 -->
+				<hr class="m-0" />
+				<div class="card-header d-flex align-items-center">
+					<h5 class="mb-0">
+						<i class="bx bx-user-check me-2"></i>
+						법정대리인
+					</h5>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="depositorName">법정대리인명</label>
+							<input type="text" 
+								   id="depositorName" 
+								   name="depositorName" 
+								   class="form-control legal-input" 
+								   placeholder="법정대리인명을 입력하세요">
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="depositorBirthdate">생년월일</label>
+							<input type="text" 
+								   id="depositorBirthdate" 
+								   name="depositorBirthdate" 
+								   class="form-control legal-input" 
+								   placeholder="YYYYMMDD">
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="depositorNumber">법대연락처</label>
+							<input type="text" 
+								   id="depositorNumber" 
+								   name="depositorNumber" 
+								   class="form-control legal-input" 
+								   placeholder="연락처를 입력하세요">
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="relationship">관계</label>
+							<input type="text" 
+								   id="relationship" 
+								   name="relationship" 
+								   class="form-control legal-input" 
+								   placeholder="관계를 입력하세요">
+						</div>
+					</div>
+				</div>
+				
+				<!-- 부가기능 -->
+				<hr class="m-0" />
+				<div class="card-header d-flex align-items-center">
+					<h5 class="mb-0">
+						<i class="bx bx-cog me-2"></i>
+						부가기능
+					</h5>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="mobilePayment">통신과금서비스</label>
+							<select name="mobilePayment" id="mobilePayment" class="form-select">
+								<option value="mobilePayment1">휴대폰결제 차단</option>
+								<option value="mobilePayment2">휴대폰결제 이용</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				
+				<!-- 판매자정보 -->
+				<hr class="m-0" />
+				<div class="card-header d-flex align-items-center">
+					<h5 class="mb-0">
+						<i class="bx bx-store me-2"></i>
+						판매자정보
+					</h5>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="retailerName">판매점 상호</label>
+							<input type="text" id="retailerName" name="retailerName" class="form-control" placeholder="판매점 상호를 입력하세요">
+						</div>
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="sellerName">판매자명</label>
+							<input type="text" id="sellerName" name="sellerName" class="form-control" placeholder="판매자명을 입력하세요">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 mb-3">
+							<label class="form-label" for="sellerNumber">연락처</label>
+							<input type="text" id="sellerNumber" name="sellerNumber" class="form-control" placeholder="연락처를 입력하세요">
+						</div>
+					</div>
+				</div>
+					
+			</div>
+        </div>
+	</form>
+	<div class="d-sm-flex align-items-center mb-4 justify-content-end">
+		<div class="d-flex gap-2">
+		    <button type="button" 
+		            class="btn btn-primary d-flex align-items-center" 
+		            onclick="applyFormDownload(true)">
+		        <i class="bx bx-printer me-1"></i>
+		        <span class="d-none d-sm-inline">출력</span>
+		    </button>
+		    <button type="button" 
+		            class="btn btn-outline-primary d-flex align-items-center" 
+		            onclick="applyFormDownload(false)">
+		        <i class="bx bx-download me-1"></i>
+		        <span class="d-none d-sm-inline">다운로드</span>
+		    </button>
+		</div>
+	</div>
+</div>
+
+<div th:replace="~{fragments/password-check-modal :: passwordCheckModal}"></div>
+<div th:replace="~{fragments/loading-message :: loadingMessage}"></div>
+
+</html>

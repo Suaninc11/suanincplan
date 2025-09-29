@@ -1,5 +1,7 @@
 package com.suaninc.newsagency.domain;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +18,7 @@ public class ResourcesBoard {
 	private Integer download_count;		// 다운로드수
     private String file_yn;				// 파일 첨부 여부 (Y/N)
 	private String notice_yn;			// 공지사항 여부 (Y/N)
-    private String lastUpdatedDatetime;	// 수정일
-    private String registeredDatetime;	// 생성일
+    private LocalDateTime lastUpdatedDatetime;	// 수정일
+    private LocalDateTime registeredDatetime;	// 생성일
 	    
 }

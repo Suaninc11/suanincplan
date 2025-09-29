@@ -20,8 +20,8 @@
 		SELECT
 		    template_code,
 		    template_name,
-		    COUNT(template_code),
-		    MAX(DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i')) AS last_updated_datetime
+		    COUNT(template_code) as template_count,
+            last_updated_datetime
 		FROM
 		    carrier_template ct
 		GROUP BY
@@ -44,8 +44,8 @@
 		    tc.coordinate_x_axis,
 		    tc.coordinate_y_axis,
 		    CONCAT(ct.template_code, '/', ct.template_image_name) AS template_image_path,
-		    DATE_FORMAT(tc.last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime,
-		    DATE_FORMAT(tc.registered_datetime, '%Y-%m-%d %H:%i') AS registered_datetime
+            last_updated_datetime,
+            registered_datetime
 		FROM
 		    template_coordinate tc
 		INNER JOIN
@@ -54,6 +54,21 @@
 		    AND tc.template_image_order = ct.template_image_order
 		WHERE
 		    tc.template_code = #{templateCode}
+    </select>
+    
+    <select id="selectTemplateCoordinateCount" resultType="TemplateCoordinate">
+		SELECT 
+			COUNT(CASE WHEN tc.template_type = '고객구분' THEN 1 END) AS customer_type_count,
+			COUNT(CASE WHEN tc.template_type = '고객정보' THEN 1 END) AS customer_info_count,
+			COUNT(CASE WHEN tc.template_type = '요금제' THEN 1 END) AS mobile_carrier_count,
+			COUNT(CASE WHEN tc.template_type = '가입비 및 유심정보' THEN 1 END) AS sim_info_count,
+			COUNT(CASE WHEN tc.template_type = '결제정보' THEN 1 END) AS payment_info_count,
+		    COUNT(CASE WHEN tc.template_type = '법정대리인' THEN 1 END) AS legal_representative_count,
+			COUNT(CASE WHEN tc.template_type = '부가기능' THEN 1 END) AS additional_function_count,
+		    COUNT(CASE WHEN tc.template_type = '판매자정보' THEN 1 END) AS seller_info_count,
+		    COUNT(CASE WHEN tc.template_type = '공통체크' THEN 1 END) AS common_info_count
+		FROM template_coordinate tc
+		WHERE tc.template_code = #{templateCode}
     </select>
     
 	<update id="updateCoordinate" parameterType="TemplateCoordinate">
@@ -72,8 +87,8 @@
 		    template_name,
 		    template_image_order,
 		    template_image_name,
-		    DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime,
-		    DATE_FORMAT(registered_datetime, '%Y-%m-%d %H:%i') AS registered_datetime
+            last_updated_datetime,
+            registered_datetime
 		FROM
 		    carrier_template
 		WHERE

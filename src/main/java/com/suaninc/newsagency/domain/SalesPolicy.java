@@ -1,5 +1,7 @@
 package com.suaninc.newsagency.domain;
 
+import java.time.LocalDateTime;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +12,8 @@ public class SalesPolicy {
 	private Integer id;
     private String salesPolicyName;
     private String agencyName;
-    private String startDatetime;
-    private String endDatetime;
+    private LocalDateTime startDatetime;
+    private LocalDateTime endDatetime;
     private String productCode;
     private String productName;
     private String isUsedProduct;
@@ -33,13 +35,15 @@ public class SalesPolicy {
     private String classification;
     private String urlPath;
     private String mobileUrlPath;
-    private String lastUpdatedDatetime;
-    private String registeredDatetime;
+    private LocalDateTime lastUpdatedDatetime;
+    private LocalDateTime registeredDatetime;
     
     private String installmentType; // 할부 유형 (LIKE 검색용)
     
     private Integer installmentAmount;       // 할부금 (계산값)
     private Integer installmentInterest;     // 할부이자 (계산값)
     private Integer monthlyBill;             // 월 청구요금 (계산값)
+    
+    private String status;
 	
 }

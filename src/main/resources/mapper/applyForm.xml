@@ -15,9 +15,8 @@
             mobile_data,
             mobile_qos,
             mobile_message,
-            carrier_plan_order,
-            DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime,
-            DATE_FORMAT(registered_datetime, '%Y-%m-%d %H:%i') AS registered_datetime
+            last_updated_datetime,
+            registered_datetime
 		FROM
 			carrier_plan
 		WHERE
@@ -33,8 +32,8 @@
             template_code AS templateCode,
             template_image_order AS templateImageOrder,
             template_image_name AS templateImageName,
-            DATE_FORMAT(last_updated_datetime ,'%Y-%m-%d %H:%i') AS last_updated_datetime,
-            DATE_FORMAT(registered_datetime ,'%Y-%m-%d %H:%i') AS registered_datetime
+            last_updated_datetime,
+            registered_datetime
         FROM 
             carrier_template
         WHERE
@@ -55,13 +54,33 @@
 		    font_size,
 		    coordinate_x_axis,
 		    coordinate_y_axis,
-		    DATE_FORMAT(last_updated_datetime, '%Y-%m-%d %H:%i') AS last_updated_datetime,
-		    DATE_FORMAT(registered_datetime, '%Y-%m-%d %H:%i') AS registered_datetime
+            last_updated_datetime,
+            registered_datetime
 		FROM
 		    template_coordinate
 		WHERE
 		    template_code = #{templateCode}
 		    AND template_image_order = #{templateImageOrder}
+    </select>
+    
+    <select id="selectTemplateCoordinates"  parameterType="TemplateCoordinate" resultType="TemplateCoordinate">
+		SELECT
+		    template_coordinate_id,
+		    template_code,
+		    template_image_order,
+		    template_coordinate_name,
+		    template_input_type,
+		    template_input_option,
+		    font_style,
+		    font_size,
+		    coordinate_x_axis,
+		    coordinate_y_axis,
+            last_updated_datetime,
+            registered_datetime
+		FROM
+		    template_coordinate
+		WHERE
+		    template_code = #{templateCode}
     </select>
 
 </mapper>

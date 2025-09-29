@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>suaninc</title>
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+
+	<script src="/js/pages-script.js"></script>
+	<link rel="stylesheet" href="/css/common.css" />
+	<!-- Icons. Uncomment required icon fonts -->
+	<link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+	<!-- Core CSS -->
+	<link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+	<link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+	<link rel="stylesheet" href="/assets/css/demo.css" />
+	<!-- Vendors CSS -->
+	<link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+	<link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+	<!-- Helpers -->
+	<script src="/assets/vendor/js/helpers.js"></script>
+	<script src="/assets/js/config.js"></script>
+	<!-- AdressAPI -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            
+            <!-- Menu -->
+            <div th:replace="~{/fragments/sidebar :: sidebar}"></div>
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    
+					<!-- Header -->
+					<div class="row">
+					    <div class="col-12">
+					        <nav class="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+					            <div class="navbar-nav align-items-center">
+					                <i class="bx bx-cog me-2 text-primary fs-4"></i>
+					                <span class="fw-semibold">템플릿 설정</span>
+					            </div>
+					            <div class="ms-auto">
+					                <ol class="breadcrumb breadcrumb-style1 mb-0">
+					                    <li class="breadcrumb-item">
+					                        <a href="javascript:void(0);">설정</a>
+					                    </li>
+					                    <li class="breadcrumb-item">
+					                        <a href="/homepage/template/templateList">템플릿 설정</a>
+					                    </li>
+					                    <li class="breadcrumb-item active">템플릿 상세</li>
+					                </ol>
+					            </div>
+					        </nav>
+					    </div>
+					</div>
+					
+                    <!-- Content -->
+                    <div class="container-fluid flex-grow-1 container-p-y">
+						
+						<!-- 페이지 헤더 -->
+						<div class="card mb-4">
+							
+							<div class="card-header d-flex justify-content-between align-items-center">
+							    <h5 class="card-title mb-0 d-flex align-items-center">
+							        <i class="bx bx-file me-2"></i>템플릿 상세
+							    </h5>
+								<button type="button" class="btn btn-outline-secondary me-2" onclick="history.back()">
+									<i class="bx bx-arrow-back me-1"></i>
+									목록
+								</button>
+							</div>
+						</div>
+
+                        <!-- Template Detail Accordion -->
+                        <div class="accordion mb-4" id="templateAccordion">
+        
+							<!-- 고객구분 -->
+							<div class="card mb-4">
+							    <div class="card-header d-flex justify-content-between align-items-center">
+							        <h5 class="card-title mb-0 d-flex align-items-center">
+							            <i class="bx bx-user me-2"></i>고객구분
+							        </h5>
+										<span class="badge bg-label-primary" th:text="${templateCoordinateCount.customerTypeCount ?: 0} + '개 항목'"></span>
+									</span>
+							    </div>
+							    <div class="card-body pt-0">
+							        <div class="table-responsive">
+							            <table class="table table-hover">
+							                <thead class="table-light">
+							                    <tr>
+							                        <th>No</th>
+							                        <th>입력구분</th>
+							                        <th class="text-center">타입</th>
+							                        <th class="text-center">폰트</th>
+							                        <th class="text-center">크기</th>
+							                        <th class="text-center">X좌표</th>
+							                        <th class="text-center">Y좌표</th>
+							                        <th class="text-center">페이지</th>
+							                        <th class="text-center">수정일자</th>
+							                        <th class="text-center" style="width: 80px;">관리</th>
+							                    </tr>
+							                </thead>
+							                <tbody>
+							                    <tr th:each="template, iterStat : ${templateInfo}" 
+							                        th:if="${template.templateType != null} and ${template.templateType} == '고객구분'">
+							                        <td>
+							                            <span class="badge bg-label-secondary" th:text="${iterStat.index + 1}"></span>
+							                        </td>
+							                        <td>
+							                            <span th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-primary" th:text="${template.templateInputType}"></span>
+							                        </td>
+							                        <td class="text-center" th:text="${template.fontStyle}"></td>
+							                        <td class="text-center">
+							                            <span class="fw-semibold" th:text="${template.fontSize} + 'px'"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateXAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateYAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-warning" th:text="'P' + ${template.templateImageOrder}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <small class="text-muted" th:text="${template.lastUpdatedDatetime}"></small>
+							                        </td>
+							                        <td class="text-center">
+							                            <button type="button" class="btn btn-sm btn-icon btn-outline-primary" name="modifyCoordinate"
+							                                th:attr="data-template-coordinate-id=${template.templateCoordinateId},
+							                                         data-template-coordinate-x=${template.coordinateXAxis},
+							                                         data-template-coordinate-y=${template.coordinateYAxis},
+							                                         data-template-font-size=${template.fontSize},
+							                                         data-template-input-type=${template.templateInputType},
+							                                         data-template-path=${template.templateImagePath}">
+							                                <i class="bx bx-edit"></i>
+							                            </button>
+							                        </td>
+							                    </tr>
+												<tr th:if="${templateCoordinateCount.customerTypeCount == null or templateCoordinateCount.customerTypeCount == 0}">
+												    <td colspan="10" class="text-center py-4">
+												        <i class="bx bx-info-circle text-muted me-2" style="font-size: 1.2rem;"></i>
+												        <span class="text-muted">등록된 항목이 없습니다</span>
+												    </td>
+												</tr>
+							                </tbody>
+							            </table>
+							        </div>
+							    </div>
+							</div>
+
+							<!-- 고객정보 -->
+							<div class="card mb-4">
+							    <div class="card-header d-flex justify-content-between align-items-center">
+							        <h5 class="card-title mb-0 d-flex align-items-center">
+							            <i class="bx bx-id-card me-2"></i>고객정보
+							        </h5>
+							        <span class="badge bg-label-primary" th:text="${templateCoordinateCount.customerInfoCount ?: 0} + '개 항목'"></span>
+							    </div>
+							    <div class="card-body pt-0">
+							        <div class="table-responsive">
+							            <table class="table table-hover">
+							                <thead class="table-light">
+							                    <tr>
+							                        <th>No</th>
+							                        <th>입력구분</th>
+							                        <th class="text-center">타입</th>
+							                        <th class="text-center">폰트</th>
+							                        <th class="text-center">크기</th>
+							                        <th class="text-center">X좌표</th>
+							                        <th class="text-center">Y좌표</th>
+							                        <th class="text-center">페이지</th>
+							                        <th class="text-center">수정일자</th>
+							                        <th class="text-center" style="width: 80px;">관리</th>
+							                    </tr>
+							                </thead>
+							                <tbody>
+							                    <tr th:each="template, iterStat : ${templateInfo}" 
+							                        th:if="${template.templateType != null} and ${template.templateType} == '고객정보'">
+							                        <td>
+							                            <span class="badge bg-label-secondary" th:text="${iterStat.index + 1}"></span>
+							                        </td>
+							                        <td>
+							                            <span th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-primary" th:text="${template.templateInputType}"></span>
+							                        </td>
+							                        <td class="text-center" th:text="${template.fontStyle}"></td>
+							                        <td class="text-center">
+							                            <span class="fw-semibold" th:text="${template.fontSize} + 'px'"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateXAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateYAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-warning" th:text="'P' + ${template.templateImageOrder}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <small class="text-muted" th:text="${template.lastUpdatedDatetime}"></small>
+							                        </td>
+							                        <td class="text-center">
+							                            <button type="button" class="btn btn-sm btn-icon btn-outline-primary" name="modifyCoordinate"
+							                                th:attr="data-template-coordinate-id=${template.templateCoordinateId},
+							                                         data-template-coordinate-x=${template.coordinateXAxis},
+							                                         data-template-coordinate-y=${template.coordinateYAxis},
+							                                         data-template-font-size=${template.fontSize},
+							                                         data-template-input-type=${template.templateInputType},
+							                                         data-template-path=${template.templateImagePath}">
+							                                <i class="bx bx-edit"></i>
+							                            </button>
+							                        </td>
+							                    </tr>
+												<tr th:if="${templateCoordinateCount.customerInfoCount == null or templateCoordinateCount.customerInfoCount == 0}">
+												    <td colspan="10" class="text-center py-4">
+												        <i class="bx bx-info-circle text-muted me-2" style="font-size: 1.2rem;"></i>
+												        <span class="text-muted">등록된 항목이 없습니다</span>
+												    </td>
+												</tr>
+							                </tbody>
+							            </table>
+							        </div>
+							    </div>
+							</div>
+
+							<!-- 요금제 -->
+							<div class="card mb-4">
+							    <div class="card-header d-flex justify-content-between align-items-center">
+							        <h5 class="card-title mb-0 d-flex align-items-center">
+							            <i class="bx bx-wallet me-2"></i>요금제
+							        </h5>
+							        <span class="badge bg-label-primary" th:text="${templateCoordinateCount.mobileCarrierCount ?: 0} + '개 항목'"></span>
+							    </div>
+							    <div class="card-body pt-0">
+							        <div class="table-responsive">
+							            <table class="table table-hover">
+							                <thead class="table-light">
+							                    <tr>
+							                        <th>No</th>
+							                        <th>입력구분</th>
+							                        <th class="text-center">타입</th>
+							                        <th class="text-center">폰트</th>
+							                        <th class="text-center">크기</th>
+							                        <th class="text-center">X좌표</th>
+							                        <th class="text-center">Y좌표</th>
+							                        <th class="text-center">페이지</th>
+							                        <th class="text-center">수정일자</th>
+							                        <th class="text-center" style="width: 80px;">관리</th>
+							                    </tr>
+							                </thead>
+							                <tbody>
+							                    <tr th:each="template, iterStat : ${templateInfo}" 
+							                        th:if="${template.templateType != null} and ${template.templateType} == '요금제'">
+							                        <td>
+							                            <span class="badge bg-label-secondary" th:text="${iterStat.index + 1}"></span>
+							                        </td>
+							                        <td>
+							                            <span th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-primary" th:text="${template.templateInputType}"></span>
+							                        </td>
+							                        <td class="text-center" th:text="${template.fontStyle}"></td>
+							                        <td class="text-center">
+							                            <span class="fw-semibold" th:text="${template.fontSize} + 'px'"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateXAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateYAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-warning" th:text="'P' + ${template.templateImageOrder}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <small class="text-muted" th:text="${template.lastUpdatedDatetime}"></small>
+							                        </td>
+							                        <td class="text-center">
+							                            <button type="button" class="btn btn-sm btn-icon btn-outline-primary" name="modifyCoordinate"
+							                                th:attr="data-template-coordinate-id=${template.templateCoordinateId},
+							                                         data-template-coordinate-x=${template.coordinateXAxis},
+							                                         data-template-coordinate-y=${template.coordinateYAxis},
+							                                         data-template-font-size=${template.fontSize},
+							                                         data-template-input-type=${template.templateInputType},
+							                                         data-template-path=${template.templateImagePath}">
+							                                <i class="bx bx-edit"></i>
+							                            </button>
+							                        </td>
+							                    </tr>
+												<tr th:if="${templateCoordinateCount.mobileCarrierCount == null or templateCoordinateCount.mobileCarrierCount == 0}">
+												    <td colspan="10" class="text-center py-4">
+												        <i class="bx bx-info-circle text-muted me-2" style="font-size: 1.2rem;"></i>
+												        <span class="text-muted">등록된 항목이 없습니다</span>
+												    </td>
+												</tr>
+							                </tbody>
+							            </table>
+							        </div>
+							    </div>
+							</div>
+
+							<!-- 가입비 및 유심정보 -->
+							<div class="card mb-4">
+							    <div class="card-header d-flex justify-content-between align-items-center">
+							        <h5 class="card-title mb-0 d-flex align-items-center">
+							            <i class="bx bx-credit-card me-2"></i>가입비 및 유심정보
+							        </h5>
+							        <span class="badge bg-label-primary" th:text="${templateCoordinateCount.simInfoCount ?: 0} + '개 항목'"></span>
+							    </div>
+							    <div class="card-body pt-0">
+							        <div class="table-responsive">
+							            <table class="table table-hover">
+							                <thead class="table-light">
+							                    <tr>
+							                        <th>No</th>
+							                        <th>입력구분</th>
+							                        <th class="text-center">타입</th>
+							                        <th class="text-center">폰트</th>
+							                        <th class="text-center">크기</th>
+							                        <th class="text-center">X좌표</th>
+							                        <th class="text-center">Y좌표</th>
+							                        <th class="text-center">페이지</th>
+							                        <th class="text-center">수정일자</th>
+							                        <th class="text-center" style="width: 80px;">관리</th>
+							                    </tr>
+							                </thead>
+							                <tbody>
+							                    <tr th:each="template, iterStat : ${templateInfo}" 
+							                        th:if="${template.templateType != null} and ${template.templateType} == '가입비 및 유심정보'">
+							                        <td>
+							                            <span class="badge bg-label-secondary" th:text="${iterStat.index + 1}"></span>
+							                        </td>
+							                        <td>
+							                            <span th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-primary" th:text="${template.templateInputType}"></span>
+							                        </td>
+							                        <td class="text-center" th:text="${template.fontStyle}"></td>
+							                        <td class="text-center">
+							                            <span class="fw-semibold" th:text="${template.fontSize} + 'px'"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateXAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateYAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-warning" th:text="'P' + ${template.templateImageOrder}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <small class="text-muted" th:text="${template.lastUpdatedDatetime}"></small>
+							                        </td>
+							                        <td class="text-center">
+							                            <button type="button" class="btn btn-sm btn-icon btn-outline-primary" name="modifyCoordinate"
+							                                th:attr="data-template-coordinate-id=${template.templateCoordinateId},
+							                                         data-template-coordinate-x=${template.coordinateXAxis},
+							                                         data-template-coordinate-y=${template.coordinateYAxis},
+							                                         data-template-font-size=${template.fontSize},
+							                                         data-template-input-type=${template.templateInputType},
+							                                         data-template-path=${template.templateImagePath}">
+							                                <i class="bx bx-edit"></i>
+							                            </button>
+							                        </td>
+							                    </tr>
+												<tr th:if="${templateCoordinateCount.simInfoCount == null or templateCoordinateCount.simInfoCount == 0}">
+												    <td colspan="10" class="text-center py-4">
+												        <i class="bx bx-info-circle text-muted me-2" style="font-size: 1.2rem;"></i>
+												        <span class="text-muted">등록된 항목이 없습니다</span>
+												    </td>
+												</tr>
+							                </tbody>
+							            </table>
+							        </div>
+							    </div>
+							</div>
+
+							<!-- 결제정보 -->
+							<div class="card mb-4">
+							    <div class="card-header d-flex justify-content-between align-items-center">
+							        <h5 class="card-title mb-0 d-flex align-items-center">
+							            <i class="bx bx-credit-card-alt me-2"></i>결제정보
+							        </h5>
+							        <span class="badge bg-label-primary" th:text="${templateCoordinateCount.paymentInfoCount ?: 0} + '개 항목'"></span>
+							    </div>
+							    <div class="card-body pt-0">
+							        <div class="table-responsive">
+							            <table class="table table-hover">
+							                <thead class="table-light">
+							                    <tr>
+							                        <th>No</th>
+							                        <th>입력구분</th>
+							                        <th class="text-center">타입</th>
+							                        <th class="text-center">폰트</th>
+							                        <th class="text-center">크기</th>
+							                        <th class="text-center">X좌표</th>
+							                        <th class="text-center">Y좌표</th>
+							                        <th class="text-center">페이지</th>
+							                        <th class="text-center">수정일자</th>
+							                        <th class="text-center" style="width: 80px;">관리</th>
+							                    </tr>
+							                </thead>
+							                <tbody>
+							                    <tr th:each="template, iterStat : ${templateInfo}" 
+							                        th:if="${template.templateType != null} and ${template.templateType} == '자동이체'">
+							                        <td>
+							                            <span class="badge bg-label-secondary" th:text="${iterStat.index + 1}"></span>
+							                        </td>
+							                        <td>
+							                            <span th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-primary" th:text="${template.templateInputType}"></span>
+							                        </td>
+							                        <td class="text-center" th:text="${template.fontStyle}"></td>
+							                        <td class="text-center">
+							                            <span class="fw-semibold" th:text="${template.fontSize} + 'px'"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateXAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateYAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-warning" th:text="'P' + ${template.templateImageOrder}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <small class="text-muted" th:text="${template.lastUpdatedDatetime}"></small>
+							                        </td>
+							                        <td class="text-center">
+							                            <button type="button" class="btn btn-sm btn-icon btn-outline-primary" name="modifyCoordinate"
+							                                th:attr="data-template-coordinate-id=${template.templateCoordinateId},
+							                                         data-template-coordinate-x=${template.coordinateXAxis},
+							                                         data-template-coordinate-y=${template.coordinateYAxis},
+							                                         data-template-font-size=${template.fontSize},
+							                                         data-template-input-type=${template.templateInputType},
+							                                         data-template-path=${template.templateImagePath}">
+							                                <i class="bx bx-edit"></i>
+							                            </button>
+							                        </td>
+							                    </tr>
+												<tr th:if="${templateCoordinateCount.paymentInfoCount == null or templateCoordinateCount.paymentInfoCount == 0}">
+												    <td colspan="10" class="text-center py-4">
+												        <i class="bx bx-info-circle text-muted me-2" style="font-size: 1.2rem;"></i>
+												        <span class="text-muted">등록된 항목이 없습니다</span>
+												    </td>
+												</tr>
+							                </tbody>
+							            </table>
+							        </div>
+							    </div>
+							</div>
+
+							<!-- 법정대리인 -->
+							<div class="card mb-4">
+							    <div class="card-header d-flex justify-content-between align-items-center">
+							        <h5 class="card-title mb-0 d-flex align-items-center">
+							            <i class="bx bx-user-check me-2"></i>법정대리인
+							        </h5>
+							        <span class="badge bg-label-primary" th:text="${templateCoordinateCount.legalRepresentativeCount ?: 0} + '개 항목'"></span>
+							    </div>
+							    <div class="card-body pt-0">
+							        <div class="table-responsive">
+							            <table class="table table-hover">
+							                <thead class="table-light">
+							                    <tr>
+							                        <th>No</th>
+							                        <th>입력구분</th>
+							                        <th class="text-center">타입</th>
+							                        <th class="text-center">폰트</th>
+							                        <th class="text-center">크기</th>
+							                        <th class="text-center">X좌표</th>
+							                        <th class="text-center">Y좌표</th>
+							                        <th class="text-center">페이지</th>
+							                        <th class="text-center">수정일자</th>
+							                        <th class="text-center" style="width: 80px;">관리</th>
+							                    </tr>
+							                </thead>
+							                <tbody>
+							                    <tr th:each="template, iterStat : ${templateInfo}" 
+							                        th:if="${template.templateType != null} and ${template.templateType} == '법정대리인'">
+							                        <td>
+							                            <span class="badge bg-label-secondary" th:text="${iterStat.index + 1}"></span>
+							                        </td>
+							                        <td>
+							                            <span th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-primary" th:text="${template.templateInputType}"></span>
+							                        </td>
+							                        <td class="text-center" th:text="${template.fontStyle}"></td>
+							                        <td class="text-center">
+							                            <span class="fw-semibold" th:text="${template.fontSize} + 'px'"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateXAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateYAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-warning" th:text="'P' + ${template.templateImageOrder}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <small class="text-muted" th:text="${template.lastUpdatedDatetime}"></small>
+							                        </td>
+							                        <td class="text-center">
+							                            <button type="button" class="btn btn-sm btn-icon btn-outline-primary" name="modifyCoordinate"
+							                                th:attr="data-template-coordinate-id=${template.templateCoordinateId},
+							                                         data-template-coordinate-x=${template.coordinateXAxis},
+							                                         data-template-coordinate-y=${template.coordinateYAxis},
+							                                         data-template-font-size=${template.fontSize},
+							                                         data-template-input-type=${template.templateInputType},
+							                                         data-template-path=${template.templateImagePath}">
+							                                <i class="bx bx-edit"></i>
+							                            </button>
+							                        </td>
+							                    </tr>
+												<tr th:if="${templateCoordinateCount.legalRepresentativeCount == null or templateCoordinateCount.legalRepresentativeCount == 0}">
+												    <td colspan="10" class="text-center py-4">
+												        <i class="bx bx-info-circle text-muted me-2" style="font-size: 1.2rem;"></i>
+												        <span class="text-muted">등록된 항목이 없습니다</span>
+												    </td>
+												</tr>
+							                </tbody>
+							            </table>
+							        </div>
+							    </div>
+							</div>
+
+							<!-- 부가기능 -->
+							<div class="card mb-4">
+							    <div class="card-header d-flex justify-content-between align-items-center">
+							        <h5 class="card-title mb-0 d-flex align-items-center">
+							            <i class="bx bx-cog me-2"></i>부가기능
+							        </h5>
+							        <span class="badge bg-label-primary" th:text="${templateCoordinateCount.additionalFunctionCount ?: 0} + '개 항목'"></span>
+							    </div>
+							    <div class="card-body pt-0">
+							        <div class="table-responsive">
+							            <table class="table table-hover">
+							                <thead class="table-light">
+							                    <tr>
+							                        <th>No</th>
+							                        <th>입력구분</th>
+							                        <th class="text-center">타입</th>
+							                        <th class="text-center">폰트</th>
+							                        <th class="text-center">크기</th>
+							                        <th class="text-center">X좌표</th>
+							                        <th class="text-center">Y좌표</th>
+							                        <th class="text-center">페이지</th>
+							                        <th class="text-center">수정일자</th>
+							                        <th class="text-center" style="width: 80px;">관리</th>
+							                    </tr>
+							                </thead>
+							                <tbody>
+							                    <tr th:each="template, iterStat : ${templateInfo}" 
+							                        th:if="${template.templateType != null} and ${template.templateType} == '부가기능'">
+							                        <td>
+							                            <span class="badge bg-label-secondary" th:text="${iterStat.index + 1}"></span>
+							                        </td>
+							                        <td>
+							                            <span th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-primary" th:text="${template.templateInputType}"></span>
+							                        </td>
+							                        <td class="text-center" th:text="${template.fontStyle}"></td>
+							                        <td class="text-center">
+							                            <span class="fw-semibold" th:text="${template.fontSize} + 'px'"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateXAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateYAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-warning" th:text="'P' + ${template.templateImageOrder}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <small class="text-muted" th:text="${template.lastUpdatedDatetime}"></small>
+							                        </td>
+							                        <td class="text-center">
+							                            <button type="button" class="btn btn-sm btn-icon btn-outline-primary" name="modifyCoordinate"
+							                                th:attr="data-template-coordinate-id=${template.templateCoordinateId},
+							                                         data-template-coordinate-x=${template.coordinateXAxis},
+							                                         data-template-coordinate-y=${template.coordinateYAxis},
+							                                         data-template-font-size=${template.fontSize},
+							                                         data-template-input-type=${template.templateInputType},
+							                                         data-template-path=${template.templateImagePath}">
+							                                <i class="bx bx-edit"></i>
+							                            </button>
+							                        </td>
+							                    </tr>
+												<tr th:if="${templateCoordinateCount.additionalFunctionCount == null or templateCoordinateCount.additionalFunctionCount == 0}">
+												    <td colspan="10" class="text-center py-4">
+												        <i class="bx bx-info-circle text-muted me-2" style="font-size: 1.2rem;"></i>
+												        <span class="text-muted">등록된 항목이 없습니다</span>
+												    </td>
+												</tr>
+							                </tbody>
+							            </table>
+							        </div>
+							    </div>
+							</div>
+
+							<!-- 판매자정보 -->
+							<div class="card mb-4">
+							    <div class="card-header d-flex justify-content-between align-items-center">
+							        <h5 class="card-title mb-0 d-flex align-items-center">
+							            <i class="bx bx-store me-2"></i>판매자정보
+							        </h5>
+							        <span class="badge bg-label-primary" th:text="${templateCoordinateCount.sellerInfoCount ?: 0} + '개 항목'"></span>
+							    </div>
+							    <div class="card-body pt-0">
+							        <div class="table-responsive">
+							            <table class="table table-hover">
+							                <thead class="table-light">
+							                    <tr>
+							                        <th>No</th>
+							                        <th>입력구분</th>
+							                        <th class="text-center">타입</th>
+							                        <th class="text-center">폰트</th>
+							                        <th class="text-center">크기</th>
+							                        <th class="text-center">X좌표</th>
+							                        <th class="text-center">Y좌표</th>
+							                        <th class="text-center">페이지</th>
+							                        <th class="text-center">수정일자</th>
+							                        <th class="text-center" style="width: 80px;">관리</th>
+							                    </tr>
+							                </thead>
+							                <tbody>
+							                    <tr th:each="template, iterStat : ${templateInfo}" 
+							                        th:if="${template.templateType != null} and ${template.templateType} == '판매자정보'">
+							                        <td>
+							                            <span class="badge bg-label-secondary" th:text="${iterStat.index + 1}"></span>
+							                        </td>
+							                        <td>
+							                            <span th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-primary" th:text="${template.templateInputType}"></span>
+							                        </td>
+							                        <td class="text-center" th:text="${template.fontStyle}"></td>
+							                        <td class="text-center">
+							                            <span class="fw-semibold" th:text="${template.fontSize} + 'px'"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateXAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateYAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-warning" th:text="'P' + ${template.templateImageOrder}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <small class="text-muted" th:text="${template.lastUpdatedDatetime}"></small>
+							                        </td>
+							                        <td class="text-center">
+							                            <button type="button" class="btn btn-sm btn-icon btn-outline-primary" name="modifyCoordinate"
+							                                th:attr="data-template-coordinate-id=${template.templateCoordinateId},
+							                                         data-template-coordinate-x=${template.coordinateXAxis},
+							                                         data-template-coordinate-y=${template.coordinateYAxis},
+							                                         data-template-font-size=${template.fontSize},
+							                                         data-template-input-type=${template.templateInputType},
+							                                         data-template-path=${template.templateImagePath}">
+							                                <i class="bx bx-edit"></i>
+							                            </button>
+							                        </td>
+							                    </tr>
+												<tr th:if="${templateCoordinateCount.sellerInfoCount == null or templateCoordinateCount.sellerInfoCount == 0}">
+												    <td colspan="10" class="text-center py-4">
+												        <i class="bx bx-info-circle text-muted me-2" style="font-size: 1.2rem;"></i>
+												        <span class="text-muted">등록된 항목이 없습니다</span>
+												    </td>
+												</tr>
+							                </tbody>
+							            </table>
+							        </div>
+							    </div>
+							</div>
+
+							<!-- 공통체크 -->
+							<div class="card mb-4">
+							    <div class="card-header d-flex justify-content-between align-items-center">
+							        <h5 class="card-title mb-0 d-flex align-items-center">
+							            <i class="bx bx-check-square me-2"></i>공통체크
+							        </h5>
+							        <span class="badge bg-label-primary" th:text="${templateCoordinateCount.commonInfoCount ?: 0} + '개 항목'"></span>
+							    </div>
+							    <div class="card-body pt-0">
+							        <div class="table-responsive">
+							            <table class="table table-hover">
+							                <thead class="table-light">
+							                    <tr>
+							                        <th>No</th>
+							                        <th>입력구분</th>
+							                        <th class="text-center">타입</th>
+							                        <th class="text-center">폰트</th>
+							                        <th class="text-center">크기</th>
+							                        <th class="text-center">X좌표</th>
+							                        <th class="text-center">Y좌표</th>
+							                        <th class="text-center">페이지</th>
+							                        <th class="text-center">수정일자</th>
+							                        <th class="text-center" style="width: 80px;">관리</th>
+							                    </tr>
+							                </thead>
+							                <tbody>
+							                    <tr th:each="template, iterStat : ${templateInfo}" 
+							                        th:if="${template.templateType != null} and ${template.templateType} == '공통체크'">
+							                        <td>
+							                            <span class="badge bg-label-secondary" th:text="${iterStat.index + 1}"></span>
+							                        </td>
+							                        <td>
+							                            <span th:text="${coordinateNameMapping[template.templateCoordinateName] ?: template.templateCoordinateName}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-primary" th:text="${template.templateInputType}"></span>
+							                        </td>
+							                        <td class="text-center" th:text="${template.fontStyle}"></td>
+							                        <td class="text-center">
+							                            <span class="fw-semibold" th:text="${template.fontSize} + 'px'"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateXAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <code th:text="${template.coordinateYAxis}"></code>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-warning" th:text="'P' + ${template.templateImageOrder}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <small class="text-muted" th:text="${template.lastUpdatedDatetime}"></small>
+							                        </td>
+							                        <td class="text-center">
+							                            <button type="button" class="btn btn-sm btn-icon btn-outline-primary" name="modifyCoordinate"
+							                                th:attr="data-template-coordinate-id=${template.templateCoordinateId},
+							                                         data-template-coordinate-x=${template.coordinateXAxis},
+							                                         data-template-coordinate-y=${template.coordinateYAxis},
+							                                         data-template-font-size=${template.fontSize},
+							                                         data-template-input-type=${template.templateInputType},
+							                                         data-template-path=${template.templateImagePath}">
+							                                <i class="bx bx-edit"></i>
+							                            </button>
+							                        </td>
+							                    </tr>
+												<tr th:if="${templateCoordinateCount.commonInfoCount == null or templateCoordinateCount.commonInfoCount == 0}">
+												    <td colspan="10" class="text-center py-4">
+												        <i class="bx bx-info-circle text-muted me-2" style="font-size: 1.2rem;"></i>
+												        <span class="text-muted">등록된 항목이 없습니다</span>
+												    </td>
+												</tr>
+							                </tbody>
+							            </table>
+							        </div>
+							    </div>
+							</div>
+
+							<!-- 템플릿 이미지 -->
+							<div class="card mb-4">
+							    <div class="card-header d-flex justify-content-between align-items-center">
+							        <h5 class="card-title mb-0 d-flex align-items-center">
+							            <i class="bx bx-image me-2"></i>템플릿 이미지
+							        </h5>
+							        <span class="badge bg-label-success" th:text="${#lists.size(templateImageList)} + '개 이미지'"></span>
+							    </div>
+							    <div class="card-body pt-0">
+							        <div class="table-responsive">
+							            <table class="table table-hover">
+							                <thead class="table-light">
+							                    <tr>
+							                        <th>No</th>
+							                        <th class="text-center">이미지</th>
+							                        <th>이미지명</th>
+							                        <th class="text-center">순서</th>
+							                        <th class="text-center">수정일자</th>
+							                        <th class="text-center" style="width: 80px;">관리</th>
+							                    </tr>
+							                </thead>
+							                <tbody>
+							                    <tr th:each="templateImage, iterStat : ${templateImageList}">
+							                        <td>
+							                            <span class="badge bg-label-primary" th:text="${iterStat.index + 1}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <div class="avatar avatar-lg">
+							                                <img th:src="@{/external-images/{templateCode}/{imageName}(templateCode=${templateImage.templateCode}, imageName=${templateImage.templateImageName})}"
+							                                     alt="Template Image" 
+							                                     class="rounded"
+							                                     style="width: 100%; height: 100%; object-fit: cover; cursor: pointer;"
+							                                     onclick="openImageModal(this)">
+							                            </div>
+							                        </td>
+							                        <td>
+							                            <span th:text="${templateImage.templateImageName}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <span class="badge bg-label-warning" th:text="'P' + ${templateImage.templateImageOrder}"></span>
+							                        </td>
+							                        <td class="text-center">
+							                            <small class="text-muted" th:text="${templateImage.lastUpdatedDatetime}"></small>
+							                        </td>
+							                        <td class="text-center">
+							                            <button type="button" class="btn btn-sm btn-outline-primary"
+							                                th:attr="data-carrier-template-id=${templateImage.carrierTemplateId},
+							                                         data-template-code=${templateImage.templateCode}, 
+							                                         data-template-name=${templateImage.templateName}, 
+							                                         data-template-image-order=${templateImage.templateImageOrder}, 
+							                                         data-template-image-name=${templateImage.templateImageName}"
+							                                onclick="triggerFileUpload(this)">
+							                                <i class="bx bx-upload me-1"></i>
+							                                교체
+							                            </button>
+							                        </td>
+							                    </tr>
+							                </tbody>
+							            </table>
+							        </div>
+							        <input type="file" id="fileInput" style="display: none;" accept=".jpg" onchange="handleFileUpload(event)">
+							    </div>
+							</div>
+							
+                        </div>
+                    </div>
+                    <!-- / Content -->
+
+                    <!-- Footer -->
+                    <div th:replace="~{/fragments/footer :: footer}"></div>
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+	<!-- 이미지 확대 모달 -->
+	<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">이미지 미리보기</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center p-0">
+					<img id="modalImage" src="" alt="확대된 이미지" class="img-fluid">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 좌표 수정 모달 -->
+	<div class="modal fade" id="coordinateModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">
+						<i class="bx bx-move me-2"></i>
+						좌표 편집
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body p-0">
+					<div class="text-center">
+						<canvas id="coordinateCanvas" style="max-width: 100%; height: auto; border: 1px solid #ddd;"></canvas>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-between">
+					<div class="d-flex align-items-center">
+						<div class="input-group input-group-sm me-3">
+							<span class="input-group-text">X</span>
+							<input type="number" id="xInput" class="form-control" style="width: 100px;">
+						</div>
+						<div class="input-group input-group-sm">
+							<span class="input-group-text">Y</span>
+							<input type="number" id="yInput" class="form-control" style="width: 100px;">
+						</div>
+					</div>
+					<div>
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+							<i class="bx bx-x me-1"></i>
+							취소
+						</button>
+						<button type="button" class="btn btn-primary" id="saveCoordinate">
+							<i class="bx bx-save me-1"></i>
+							저장
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Core JS -->
+	<script src="/assets/vendor/js/menu.js"></script>
+	<script src="/assets/vendor/libs/jquery/jquery.js"></script>
+	<script src="/assets/vendor/libs/popper/popper.js"></script>
+	<script src="/assets/vendor/js/bootstrap.js"></script>
+	<script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+	<script src="/assets/vendor/js/menu.js"></script>
+	<script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+	<script src="/assets/js/main.js"></script>
+	<script src="/assets/js/dashboards-analytics.js"></script>
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Page JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 호버 효과를 위한 CSS 추가
+            const style = document.createElement('style');
+            style.textContent = `
+                .table tbody tr:hover {
+                    background-color: rgba(67, 89, 113, 0.04);
+                }
+                
+                .accordion-button:not(.collapsed) {
+                    background-color: var(--bs-primary-bg-subtle);
+                    color: var(--bs-primary);
+                }
+
+                .table th {
+                    border-bottom: 2px solid #d9dee3;
+                    font-weight: 600;
+                    color: #566a7f;
+                    font-size: 0.8125rem;
+                }
+
+                .badge {
+                    font-size: 0.75rem;
+                }
+
+                .btn-icon {
+                    width: 32px;
+                    height: 32px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .avatar-xs {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                .avatar-lg {
+                    width: 48px;
+                    height: 48px;
+                }
+
+                @media (max-width: 768px) {
+                    .accordion-button {
+                        font-size: 0.875rem;
+                        padding: 0.75rem;
+                    }
+                    
+                    .table-responsive {
+                        font-size: 0.8rem;
+                    }
+                    
+                    .btn-sm {
+                        font-size: 0.75rem;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+
+		// 캔버스 및 좌표 관련 JavaScript
+		let canvas, ctx;
+		let text = "";
+		let image = new Image();
+		let textX = 50, textY = 50;
+		let fontSize = 20;
+		let templateInputType = "";
+		let background = new Image();
+		let templateCoordinateId = "";
+
+		// 수정 버튼 클릭 시 모달 열기
+		$(document).on('click', '[name="modifyCoordinate"]', function () {
+			const button = $(this);
+
+			templateCoordinateId = button.data('template-coordinate-id');
+			textX = button.data('template-coordinate-x');
+			textY = button.data('template-coordinate-y');
+			fontSize = button.data('template-font-size');
+			templateInputType = button.data('template-input-type');
+			const templatePath = button.data('template-path');
+			const backgroundImageUrl = `/external-images/${templatePath}`;
+
+			if (templateInputType === "text") {
+				text = "이동할 텍스트";
+			} else if (templateInputType === "check") {
+				image.src = "/external-images/checkmark.png";
+			}
+
+			$('#xInput').val(textX);
+			$('#yInput').val(textY);
+
+			background.src = backgroundImageUrl;
+			background.onload = function () {
+				setupCanvas();
+				drawCanvas();
+			};
+
+			const modal = new bootstrap.Modal(document.getElementById('coordinateModal'));
+			modal.show();
+		});
+
+		function setupCanvas() {
+			canvas = document.getElementById('coordinateCanvas');
+			ctx = canvas.getContext('2d');
+			canvas.width = background.width || 2000;
+			canvas.height = background.height || 2828;
+		}
+
+		function drawCanvas() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+			if (background.complete && background.naturalWidth !== 0) {
+				ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+			}
+
+			if (templateInputType === "text" && text) {
+				ctx.font = `${fontSize}px Arial`;
+				ctx.fillStyle = "red";
+				ctx.fillText(text, textX, textY);
+			} else if (templateInputType === "check") {
+				if (image.complete && image.naturalWidth !== 0) {
+					const imgWidth = image.width;
+					const imgHeight = image.height;
+					const centerX = textX - imgWidth / 2;
+					const centerY = textY - imgHeight / 2;
+					ctx.drawImage(image, centerX, centerY, imgWidth, imgHeight);
+				}
+			}
+		}
+
+		$(document).on('input', '#xInput, #yInput', function () {
+			textX = parseInt($('#xInput').val(), 10) || 0;
+			textY = parseInt($('#yInput').val(), 10) || 0;
+			drawCanvas();
+		});
+
+		$(document).on('click', '#saveCoordinate', function () {
+			const payload = {
+				templateCoordinateId: templateCoordinateId,
+				coordinateXAxis: textX,
+				coordinateYAxis: textY,
+			};
+
+			$.ajax({
+				url: '/homepage/template/modifyCoordinate',
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(payload),
+				success: function (response) {
+					alert('좌표가 성공적으로 저장되었습니다.');
+					bootstrap.Modal.getInstance(document.getElementById('coordinateModal')).hide();
+					location.reload();
+				},
+				error: function (error) {
+					alert('좌표 저장에 실패했습니다.');
+				}
+			});
+		});
+
+		// 파일 업로드 관련 함수들
+		let selectedData = {};
+
+		function openImageModal(image) {
+			const modalImage = document.getElementById("modalImage");
+			modalImage.src = image.src;
+			const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+			modal.show();
+		}
+
+		function triggerFileUpload(button) {
+			selectedData = {
+				carrierTemplateId: button.getAttribute("data-carrier-template-id"),
+				templateCode: button.getAttribute("data-template-code"),
+				templateName: button.getAttribute("data-template-name"),
+				templateImageOrder: button.getAttribute("data-template-image-order"),
+				templateImageName: button.getAttribute("data-template-image-name")
+			};
+			document.getElementById('fileInput').click();
+		}
+
+		function handleFileUpload(event) {
+			const file = event.target.files[0];
+			if (file) {
+				const fileType = file.type;
+				if (fileType !== 'image/jpeg') {
+					alert("JPG 파일만 업로드할 수 있습니다.");
+					return;
+				}
+
+				const img = new Image();
+				img.src = URL.createObjectURL(file);
+				img.onload = function() {
+					const width = img.width;
+					const height = img.height;
+
+					if (width === 2000 && height === 2828) {
+						uploadFile(file);
+					} else {
+						alert("이미지 해상도는 2000x2828이어야 합니다.");
+					}
+					URL.revokeObjectURL(img.src);
+				};
+			}
+		}
+
+		function uploadFile(file) {
+			const formData = new FormData();
+			formData.append("file", file);
+			formData.append("templateCode", selectedData.templateCode);
+			formData.append("carrierTemplateId", selectedData.carrierTemplateId);
+
+			fetch('/homepage/template/replaceImage', {
+				method: 'POST',
+				body: formData
+			})
+			.then(response => response.json())
+			.then(data => {
+				if (data.success) {
+					alert("이미지가 성공적으로 교체되었습니다.");
+					location.reload();
+				} else {
+					alert("이미지 교체에 실패했습니다.");
+				}
+			})
+			.catch(error => {
+				alert("이미지 교체 중 오류가 발생했습니다.");
+			});
+		}
+    </script>
+	
+	<div th:replace="~{fragments/password-check-modal :: passwordCheckModal}"></div>
+	
+</body>
+</html>

@@ -35,7 +35,7 @@ public class CarrierPlanController {
 	    model.addAttribute("carrierPlanList", carrierPlanList);
 	    model.addAttribute("carrierPlan", form);
 		
-		return "carrierPlanList";
+		return "pages/carrier-plan-list";
 	}
 	
 	@GetMapping("/homepage/carrierPlan/carrierPlanInfo")
@@ -46,7 +46,7 @@ public class CarrierPlanController {
 	    
 		model.addAttribute("carrierPlanInfo", carrierPlanInfo);
 	    
-		return "carrierPlanInfo";
+		return "pages/carrier-plan-info";
 	}
 	
 	@PostMapping("/homepage/carrierPlan/carrierPlanModify")
@@ -86,11 +86,10 @@ public class CarrierPlanController {
 	    return response;
 	}
 	
-	
 	@GetMapping("/homepage/carrierPlan/carrierPlanForm")
 	public String carrierPlanForm() {
 		
-	    return "carrierPlanForm";  
+	    return "pages/carrier-plan-form";
 	}
 
 	@PostMapping("/homepage/carrierPlan/createCarrierPlan")

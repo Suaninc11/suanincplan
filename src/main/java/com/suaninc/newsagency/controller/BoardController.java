@@ -41,7 +41,7 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("selectedCarrier", carrier); // 선택된 carrier를 view로 전달
         
-        return "board_list";
+        return "pages/board-list";
     }
     
 }

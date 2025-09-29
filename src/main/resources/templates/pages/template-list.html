@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="/assets/" data-template="vertical-menu-template-free" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>suaninc</title>
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<link rel="icon" href="/img/favicon.ico" type="image/x-icon">
+	<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon">
+
+	<script src="/js/pages-script.js"></script>
+	<link rel="stylesheet" href="/css/common.css" />
+	<!-- Icons. Uncomment required icon fonts -->
+	<link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+	<!-- Core CSS -->
+	<link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+	<link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+	<link rel="stylesheet" href="/assets/css/demo.css" />
+	<!-- Vendors CSS -->
+	<link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+	<link rel="stylesheet" href="/assets/vendor/libs/apex-charts/apex-charts.css" />
+	<!-- Helpers -->
+	<script src="/assets/vendor/js/helpers.js"></script>
+	<script src="/assets/js/config.js"></script>
+	<!-- AdressAPI -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+
+<body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+        <div class="layout-container">
+            
+            <!-- Menu -->
+            <div th:replace="~{/fragments/sidebar :: sidebar}"></div>
+            <!-- / Menu -->
+
+            <!-- Layout container -->
+            <div class="layout-page">
+                
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    
+					<!-- Header -->
+					<div class="row">
+					    <div class="col-12">
+					        <nav class="layout-navbar navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+					            <div class="navbar-nav align-items-center">
+					                <i class="bx bx-cog me-2 text-primary fs-4"></i>
+					                <span class="fw-semibold">템플릿 설정</span>
+					            </div>
+					            <div class="ms-auto">
+					                <ol class="breadcrumb breadcrumb-style1 mb-0">
+					                    <li class="breadcrumb-item">
+					                        <a href="javascript:void(0);">설정</a>
+					                    </li>
+					                    <li class="breadcrumb-item">
+					                        <a href="/homepage/template/templateList">템플릿 설정</a>
+					                    </li>
+					                    <li class="breadcrumb-item active">템플릿 목록</li>
+					                </ol>
+					            </div>
+					        </nav>
+					    </div>
+					</div>
+					
+                    <!-- Content -->
+                    <div class="container-fluid flex-grow-1 container-p-y">
+						
+                        <!-- Template List Card -->
+                        <div class="card">
+							<div class="card-header d-flex justify-content-between align-items-center">
+							    <h5 class="card-title mb-0 d-flex align-items-center">
+							        <i class="bx bx-file me-2"></i>템플릿 목록
+							    </h5>
+							</div>
+
+							<!-- Search Form -->
+							<div class="card-body border-bottom">
+							    <form id="searchForm" action="/homepage/template/templateList" method="get" class="row g-3 align-items-end">
+							        <div class="col-md-3">
+							            <label class="form-label">템플릿 검색</label>
+							            <div class="input-group">
+							                <span class="input-group-text">
+							                    <i class="bx bx-search"></i>
+							                </span>
+							                <input type="text"
+							                       name="searchKeyword"
+							                       class="form-control"
+							                       placeholder="템플릿명으로 검색..."
+							                       th:value="${searchKeyword}">
+							            </div>
+							        </div>
+							        <div class="col-auto">
+							            <button type="submit" class="btn btn-primary">
+							                <i class="bx bx-search-alt me-1"></i>검색
+							            </button>
+							            <a href="/homepage/template/templateList" class="btn btn-outline-secondary ms-2">
+							                <i class="bx bx-refresh me-1"></i>전체
+							            </a>
+							        </div>
+							    </form>
+							</div>
+
+                            <!-- Table -->
+                            <div class="table-responsive text-nowrap">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="text-center" style="width: 80px;">번호</th>
+                                            <th>템플릿명</th>
+                                            <th class="text-center" style="width: 120px;">페이지수</th>
+                                            <th class="text-center" style="width: 140px;">수정일자</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <th:block th:each="template, iterStat : ${templateList}">
+                                            <tr class="template-row">
+												<td class="text-center">
+												  <span class="badge bg-label-primary"
+												        th:text="${templateList.totalElements - (templateList.number * templateList.size) - iterStat.index}">
+												  </span>
+												</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar avatar-sm me-3">
+                                                            <div class="avatar-initial bg-label-info rounded">
+                                                                <i class="bx bx-file-blank"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-0">
+                                                                <a th:href="@{/homepage/template/templateInfo(templateCode=${template.templateCode})}"
+                                                                   class="fw-medium text-primary text-decoration-none hover-underline"
+                                                                   th:text="${template.templateName}"></a>
+                                                            </h6>
+                                                            <small class="text-muted" th:text="'코드: ' + ${template.templateCode}"></small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="badge bg-label-secondary" th:text="${template.templateCount} + '페이지'"></span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="text-muted" th:text="${template.lastUpdatedDatetime}"></span>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        <tr th:if="${#lists.isEmpty(templateList)}">
+                                            <td class="text-center text-muted" colspan="5">
+                                                <div class="py-4">
+                                                    <i class="bx bx-file-blank fs-2 mb-2 d-block text-muted"></i>
+                                                    등록된 템플릿이 없습니다.
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Pagination -->
+                            <div class="card-footer">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6">
+                                        <div class="text-muted">
+                                            <small>
+                                                총 <span class="fw-medium" th:text="${templateList.totalElements}"></span>개 항목 중 
+                                                <span class="fw-medium" th:text="${templateList.number * templateList.size + 1}"></span>-<span class="fw-medium" th:text="${(templateList.number + 1) * templateList.size > templateList.totalElements ? templateList.totalElements : (templateList.number + 1) * templateList.size}"></span>개 표시
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination pagination-sm justify-content-end mb-0">
+                                                <li class="page-item" th:classappend="${templateList.number == 0} ? 'disabled'">
+                                                    <a th:href="@{/homepage/template/templateList(page=${0}, searchKeyword=${searchKeyword})}" class="page-link">
+                                                        <i class="bx bx-chevrons-left" style="font-size: 0.6rem;"></i>
+                                                    </a>
+                                                </li>
+                                                
+                                                <li class="page-item" th:classappend="${templateList.number == 0} ? 'disabled'">
+                                                    <a th:href="@{/homepage/template/templateList(page=${templateList.number - 1}, searchKeyword=${searchKeyword})}" class="page-link">
+                                                        <i class="bx bx-chevron-left" style="font-size: 0.6rem;"></i>
+                                                    </a>
+                                                </li>
+
+                                                <!-- 페이지 번호 출력 -->
+                                                <li th:each="i : ${#numbers.sequence(
+                                                        templateList.number < 3 ? 0 : (templateList.number >= templateList.totalPages - 3 ? templateList.totalPages - 5 : templateList.number - 2),
+                                                        templateList.number < 3 ? (templateList.totalPages >= 5 ? 4 : templateList.totalPages - 1) : (templateList.number >= templateList.totalPages - 3 ? templateList.totalPages - 1 : templateList.number + 2))}"
+                                                    class="page-item" th:classappend="${templateList.number == i} ? 'active'">
+                                                    <a th:href="@{/homepage/template/templateList(page=${i}, searchKeyword=${searchKeyword})}" class="page-link" th:text="${i + 1}"></a>
+                                                </li>
+
+                                                <li class="page-item" th:classappend="${templateList.number == templateList.totalPages - 1} ? 'disabled'">
+                                                    <a th:if="${templateList.number < templateList.totalPages - 1}" 
+                                                       th:href="@{/homepage/template/templateList(page=${templateList.number + 1}, searchKeyword=${searchKeyword})}" 
+                                                       class="page-link">
+                                                        <i class="bx bx-chevron-right" style="font-size: 0.6rem;"></i>
+                                                    </a>
+                                                    <span th:if="${templateList.number == templateList.totalPages - 1}" class="page-link">
+                                                        <i class="bx bx-chevron-right" style="font-size: 0.6rem;"></i>
+                                                    </span>
+                                                </li>
+
+                                                <li class="page-item" th:classappend="${templateList.number == templateList.totalPages - 1} ? 'disabled'">
+                                                    <a th:if="${templateList.number < templateList.totalPages - 1}" 
+                                                       th:href="@{/homepage/template/templateList(page=${templateList.totalPages - 1}, searchKeyword=${searchKeyword})}" 
+                                                       class="page-link">
+                                                        <i class="bx bx-chevrons-right" style="font-size: 0.6rem;"></i>
+                                                    </a>
+                                                    <span th:if="${templateList.number == templateList.totalPages - 1}" class="page-link">
+                                                        <i class="bx bx-chevrons-right" style="font-size: 0.6rem;"></i>
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Content -->
+
+                    <!-- Footer -->
+                    <div th:replace="~{/fragments/footer :: footer}"></div>
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+	<!-- Core JS -->
+	<script src="/assets/vendor/js/menu.js"></script>
+	<script src="/assets/vendor/libs/jquery/jquery.js"></script>
+	<script src="/assets/vendor/libs/popper/popper.js"></script>
+	<script src="/assets/vendor/js/bootstrap.js"></script>
+	<script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+	<script src="/assets/vendor/js/menu.js"></script>
+	<script src="/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+	<script src="/assets/js/main.js"></script>
+	<script src="/assets/js/dashboards-analytics.js"></script>
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- Page JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 호버 효과를 위한 CSS 추가
+            const style = document.createElement('style');
+            style.textContent = `
+                .hover-underline:hover {
+                    text-decoration: underline !important;
+                }
+                
+                .table tbody tr:hover {
+                    background-color: rgba(67, 89, 113, 0.04);
+                }
+                
+                .template-row {
+                    transition: background-color 0.2s ease;
+                }
+                
+                .badge {
+                    font-size: 0.75rem;
+                }
+                
+                .avatar-initial {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                
+                .dropdown-toggle::after {
+                    display: none;
+                }
+                
+                @media (max-width: 768px) {
+                    .table-responsive {
+                        font-size: 0.875rem;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // 검색 입력 필드에 엔터키 이벤트
+            const searchInput = document.querySelector('input[name="searchKeyword"]');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        document.getElementById('searchForm').submit();
+                    }
+                });
+            }
+        });
+    </script>
+	
+	<div th:replace="~{fragments/password-check-modal :: passwordCheckModal}"></div>
+	
+</body>
+</html>
